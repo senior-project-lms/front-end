@@ -1,19 +1,23 @@
 <template>
     
     <div class="Announcement">
-        <v-card :color="unread">
+        <v-card :color="unread" :class="{'border-color': announcement.borderColor}">
             <a class="right dismiss" href="">dismiss</a>
             <v-card-title >{{ announcement.title }}</v-card-title>
             <v-divider class="divider"></v-divider>
             <v-card-text>
                 <pre>
                     <p class="text" v-html="announcement.text"/>
-                    <div class="detail">
-                        <span class="right grey--text ">{{ moment(announcement.publishDate).fromNow() }}</span>
-                        <span class="right grey--text ">{{announcement.author}}</span>
-                    </div>
                 </pre>
             </v-card-text>
+            <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <div class="detail">
+                        <span class="right grey--text ">{{ moment(announcement.publishDate).fromNow() }}</span>
+                        <br>
+                        <span class="right grey--text ">{{announcement.author}}</span>
+                    </div>
+            </v-card-actions>
         </v-card>
     </div>
 </template>
@@ -29,12 +33,14 @@ export default {
     },
     computed: {
         unread (){
-            if(!this.announcement.isRead){
-                return "yellow lighten-4"
-            }
-            return ""
+            // if(!this.announcement.isRead){
+            //     return "yellow lighten-4"
+            // }
+            // return "red lighten-3"
            
-        }
+        },
+    
+        
     }
 }
 </script>
@@ -51,9 +57,9 @@ export default {
         margin-bottom 15px
 
     .detail
-        margin-top -70px
+        margin-top -100px
         margin-bottom -70px
-        margin-right -10px
+        
 
     .text 
         margin-top -20px

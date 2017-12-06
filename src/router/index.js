@@ -17,8 +17,11 @@ import Signout from '@/components/common-components/Signout'
 import Profile from '@/components/common-components/Profile'
 import PublicResources from '@/components/common-components/PublicResources'
 import qaGlobal from '@/components/common-components/QA-Global'
+import CourseContainer from '@/components/common-components/CourseContainer'
+import CourseList from '@/components/common-components/CourseList'
 
-import Student from './student'
+//import Student from './student'
+import CourseDetail from './course/course' 
 
 Vue.use(Router)
 
@@ -30,7 +33,19 @@ export default new Router({
       name: 'Container',
       component: Container,
       children: [        
-          Student,
+          {
+            path: 'courses',
+            name: 'CourseConatiner',
+            component: CourseContainer,
+            children: [
+                CourseDetail,
+                {
+                  path: '',
+                  name: 'CourseList',
+                  component: CourseList,
+                }
+            ]
+          },
           {
             path: 'announcement',
             name: 'Announcement',

@@ -1,13 +1,13 @@
-import Course from '@/components/student/Course'
+import Course from '@/components/common-components/Course'
 
 //Insede Course
-import CourseTestQuiz from '@/components/student/course/TestQuiz';
-import CourseCalendar from '@/components/student/course/Calendar';
-import CourseAnnouncements from '@/components/student/course/Announcements';
-import CourseGrades from '@/components/student/course/Grades';
-import CourseQA from '@/components/student/course/QA';
-import CourseResources from '@/components/student/course/Resources';
-import CourseAssignments from '@/components/student/course/Assignments';
+import CourseTestQuiz from '@/components/common-components/course/TestQuiz';
+import CourseCalendar from '@/components/common-components/course/Calendar';
+import CourseAnnouncements from '@/components/common-components/course/Announcements';
+import CourseGrades from '@/components/common-components/course/Grades';
+import CourseQA from '@/components/common-components/course/QA';
+import CourseResources from '@/components/common-components/course/Resources';
+import CourseAssignments from '@/components/common-components/course/Assignments';
 
 
 var testQuiz = {
@@ -54,7 +54,7 @@ var qa = {
 export default {
     
   path: ':id',
-  name: 'StudentCourse',
+  name: 'Course',
   component: Course,
   children: [
       announcements,

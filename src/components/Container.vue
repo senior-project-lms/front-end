@@ -87,7 +87,7 @@
           {
             icon: 'fa-tachometer',
             title: 'Home',
-            to: {name: 'StudentHome'},
+            to: {name: 'Announcement'},
             
           },
           {
@@ -99,7 +99,7 @@
           {
             icon: 'fa-book',
             title: 'Courses',
-            to: {name: 'StudentCourses'},
+            to: {name: 'CourseList'},
           },
           {
             icon: 'fa-calendar',
@@ -175,7 +175,7 @@
 
 </script>
 
-<style lang="stylus" >
+<style lang="stylus" scoped>
 
   .link
     text-decoration none
