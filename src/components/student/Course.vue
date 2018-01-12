@@ -25,7 +25,7 @@
                     </v-tabs-item>
                 </v-tabs-bar>
                 <v-tabs-items>
-                <v-tabs-content
+                <v-tabs-content>
                     <v-card flat>
                         <main>
                             <router-view></router-view>
