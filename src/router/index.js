@@ -20,7 +20,6 @@ import qaGlobal from '@/components/common-components/QA-Global'
 import CourseContainer from '@/components/common-components/CourseContainer'
 import CourseList from '@/components/common-components/CourseList'
 
-//import Student from './student'
 import CourseDetail from './course/course' 
 
 Vue.use(Router)
