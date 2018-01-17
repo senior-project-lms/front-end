@@ -169,9 +169,4 @@ export default class Authentication{
         }
     }
 
-
-    __checkToken(){
-
-    }
-
 }
