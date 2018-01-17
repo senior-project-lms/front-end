@@ -1,7 +1,9 @@
 
-import Authentication from '../services/authentication.js';
+import AuthenticationService from '../services/authentication';
+import UserService from '../services/user'
+var authenticationService = new AuthenticationService();
+var userService = new UserService();
 
-var authentication = new Authentication();
 /*
 
 mutations : change data
@@ -12,50 +14,48 @@ getters:
 
 export default{
     state: {
-        user: {
+        authenticatedUser: {
             username: '',
             name: '',
             surname: '',
-            accessLevel: null,
+            authority: {accessLevel: null},
         }
     },
     mutations: {
-        setUser(state, object){
-            state.user.username = object.username;
-            state.user.name = object.name;
-            state.user.surname = object.surname
-            state.user.accessLevel = object.accessLevel;
+        setAuthenticatedUser(state, object){
+            state.authenticatedUser.username = object.username;
+            state.authenticatedUser.name = object.name;
+            state.authenticatedUser.surname = object.surname
+            state.authenticatedUser.authority = object.authority;
         },
         
     },
     actions: {
 
-        login(user){
+        login(context, user){
 
-            return authentication.login(user)
+            return authenticationService.login(user)
             .then( isAuthendticated => {
                 if(isAuthendticated){
-                    // fetch user profile
+                    return userService.fetchProfile()
+                        .then(user => {
+                            if(user != null){
+                                context.commit('setAuthenticatedUser', user);
+                                return true;
+                            }
+                        })
                 }
+                return false;
             });
         
         },
 
-        clearExampleArray(context){
-            context.commit('setExampleArray', []);
-        }
-
+        
     },
     getters: {
-        exampleObject(state){
-            return state.exampleObject;
-        },
-        exampleArray(state){
-            return state.exampleArray;
-        },
-        exampleVariable(state){
-            return state.exampleVariable;
-        },
+        authenticatedUser(state){
+            return state.authenticatedUser;
+        }
 
     }
 }

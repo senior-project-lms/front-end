@@ -30,7 +30,7 @@ export default{
     },
     actions: {
 
-        fetchExampleObjectFromServer(dataComesFromComponent){
+        fetchExampleObjectFromServer(context, dataComesFromComponent){
 
             return exampleService.fetchExampleObject(dataComesFromComponent)
             .then(responedExampleObject => {

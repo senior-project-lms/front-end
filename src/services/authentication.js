@@ -1,6 +1,6 @@
 import {Axios} from './axios'
 
-export default class Authentication{
+export default class AuthenticationService{
 
     constructor(){
 
@@ -13,14 +13,16 @@ export default class Authentication{
     request with post method to /oauth/token endpoint, endpoint returns tokes for authentication
     */
     __auth(params){
-        return Axios.post('/oauth/token', params)
+        return Axios.post("/oauth/token", params)
         .then(response => {
             if(response.status === 200){
                 let responseData = response.data;
                 if(responseData != null && responseData.access_token != null && responseData.refresh_token != null){
                     
-                    const tokens = {access_token​: responseData.access_token, refresh_token​: responseData.refresh_token}
-                    
+                    const tokens = {
+                        access_token: responseData.access_token,
+                        refresh_token: responseData.refresh_token,
+                    }
                     this.setTokenExpiredTime(responseData.expired_in);
 
                     this.setTokens(tokens);
@@ -67,31 +69,6 @@ export default class Authentication{
         params.append("refresh_token", this.getRefreshToken());
         return this.__auth(params);
     }
-
-
-    /*
-        function: ​setTokenExpiredTime
-        @param (expiredIn) comes from server, that show when the access_token will die
-        @return (none)
-        calculates the die timestamp of access_token, and stores it in session storage
-    */
-    ​setTokenExpiredTime(expiredIn){
-        let currentTimeStamp = new Date().getTime();
-        let expiredAt = currentTimeStamp + expiredIn;
-        sessionStorage.setItem("expired_at", expiredAt);
-    }
-
-    /*
-        function: ​getTokenExpiredTime
-        @param (none)
-        @return (expiredAt: timestap) returns the  expired_at which stored in sessionStorage 
-    */
-    ​getTokenExpiredTime(){
-        let expiredAt = sessionStorage.getItem("expired_at");
-        return expiredAt == null ? 0 : expiredAt;
-    }
-
-
     /*
         function: isTokenExpired
         @param (none)
@@ -118,6 +95,7 @@ export default class Authentication{
         }
     }
 
+    
     /*
         function: getAccessToken
         @param 
@@ -126,7 +104,7 @@ export default class Authentication{
     */
     getAccessToken(){
         let accessToken = sessionStorage.getItem("access_token");
-        return accessToken == null || accessToken == '' ? null : accessToken;
+        return accessToken == null || accessToken == "" ? null : accessToken;
     }
 
 
@@ -137,10 +115,35 @@ export default class Authentication{
         @return (accessToken: String)
         returns refresh token that is stored in local storage
     */
-    ​getRefreshToken(){
-        let refreshToken = localStorage.getItem("refresh_token");
-        return refreshToken == null || refreshToken == '' ? null : refreshToken;
+    getRefreshToken(){
+        var refreshToken = localStorage.getItem("refresh_token");
+        return refreshToken == null || refreshToken == "" ? null : refreshToken;
     }
+    
+
+
+    /*
+        function: ​setTokenExpiredTime
+        @param (expiredIn) comes from server, that show when the access_token will die
+        @return (none)
+        calculates the die timestamp of access_token, and stores it in session storage
+    */
+    setTokenExpiredTime(expiredIn){
+        var currentTimeStamp = new Date().getTime();
+        var expiredAt = currentTimeStamp + expiredIn;
+        sessionStorage.setItem("expired_at", expiredAt);
+    }
+
+    /*
+        function: ​getTokenExpiredTime
+        @param (none)
+        @return (expiredAt: timestap) returns the  expired_at which stored in sessionStorage 
+    */
+    getTokenExpiredTime(){
+        var expiredAt = sessionStorage.getItem("expired_at");
+        return expiredAt == null ? 0 : expiredAt;
+    }
+
 
     /*
         function: destroyStorage
@@ -163,7 +166,7 @@ export default class Authentication{
     */
     isLoggedIn(){
         let accessToken = this.getAccessToken();
-        if(accessToken != null || accessToken != ''){
+        if(accessToken != null || accessToken != ""){
             // check 
             // ouah/token_check param token
         }

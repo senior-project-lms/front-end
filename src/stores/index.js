@@ -1,7 +1,7 @@
-import exampleStore from './exampleStore'
+import authentication from './authentication'
 
 
 
 export default{
-    exampleStore: exampleStore,
+    authentication: authentication,
 }

@@ -5,7 +5,7 @@ export const Axios = axios.create({
     timeout: 10000,
     headers: {
         //'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-        'Authorization':'Basic Z295Z295cHJvamVjdDpkZjA1ZTRlZi0wOGFlLTQ5NTAtYWFlYy0yOWRhYmRhNWFkNjI=',
+        'Authorization':'Basic bGVhcm5pbmdtYW5hZ2VtZW50c3lzdGVtOmRmMDVlNGVmLTA4YWUtNDk1MC1hYWVjLTI5ZGFiZGE1YWQ2Mg==',
         
     }
   });

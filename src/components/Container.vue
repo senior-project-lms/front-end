@@ -42,7 +42,7 @@
       <v-menu left>
         <v-btn flat  slot="activator">
           <v-icon left>fa-angle-down</v-icon>
-          {{user.username}}
+          {{authUser.username}}
         </v-btn>
         <v-list>
            <template v-for="(item, i) in topMenuItems">
@@ -69,13 +69,14 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
         user: {
-          username: 'umit.kas',
-          badge: true,
-          badgeCount: 3,
+          username: '',
+          badge: false,
+          badgeCount: 0,
         },
         arrow: false,
         clipped: false,
@@ -169,8 +170,18 @@
     },
     updated(){
           this.setMenuStatus();
-      
+    },
+    computed:{
+      ...mapGetters(['authenticatedUser']),
+
+      authUser(){
+        return {
+          username: this.authenticatedUser.username
+        }
+      }
+
     }
+
   }
 
 </script>
