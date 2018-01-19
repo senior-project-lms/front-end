@@ -17,22 +17,20 @@
             <v-tabs grow>
                 <v-tabs-bar color="grey lighten-4" light >
                     <v-tabs-slider class="blue"></v-tabs-slider>
-                    <v-tabs-item v-for="(item, i) in tabMenus" :key="i" :to="item.to" router>
+                    <v-tabs-item v-for="(item, i) in tabMenus" :key="i" :to="item.to" router :href="'#tab-'+`${i}`">
                         {{ item.text }}
                             <v-badge class="notification" v-if="notifications[item.text]">
                             <span slot="badge">{{ notifications[item.text] }}</span>
                         </v-badge>
                     </v-tabs-item>
                 </v-tabs-bar>
-                <v-tabs-items>
-                <v-tabs-content
+                        
                     <v-card flat>
                         <main>
                             <router-view></router-view>
                         </main>
                     </v-card>
-                </v-tabs-content>
-                </v-tabs-items>
+                
             </v-tabs>
         </v-flex>      
     </div>

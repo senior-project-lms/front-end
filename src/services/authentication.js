@@ -23,7 +23,7 @@ export default class AuthenticationService{
                         access_token: responseData.access_token,
                         refresh_token: responseData.refresh_token,
                     }
-                    this.setTokenExpiredTime(responseData.expired_in);
+                    this.setTokenExpiresTime(responseData.expires_in);
 
                     this.setTokens(tokens);
                     
@@ -39,6 +39,32 @@ export default class AuthenticationService{
     }
 
     
+    /*
+    function: isAccessTokenActive
+    @param (token) access or refresh token
+    @return (boolean) returns boolean result according to token is active or not 
+    request with get method to /oauth/check_token endpoint, endpoint returns token status
+    */
+    isAccessTokenActive(token){
+        const accessToken = this.getAccessToken();
+
+        return Axios.get(`/oauth/check_token?token=${accessToken}`)
+        .then(response => {
+            if(response.status === 200){
+                const responseData = response.data;
+                if(responseData != null && responseData != undefined && responseData.active != undefined){
+                    return responseData.active;
+                }
+                return false;
+
+            }
+        })
+        .catch(() => {
+            return false;
+        })
+    }
+
+
     /*
     function: login
     @param (user) object contains username, password data for login
@@ -76,9 +102,9 @@ export default class AuthenticationService{
     */
     isTokenExpired(){
         let currentTimeStamp = new Date().getTime();
-        let expiredAt = this.getTokenExpiredTime();
+        let expiredAt = this.getTokenExpiresTime();
         let result = expiredAt - currentTimeStamp;
-        return result > (15 * 1000); // 15 * 1000 = 15 sec
+        return result < 15 * 1000; // 15 sec
     }
 
     /*
@@ -128,20 +154,20 @@ export default class AuthenticationService{
         @return (none)
         calculates the die timestamp of access_token, and stores it in session storage
     */
-    setTokenExpiredTime(expiredIn){
-        var currentTimeStamp = new Date().getTime();
-        var expiredAt = currentTimeStamp + expiredIn;
-        sessionStorage.setItem("expired_at", expiredAt);
+    setTokenExpiresTime(expiresIn){
+        const currentTimeStamp = new Date().getTime();
+        var expiresAt = currentTimeStamp + expiresIn * 1000;
+        sessionStorage.setItem("expires_at", expiresAt);
     }
 
     /*
         function: ​getTokenExpiredTime
         @param (none)
-        @return (expiredAt: timestap) returns the  expired_at which stored in sessionStorage 
+        @return (expiredAt: timestap) returns the  expires_at which stored in sessionStorage 
     */
-    getTokenExpiredTime(){
-        var expiredAt = sessionStorage.getItem("expired_at");
-        return expiredAt == null ? 0 : expiredAt;
+    getTokenExpiresTime(){
+        var expiresAt = sessionStorage.getItem("expires_at");
+        return expiresAt == null ? 0 : expiresAt;
     }
 
 
@@ -159,16 +185,21 @@ export default class AuthenticationService{
 
 
     /*
-        function: destroyStorage
+        function: isSignedIn
         @param 
-        @return (void)
-        clear storages
+        @return (boolean)
+        checks is signed in or not
     */
-    isLoggedIn(){
+    isSignedIn(){
         let accessToken = this.getAccessToken();
-        if(accessToken != null || accessToken != ""){
-            // check 
-            // ouah/token_check param token
+        if(accessToken != null && accessToken != "" && accessToken != undefined){
+            return this.isAccessTokenActive()
+            .then(result => {
+                return result;
+            })
+        }
+        else{
+            return Promise.resolve(false);
         }
     }
 

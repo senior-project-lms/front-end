@@ -1,13 +1,13 @@
-import Course from '@/components/common-components/Course'
+import Course from '../../components/common-components/Course'
 
 //Insede Course
-import CourseTestQuiz from '@/components/common-components/course/TestQuiz';
-import CourseCalendar from '@/components/common-components/course/Calendar';
-import CourseAnnouncements from '@/components/common-components/course/Announcements';
-import CourseGrades from '@/components/common-components/course/Grades';
-import CourseQA from '@/components/common-components/course/QA';
-import CourseResources from '@/components/common-components/course/Resources';
-import CourseAssignments from '@/components/common-components/course/Assignments';
+import CourseTestQuiz from '../../components/common-components/course/TestQuiz';
+import CourseCalendar from '../../components/common-components/course/Calendar';
+import CourseAnnouncements from '../../components/common-components/course/Announcements';
+import CourseGrades from '../../components/common-components/course/Grades';
+import CourseQA from '../../components/common-components/course/QA';
+import CourseResources from '../../components/common-components/course/Resources';
+import CourseAssignments from '../../components/common-components/course/Assignments';
 
 
 var testQuiz = {

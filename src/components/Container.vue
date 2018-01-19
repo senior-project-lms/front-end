@@ -12,10 +12,10 @@
         <template v-for="(item, i) in leftMenuItems">
           <v-list-tile  v-bind:to="item.to" :key="i">
             <v-list-tile-action>
-              <v-badge  v-if="item.badge && user.badge">
-                  <span slot="badge">{{ user.badgeCount}}</span>
-                  <v-icon>{{item.icon}}</v-icon>
-              </v-badge>
+                <v-badge  v-if="item.badge && user.badge">
+                    <span slot="badge">{{ user.badgeCount}}</span>
+                    <v-icon>{{item.icon}}</v-icon>
+                </v-badge>
                 <v-icon v-else>
                   {{ item.icon }}
                 </v-icon>
@@ -84,7 +84,7 @@
         miniVariant: false,
         title: 'LMS',
         leftMenuItems: null,
-        studentMenus: [
+        menus: [
           {
             icon: 'fa-tachometer',
             title: 'Home',
@@ -135,7 +135,7 @@
           {
             icon: 'fa-sign-out',
             title: 'Sign Out',
-            to: {name:'Signout'},
+            to: {name:'SignOut'},
           },
         ]
 
@@ -146,7 +146,9 @@
           
 
           // according to user type change the menu
-          this.leftMenuItems = this.studentMenus;
+          this.leftMenuItems = this.menus;
+          
+
 
     },
     methods:{

@@ -8,7 +8,7 @@
                     <td class="text-xs-right" >{{ props.item.average }}</td>
                     <td v-show="!props.item.visible" class="text-xs-right" >%{{ props.item.affect }}</td>
                     <td v-show="!props.item.visible" class="text-xs-right">
-                        <router-link :to="{name: 'GradeDetails'}" >view details</router-link>
+                        <a href="">view details</a>
                     </td>
                 </template>                
             </v-data-table>

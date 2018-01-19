@@ -101,7 +101,7 @@ export default {
             .then(response => {
                 this.signInProcess = false;
                 if(response){
-                    this.$router.push({name:"Container"});
+                    this.$router.push({name:"Announcement"});
                 }
             });
 
@@ -111,14 +111,12 @@ export default {
 }
 </script>
 
-<style scoped>
-
-    .signin-card{
-        margin-top: 150px;
-        padding-top: 20px;
-        padding-bottom: 10px;
-        padding-right: 30px;
-        padding-left: 30px;
-    }
-
+<style lang="stylus" scoped>
+    .signin-card
+        margin-top 150px
+        padding-top 20px
+        padding-bottom 10px
+        padding-right 30px
+        padding-left 30px
+    
 </style>

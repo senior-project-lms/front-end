@@ -49,7 +49,17 @@ export default{
             });
         
         },
-
+        
+        getMe(context){
+            return userService.fetchProfile()
+            .then(user => {
+                if(user != null){
+                    context.commit('setAuthenticatedUser', user);
+                    return true;
+                }
+                return false;
+            })
+        }
         
     },
     getters: {
