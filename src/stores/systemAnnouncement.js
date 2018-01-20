@@ -12,11 +12,18 @@ export default{
              announcements = state.systemAnnouncements.concat(announcements);
              state.systemAnnouncements = announcements;
         },
+        clearSystemAnnouncements(state){
+            state.systemAnnouncements = [];
+        }
     },
     actions:{
         getSystemAnnouncements(context, page){
             return systemAnnouncementService.getAll(page)
             .then(response => {
+                if(page == 0){
+                    context.commit("clearSystemAnnouncements");
+
+                }
                 if(response != null && response.length > 0){
                     context.commit("setSystemAnnouncements", response);
                     return true;
@@ -24,21 +31,22 @@ export default{
                 return false;
             });
         },
-        save(context, announcement){
+        saveSystemAnnouncement(context, announcement){
             return systemAnnouncementService.save(announcement)
             .then(response => {
                 if(response){
-                    this.getSystemAnnouncements(1)
-                    .then(() => {
+                   return context.dispatch("getSystemAnnouncements", 0) 
+                      .then(() => {
                         return true;
                     });
+                  
                 }
                 else{
                     return false;
                 }
             })
         },
-        delete(context, publicKey){
+        deleteSystemAnnouncement(context, publicKey){
             return systemAnnouncementService.delete(publicKey)
             .then(response => {
                 if(response){
@@ -52,6 +60,7 @@ export default{
                 }
             })
         },
+
 
     },
     getters:{
