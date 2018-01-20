@@ -37,7 +37,7 @@ export default{
             return authenticationService.login(user)
             .then( isAuthendticated => {
                 if(isAuthendticated){
-                    return userService.fetchProfile()
+                    return userService.getProfile()
                         .then(user => {
                             if(user != null){
                                 context.commit('setAuthenticatedUser', user);
@@ -51,7 +51,7 @@ export default{
         },
         
         getMe(context){
-            return userService.fetchProfile()
+            return userService.getProfile()
             .then(user => {
                 if(user != null){
                     context.commit('setAuthenticatedUser', user);

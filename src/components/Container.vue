@@ -197,10 +197,8 @@
     },
     computed:{
       ...mapGetters(['authenticatedUser']),
-
       authUser(){
         return {
-          
           username: this.authenticatedUser.username,
           accessLevel: this.authenticatedUser.authority.accessLevel,
         }

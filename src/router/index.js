@@ -10,7 +10,6 @@ import Router from 'vue-router'
 // common
 import  Container from '../components/Container'
 
-import Announcement from '../components/common-components/Announcement'
 import Calendar from '../components/common-components/Calendar'
 import Settings from '../components/common-components/Settings'
 import Signout from '../components/authentication/Signout'
@@ -78,11 +77,6 @@ export default new Router({
                       component: CourseList,
                     }
                 ]
-              },
-              {
-                path: 'announcement',
-                name: 'Announcement',
-                component: Announcement,
               },
               {
                 path: 'calendar',

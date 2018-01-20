@@ -11,7 +11,7 @@ export default class UserService{
 
     }
 
-    fetchProfile(){
+    getProfile(){
         const accessToken = authenticationService.getAccessToken();
         if(accessToken != null || accessToken != ''){
             

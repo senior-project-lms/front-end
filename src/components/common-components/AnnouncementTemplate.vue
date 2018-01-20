@@ -7,15 +7,15 @@
             <v-divider class="divider"></v-divider>
             <v-card-text>
                 <pre>
-                    <p class="text" v-html="announcement.text"/>
+                    <p class="text" v-html="announcement.content"/>
                 </pre>
             </v-card-text>
             <v-card-actions>
                     <v-spacer></v-spacer>
                     <div class="detail">
-                        <span class="right grey--text ">{{ moment(announcement.publishDate).fromNow() }}</span>
+                        <span class="right grey--text ">{{ moment(announcement.updatedAt).fromNow() }}</span>
                         <br>
-                        <span class="right grey--text ">{{announcement.author}}</span>
+                        <span class="right grey--text ">{{announcement.createdBy.username}}</span>
                     </div>
             </v-card-actions>
         </v-card>
