@@ -101,7 +101,7 @@ export default {
             .then(response => {
                 this.signInProcess = false;
                 if(response){
-                    this.$router.push({name:"Announcement"});
+                    this.$router.push({name:"SystemAnnouncements"});
                 }
             });
 

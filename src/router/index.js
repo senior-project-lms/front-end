@@ -23,6 +23,11 @@ import CourseList from '../components/common-components/CourseList'
 import CourseDetail from './course/course' 
 import SignIn from '../components/authentication/Signin.vue'
 import Authenticatior from '../components/authentication/Authenticator';
+import SystemAnnouncement from '../components/common-components/SystemAnnouncements'
+
+import Admin from "../components/admin/Admin";
+import UsersForAdmin from "../components/admin/Users"
+import CoursesForAdmin from "../components/admin/Users"
 
 Vue.use(Router)
 
@@ -37,7 +42,30 @@ export default new Router({
           path: '/',
           name: 'Container',
           component: Container,
-          children: [        
+          children: [  
+              {
+                path: 'system-announcements',
+                name: 'SystemAnnouncements',
+                component: SystemAnnouncement,
+              },
+              {
+                path: 'admin',
+                name: 'Admin',
+                component: Admin,
+                children: [
+                  {
+                    path: 'users',
+                    name: 'UsersForAdmin',
+                    component: UsersForAdmin,
+                  },
+                  {
+                    path: 'courses',
+                    name: 'CoursesForAdmin',
+                    component: CoursesForAdmin,
+                  },
+                ],
+              },
+               
               {
                 path: 'courses',
                 //name: 'CourseConatiner',
