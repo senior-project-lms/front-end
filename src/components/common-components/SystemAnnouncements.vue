@@ -64,9 +64,15 @@ export default {
       this.page++;
     },
     deleteAnnouncement(publicKey){
+      try{
+
        if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
             this.$store.dispatch("deleteSystemAnnouncement", publicKey);
         }
+      }
+      catch(e){
+
+      }
     },
     cancelSystemAnnouncementPosting(){
       this.dialog = false;

@@ -86,31 +86,31 @@ export default{
         courseTabMenus: [
           {
               text: 'Announcements',
-              to: {name: 'CourseAnnouncements', params: {}},
+              to: {name: 'CourseAnnouncements'},
           },
           {
               text: 'Grades',
-              to: {name: 'CourseGrades', params: {}}
+              to: {name: 'CourseGrades'}
           },
           {
               text: 'Assignments',
-              to: {name: 'CourseAssignments', params: {}}
+              to: {name: 'CourseAssignments'}
           },
           {
               text: 'Quiz - Testing',
-              to: {name: 'CourseTestQuiz', params: {}},
+              to: {name: 'CourseTestQuiz'},
           },
           {
               text: 'Resources',
-              to: {name: 'CourseResources', params: {}}
+              to: {name: 'CourseResources'}
           },
           {
               text: 'QA',
-              to: {name: 'CourseQA', params: {}}
+              to: {name: 'CourseQA'}
           },
           {
               text: 'Calendar',
-              to: {name: 'CourseCalendar', params: {}}
+              to: {name: 'CourseCalendar'}
           },
       ],
     },
