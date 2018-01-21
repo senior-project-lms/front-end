@@ -42,7 +42,6 @@ export default {
         if(this.systemAnnouncement.title.length > 0 && this.systemAnnouncement.content.length > 0){
             this.$store.dispatch("saveSystemAnnouncement", this.systemAnnouncement)
             .then(response => {
-              console.log(response)
               if(response){
                 this.cancel();
               }

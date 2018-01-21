@@ -9,7 +9,8 @@
       width="250"
       >
       <v-list  dense class="left-menu-list" >
-        <template v-for="(item, i) in leftMenuItems" v-if="item.authenticated.includes(authUser.accessLevel)">
+        <template v-for="(item, i) in leftMenuItems" v-if="authUser.accessPrivileges.includes(item.authenticated)">
+          
           <v-list-tile  v-bind:to="item.to" :key="i">
             <v-list-tile-action>
                 <v-badge  v-if="item.badge && user.badge">
@@ -69,7 +70,6 @@
 </template>
 
 <script>
-  import {AccessLevel} from "../properties/accessLevel";
   
   import {mapGetters} from 'vuex';
   export default {
@@ -85,94 +85,10 @@
         drawer: true,
         miniVariant: false,
         title: 'LMS',
-        leftMenuItems: [
-          {
-            icon: 'fa-tachometer',
-            title: 'Home',
-            to: {name: 'Announcement'},
-            authenticated: [],
-            
-          },
-          {
-            icon: 'fa-bullhorn',
-            title: 'Announcement',
-            to: {name: 'Announcement'},
-            badge: true,
-            authenticated: [],
-          },
-          {
-            icon: 'fa-book',
-            title: 'Courses',
-            to: {name: 'CourseList'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-calendar',
-            title: 'Calendar',
-            to: {name:'Calendar'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-files-o',
-            title: 'Public Resources',
-            to: {name:'PublicResources'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-question-circle-o',
-            title: 'QA-Global',
-            to: {name: 'QA-Global'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-bullhorn',
-            title: 'System Announcement',
-            to: {name: 'SystemAnnouncements'},
-            authenticated: [AccessLevel.SUPER_ADMIN, AccessLevel.ADMIN, AccessLevel.LECTURER, AccessLevel.ASISTANT, AccessLevel.STUDENT],
-          },
-          {
-            icon: 'fa-book',
-            title: 'Courses',
-            to: {name: 'CoursesForAdmin'},
-            authenticated: [AccessLevel.SUPER_ADMIN, AccessLevel.ADMIN],
-          },
-          {
-            icon: 'fa-users',
-            title: 'Users',
-            to: {name: 'UsersForAdmin'},
-            authenticated: [AccessLevel.SUPER_ADMIN, AccessLevel.ADMIN],
-          },
-                    
-        ],
-        topMenuItems: [
-          {
-            icon: 'fa-user',
-            title: 'Profile',
-            to: {name:'Profile'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-cog',
-            title: 'Settings',
-            to: {name:'Settings'},
-            authenticated: [],
-          },
-          {
-            icon: 'fa-sign-out',
-            title: 'Sign Out',
-            to: {name:'SignOut'},
-            authenticated: [],
-          },
-        ]
-
       }
     },
     created(){
           this.setMenuStatus();
-
-          
-
-
     },
     methods:{
       menuVisible(){
@@ -196,11 +112,12 @@
           this.setMenuStatus();
     },
     computed:{
-      ...mapGetters(['authenticatedUser']),
+      ...mapGetters(['authenticatedUser', 'leftMenuItems', 'topMenuItems']),
       authUser(){
         return {
           username: this.authenticatedUser.username,
           accessLevel: this.authenticatedUser.authority.accessLevel,
+          accessPrivileges: this.authenticatedUser.accessPrivileges,
         }
       }
 

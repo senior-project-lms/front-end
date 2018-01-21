@@ -18,6 +18,7 @@ const store = new Vuex.Store({
 
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 
 /* eslint-disable no-new */
 new Vue({

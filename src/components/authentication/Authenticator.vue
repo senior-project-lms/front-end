@@ -69,7 +69,7 @@ export default {
                 if(authService.isTokenExpired()){
                     authService.refreshTokens()
                     .then(result => {
-                        if(result){
+                        if(!result){
                             authService.clearStorage();
                             this.$router.push({name: "SignIn"})
                             return;                        }

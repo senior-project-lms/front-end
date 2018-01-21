@@ -12,6 +12,8 @@ export default {
         }
     },
     created(){
+        this.$store.dispatch("cleareAuthenticatedUser");
+        this.$store.dispatch("clearSystemAnnouncements");
         authService.clearStorage();
         this.$router.push({name: "SignIn"})
     }

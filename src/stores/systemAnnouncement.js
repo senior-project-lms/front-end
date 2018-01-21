@@ -50,16 +50,19 @@ export default{
             return systemAnnouncementService.delete(publicKey)
             .then(response => {
                 if(response){
-                    this.getSystemAnnouncements(1)
+                    return context.dispatch("getSystemAnnouncements", 0) 
                     .then(() => {
                         return true;
-                    });
+                     });
                 }
                 else{
                     return false;
                 }
             })
         },
+        clearSystemAnnouncements(context){
+            context.commit("clearSystemAnnouncements");
+        }
 
 
     },

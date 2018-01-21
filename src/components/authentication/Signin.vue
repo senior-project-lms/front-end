@@ -69,12 +69,13 @@ export default {
             usernameErrorMessage: [],
             passwordErrorMessage: [],
             items: [
+                'super.admin',
                 'mock.admin',
                 'mock.lecturer',
                 'mock.student'
             ],
             authUser: {
-                username: 'mock.admin',
+                username: 'super.admin',
                 password: 'test.password',
             },
         }

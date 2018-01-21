@@ -19,6 +19,7 @@ export default{
             name: '',
             surname: '',
             authority: {accessLevel: null},
+            accessPrivileges: [],
         }
     },
     mutations: {
@@ -27,6 +28,17 @@ export default{
             state.authenticatedUser.name = object.name;
             state.authenticatedUser.surname = object.surname
             state.authenticatedUser.authority = object.authority;
+            state.authenticatedUser.accessPrivileges = object.accessPrivileges;
+            
+        },
+        
+        cleareAuthenticatedUser(state){
+            state.authenticatedUser = {
+                username: '',
+                name: '',
+                surname: '',
+                authority: {accessLevel: null},
+            }
         },
         
     },
@@ -59,6 +71,12 @@ export default{
                 }
                 return false;
             })
+        },
+        hasAccessPrivilege(context, privilege){
+            return context.state.authenticatedUser.accessPrivileges.includes(privilege);
+        },
+        cleareAuthenticatedUser(context){
+            context.commit("cleareAuthenticatedUser");
         }
         
     },
