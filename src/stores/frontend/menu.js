@@ -62,8 +62,8 @@ export default{
               authenticated: AccessPrivileges.READ_ALL_USERS,
             },
                       
-          ],
-          topMenuItems: [
+        ],
+        topMenuItems: [
             {
               icon: 'fa-user',
               title: 'Profile',
@@ -82,7 +82,37 @@ export default{
               to: {name:'SignOut'},
               authenticated: [],
             },
-          ]
+        ],
+        courseTabMenus: [
+          {
+              text: 'Announcements',
+              to: {name: 'CourseAnnouncements', params: {}},
+          },
+          {
+              text: 'Grades',
+              to: {name: 'CourseGrades', params: {}}
+          },
+          {
+              text: 'Assignments',
+              to: {name: 'CourseAssignments', params: {}}
+          },
+          {
+              text: 'Quiz - Testing',
+              to: {name: 'CourseTestQuiz', params: {}},
+          },
+          {
+              text: 'Resources',
+              to: {name: 'CourseResources', params: {}}
+          },
+          {
+              text: 'QA',
+              to: {name: 'CourseQA', params: {}}
+          },
+          {
+              text: 'Calendar',
+              to: {name: 'CourseCalendar', params: {}}
+          },
+      ],
     },
     mutations:{
         
@@ -96,7 +126,10 @@ export default{
       },
       topMenuItems(state){
         return state.topMenuItems;
-      }
+      },
+      courseTabMenus(state){
+          return state.courseTabMenus;
+      }      
 
     }
 

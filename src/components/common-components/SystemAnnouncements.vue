@@ -18,7 +18,7 @@
       <template>
         <v-btn block class="load-more" light outline @click="loadSystemAnnouncements(page)" v-if="loader">More</v-btn>
       </template>
-      <post-system-announcement :dialog="dialog"/>
+      <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
           
 
   </div>
@@ -45,8 +45,9 @@ export default {
     }
   },
   created(){
-    if(this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)){
-
+    if(!this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)){
+        this.$router.back();
+        return;
     }
     if(this.systemAnnouncements.length == 0){
       this.loadSystemAnnouncements(this.page);

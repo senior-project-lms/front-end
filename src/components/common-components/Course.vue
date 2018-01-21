@@ -17,7 +17,7 @@
             <v-tabs grow>
                 <v-tabs-bar color="grey lighten-4" light >
                     <v-tabs-slider class="blue"></v-tabs-slider>
-                    <v-tabs-item v-for="(item, i) in tabMenus" :key="i" :to="item.to" router :href="'#tab-'+`${i}`">
+                    <v-tabs-item v-for="(item, i) in courseTabMenus" :key="i" :to="item.to" router :href="'#tab-'+`${i}`">
                         {{ item.text }}
                             <v-badge class="notification" v-if="notifications[item.text]">
                             <span slot="badge">{{ notifications[item.text] }}</span>
@@ -38,51 +38,23 @@
 
 
 <script>
-
-   export default {
-       
+import {mapGetters} from 'vuex'
+export default {
+        
     data () {
-      return {
-        tabMenus: [
-            {
-                text: 'Announcements',
-                to: {name: 'CourseAnnouncements', params: {}},
-            },
-            {
-                text: 'Grades',
-                to: {name: 'CourseGrades', params: {}}
-            },
-            {
-                text: 'Assignments',
-                to: {name: 'CourseAssignments', params: {}}
-            },
-            {
-                text: 'Quiz - Testing',
-                to: {name: 'CourseTestQuiz', params: {}},
-            },
-            {
-                text: 'Resources',
-                to: {name: 'CourseResources', params: {}}
-            },
-            {
-                text: 'QA',
-                to: {name: 'CourseQA', params: {}}
-            },
-            {
-                text: 'Calendar',
-                to: {name: 'CourseCalendar', params: {}}
-            },
-        ],
+        return {
         notifications: {'Announcements': 1, 'Quiz - Testing': 1}
 
-      }
+        }
     },
     created(){
+    
     },
-    watch: {
-
+    computed: {
+        ...mapGetters(['courseTabMenus']),
     }
-  }
+
+}
 </script>
 
 <style lang="stylus" scoped>
