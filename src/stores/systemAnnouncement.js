@@ -1,3 +1,4 @@
+
 import SystemAnnouncementService from "../services/systemAnnouncement";
 
 var systemAnnouncementService = new SystemAnnouncementService();
@@ -59,6 +60,22 @@ export default{
                     return false;
                 }
             })
+        },
+        uploadSystemAnnouncementImage(context, image){
+            return systemAnnouncementService.uploadImage(image)
+            .then(data => {
+                if(data != null && data != undefined){
+                    return {
+                        publicKey: data.publicKey,
+                        name: data.name,
+                        url: data.path,
+                    }
+                }
+                return null;
+            });
+        },
+        deleteSystemAnnouncementImage(context, publicKey){
+            return systemAnnouncementService.deleteImage(publicKey);
         },
         clearSystemAnnouncements(context){
             context.commit("clearSystemAnnouncements");

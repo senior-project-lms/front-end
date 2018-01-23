@@ -1,7 +1,12 @@
 import {Axios} from './axios';
 import Service from './common'
+import StorageService from './storage'
+import AuthenticationService from './authentication';
 
 const service = new Service();
+const storageService = new StorageService();
+const authenticationService = new AuthenticationService();
+
 
 export default class SystemAnnouncementService{
     constructor(){}
@@ -16,6 +21,8 @@ export default class SystemAnnouncementService{
     save(params){
         return service.save('/api/admin/system-announcement', params);      
     }
+
+
 
     /*
         function: delete
@@ -36,4 +43,23 @@ export default class SystemAnnouncementService{
     getAll(page){
         return service.getAll(`/api/system-announcements/${page}`);
     }
+
+    uploadImage(image){
+        const accessToken = authenticationService.getAccessToken();
+        return storageService.upload('/api/admin/system-announcement/storage/image', image)
+        .then(data => {
+            if(data != null && data != undefined){
+                data.path = `${Axios.defaults.baseURL}${data.path}?access_token=${accessToken}`;
+            }
+            return data;
+            
+        });
+    
+    }
+
+    deleteImage(publicKey){
+        return storageService.delete('/api/admin/system-announcement/storage/image', publicKey);
+    }
+
+
 }

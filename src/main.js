@@ -8,9 +8,11 @@ import 'vuetify/dist/vuetify.css'
 import App from './App'
 import router from './router'
 import storeOptions from './stores/index'
+import Uploader from 'vue-simple-uploader'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
+Vue.use(Uploader)
 
 const store = new Vuex.Store({
   modules: storeOptions,

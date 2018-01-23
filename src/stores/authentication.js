@@ -14,6 +14,7 @@ getters:
 
 export default{
     state: {
+        accessToken: authenticationService.getAccessToken(),
         authenticatedUser: {
             username: '',
             name: '',

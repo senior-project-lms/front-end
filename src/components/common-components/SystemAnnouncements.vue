@@ -1,7 +1,6 @@
 <template>
   <div>
       <v-flex>
-
           <v-flex no-content md2 offset-md5 v-if="systemAnnouncements.length == 0">
                 <h3 class="text-md-center text-xs-center">There is no announcement.</h3>
           </v-flex>
