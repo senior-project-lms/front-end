@@ -17,6 +17,11 @@
                 <pre>
                     <p class="text" v-html="announcement.content"/>
                 </pre>
+                <ul class="file-list" v-for="(resource, i) in announcement.resources" :key="i">
+                    <li>
+                       <a  :href="resource.url" download> {{ resource.originalFileName}}</a>
+                    </li>
+                </ul>
             </v-card-text>
             <v-card-actions>
                     <v-spacer></v-spacer>
@@ -27,7 +32,8 @@
                     </div>
             </v-card-actions>
         </v-card>
-              <v-dialog v-model="dialog" max-width="400" persistent>
+        <!-- DELETE DIALOG -->
+        <v-dialog v-model="dialog" max-width="400" persistent>
             <v-card>
                 <v-card-title class="headline">Confim</v-card-title>
                 <v-card-text>Are you sure to delete system announcement?</v-card-text>
@@ -106,5 +112,8 @@ export default {
         margin-top 15px
         margin-right 5px
         
-
+    .file-list
+      margin-top 10px
+      margin-bottom 10px
+      list-style-type none
 </style>
