@@ -41,7 +41,16 @@ export default class SystemAnnouncementService{
         used for the fetch system announcments page by page 
     */       
     getAll(page){
-        return service.getAll(`/api/system-announcements/${page}`);
+        const accessToken = authenticationService.getAccessToken();
+        return service.getAll(`/api/system-announcements/${page}`)
+        .then(announcmenets => {
+            announcmenets.map(announcement => {
+                announcement.resources.map((resource) => {
+                    resource.url = `${Axios.defaults.baseURL}${resource.url}?access_token=${accessToken}`;
+                });
+            })
+            return announcmenets;
+        });
     }
 
     uploadImage(image){
@@ -61,5 +70,23 @@ export default class SystemAnnouncementService{
         return storageService.delete('/api/admin/system-announcement/storage/image', publicKey);
     }
 
+
+
+    uploadFile(file){
+        const accessToken = authenticationService.getAccessToken();
+        return storageService.upload('/api/admin/system-announcement/storage/file', file)
+        .then(data => {
+            if(data != null && data != undefined){
+                data.path = `${Axios.defaults.baseURL}${data.path}?access_token=${accessToken}`;
+            }
+            return data;
+            
+        });
+    
+    }
+
+    deleteFile(publicKey){
+        return storageService.delete('/api/admin/system-announcement/storage/file', publicKey);
+    }
 
 }

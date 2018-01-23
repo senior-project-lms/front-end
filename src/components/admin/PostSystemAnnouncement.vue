@@ -1,18 +1,33 @@
 <template>
-      <v-dialog v-model="dialog" persistent max-width="900">
+      <v-dialog v-model="dialog" persistent max-width="1000">
         <v-card>
           <v-card-title class="headline">System Announcement</v-card-title>
-          <v-flex class="post">
-              <v-text-field label="Title" v-model="systemAnnouncement.title" required=""/>
+          <v-flex class="post">      
+              <v-flex>
+                  <v-text-field label="Title" v-model="systemAnnouncement.title" required=""/>
+              </v-flex>
+              <v-flex>
+                <vue-editor :editorToolbar="customToolbar" 
+                v-model="systemAnnouncement.content" required />
+              </v-flex>
+              <v-flex class="uploader">
+                <v-flex>
+                  <input type="file" @change="processFiles($event)" multiple>
+                </v-flex>
+                <v-flex>
+                    <ul class="file-list">
+                      <li v-for="(resource, i) in resources" :key="i">
+                          <a class="red--text lighten-1" @click="removeFile(resource.publicKey)">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                          </a>
+                          {{ i + 1}} - {{ resource.originalFileName }} 
+                      </li>
+                    </ul>
+                    <v-divider></v-divider>  
+                    {{ resources.length }} file is uploaded                  
+                </v-flex>                  
+              </v-flex>                  
           </v-flex>
-          <v-flex class="post">
-            <vue-editor :editorToolbar="customToolbar" 
-            v-model="systemAnnouncement.content" required />
-          </v-flex>
-          <v-flex>
-                 <!-- <a @click="uploaderVisible = !uploaderVisible" class="right">Upload File</a>             -->
-          </v-flex>          
-        
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
@@ -27,34 +42,36 @@
 import {mapGetters} from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
+
 const uuidv1 = require('uuid/v1');
+
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
-  ['blockquote', 'code-block'],
+  ['blockquote', 'code-block', 'link', ],
   [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
   [{ 'indent': '-1'}, { 'indent': '+1' }],
   [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
   [{ 'color': [] }, { 'background': [] }],
   [{ 'font': [] }],
   [{ 'align': [] }],
-  ['clean']
+  ['clean',]
 ]
 
 export default {
   props: ['dialog'],
   components: {
       VueEditor,
-  },
+},
   data(){
       return{
           customToolbar: customToolbar, 
+          uploader: false,
+          resources: [],
           systemAnnouncement: {
-            
-            uploaderVisible: false,
-            title: '',
-            content: '',
-            resources: [],
-            imagePublicKeys: [],
+              title: '',
+              content: '',
+              resourceKeys: [],
+              imagePublicKeys: [],
           }
       }
   },
@@ -62,7 +79,32 @@ export default {
 
   },
   methods:{
-
+    processFiles(event){
+        var _this = this;
+        
+        const chosenFiles = Array.from(event.target.files);
+        chosenFiles.map((file) => {
+            this.$store.dispatch("uploadSystemAnnouncementFile", file)
+            .then((data) => {
+                //this.systemAnnouncement.resourceKeys.push(data.publicKey)
+                this.resources.push(data);
+                this.systemAnnouncement.resourceKeys.push(data.publicKey)
+           });
+            
+        });
+    },
+    removeFile(publicKey){
+        this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
+        .then(result => {
+            this.resources.map((file, index) => {
+                if(file.publicKey === publicKey){
+                    this.resources.splice(index, 1);
+                    const index = this.systemAnnouncement.resourceKeys.includes(file.publicKey);
+                    this.systemAnnouncement.resourceKeys.splice(index, 1);
+                }
+            });
+        });
+    },
     save(){
         if(this.systemAnnouncement.title.length > 0 && this.systemAnnouncement.content.length > 0){
             this.$store.dispatch("saveSystemAnnouncement", this.systemAnnouncement)
@@ -85,29 +127,29 @@ export default {
 
     },
     // not used because of responsive image problam.
-    handleImageAdded(file, Editor, cursorLocation){
+    // handleImageAdded(file, Editor, cursorLocation){
 
-        this.$store.dispatch("uploadSystemAnnouncementImage", file)
-        .then(data => {
-            if(data != null && data != undefined){
-              this.systemAnnouncement.imagePublicKeys.push(data.publicKey);
-              Editor.insertEmbed(cursorLocation, 'image', data.url)
-            }
-        });
-    }
+    //     this.$store.dispatch("uploadSystemAnnouncementImage", file)
+    //     .then(data => {
+    //         if(data != null && data != undefined){
+    //           this.systemAnnouncement.imagePublicKeys.push(data.publicKey);
+    //           Editor.insertEmbed(cursorLocation, 'image', data.url)
+    //         }
+    //     });
+    // }
   },
 
 
   computed: {
-    ...mapGetters(['accessToken']),
   },
   watch:{
       dialog(){
+        this.resources = [];
         this.systemAnnouncement = {
-            path: uuidv1(),
             title: '',
             content: '',
             resources: [],
+            resourceKeys: [],            
             imagePublicKeys: [],
           }
       }
@@ -121,11 +163,16 @@ export default {
 </script>
 <style lang="stylus" scoped>
     .post
-      margin-right 20px;
-      margin-left  20px;
+      margin-right 20px
+      margin-left  20px
 
     .uploader
-      margin-top 15px
-      margin-bottom 20px
-      margin-right 20px
+      margin-top 10px
+    
+    .file-list
+      margin-top 10px
+      list-style-type none
+    
+    .remove-file
+      margin-right 10px
 </style>

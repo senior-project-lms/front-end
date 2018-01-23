@@ -74,9 +74,25 @@ export default{
                 return null;
             });
         },
+       
         deleteSystemAnnouncementImage(context, publicKey){
             return systemAnnouncementService.deleteImage(publicKey);
         },
+       
+        uploadSystemAnnouncementFile(context, file){
+            return systemAnnouncementService.uploadFile(file)
+            .then(data => {
+                if(data != null && data != undefined){
+                    return data;
+                }
+                return null;
+            });
+        },
+
+        deleteSystemAnnouncementFile(context, publicKey){
+            return systemAnnouncementService.deleteFile(publicKey);
+        },
+       
         clearSystemAnnouncements(context){
             context.commit("clearSystemAnnouncements");
         }
