@@ -143,6 +143,7 @@ export default {
 
 
   computed: {
+    ...mapGetters(['authenticatedUser', 'accessPrivileges']),
   },
   watch:{
       dialog(){
