@@ -12,7 +12,8 @@
               </v-flex>
               <v-flex class="uploader">
                 <v-flex>
-                  <input type="file" @change="processFiles($event)" multiple>
+                  <input type="file" @change="processFiles($event)" multiple
+                  v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
                 </v-flex>
                 <v-flex>
                     <ul class="file-list">
@@ -118,12 +119,9 @@ export default {
         }
     },
     cancel(saved){
-      // if(!saved){
-      //   this.systemAnnouncement.imagePublicKeys.map(publicKey =>{
-      //       this.$store.dispatch("deleteSystemAnnouncementImage", publicKey);
-      //   })
-      // }
-      
+      this.systemAnnouncement.resourceKeys.map(publicKey => {
+        this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
+      });
       this.$parent.cancelSystemAnnouncementPosting();
       
 

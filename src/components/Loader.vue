@@ -1,7 +1,10 @@
 <template>
   <div>
-        <v-progress-linear v-bind:indeterminate="true"></v-progress-linear>
-  </div>
+        <v-progress-circular indeterminate v-bind:size="100" 
+            class="progress"
+            color="primary">
+        </v-progress-circular>  
+    </div>
 </template>
 <script>
 export default {
@@ -13,3 +16,15 @@ export default {
   
 }
 </script>
+
+<style lang="stylus" scoped>
+     
+    div
+        text-align: center
+
+  .progress-circular
+        margin: 1rem
+        margin-top: 300px
+
+</style>
+

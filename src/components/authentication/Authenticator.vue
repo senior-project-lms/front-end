@@ -1,7 +1,7 @@
 <template>
-    <div v-if="signedIn">        
-        <v-progress-linear class="loader" v-if="!isLoaded" key="loader"/>
-        <router-view v-if="isLoaded || loaded"/>
+    <div v-if="signedIn"> 
+        <loader v-if="!loaded"/>
+        <router-view v-if="loaded"></router-view>
     </div>
 </template>
 
@@ -19,14 +19,19 @@ export default {
     data(){
         return {
             signedIn: false,
-            loaded: false,
             tokenCheckerInterval: null,
+            loaded: false,
         }
     },
     created(){
-
-      this.isSignedIn();
-      this.isTokenActive();
+    
+        this.$store.dispatch('getMe')
+        .then(status => {
+            this.loaded = status;
+        });
+     
+        this.isSignedIn();
+        this.isTokenActive();
        
     },
     computed: {
@@ -36,17 +41,21 @@ export default {
                 function checks that the user profile is loaded and the user is singed in,
                 if there is a latency the loaded displays, when data is loaded, then the routeview displays
             */
-            if(this.authenticatedUser.username == "" && this.signedIn){
+            if(this.authenticatedUser.username == ""){
                  return this.$store.dispatch('getMe')
                     .then(status => {
                         if(status){
-                            this.loaded = true;
+                            console.log("me")
+                            return true;
                         }
-                        this.loaded = false;
+                        return false;
                     });
             }
-            this.loaded = true;
-            return true;
+            else{
+                console.log("--ups");
+                return true;
+            }
+            
         },
     },
     methods:{
@@ -63,6 +72,7 @@ export default {
                     return;
                 })
         },
+
         isTokenActive(){
             // check that is token or active or not, if it is not active than refresh them
             this.tokenCheckerInterval = setInterval(() => {
@@ -85,10 +95,6 @@ export default {
 }
 </script>
 
-<style lang="stylus" scosdadsaped>
-    .loader
-        position absolute
-        top 50%
-        left 5%
-        right 5%
+<style lang="stylus" scoped>
+
 </style>

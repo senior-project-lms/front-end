@@ -44,14 +44,16 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)
-    .then(auth => {
-        if(!auth){
-           this.$router.back();
-        return;
-        }
-    })
-       
+
+      this.hasAccessPrivilege
+      this.$store.dispatch("hasAccessPrivilege", this.accessPrivileges.READ_SYSTEM_ANNOUNCEMENT)
+      .then(auth => {
+          if(!auth){
+            this.$router.back();
+          return;
+          }
+      })
+  
     if(this.systemAnnouncements.length == 0){
       this.loadSystemAnnouncements(this.page);
     }
@@ -62,28 +64,28 @@ export default {
     
   },
   methods:{
+    
     loadSystemAnnouncements(page){
       this.$store.dispatch("getSystemAnnouncements", page);
       this.page++;
     },
+    
     deleteAnnouncement(publicKey){
-      try{
-
-       if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-            this.$store.dispatch("deleteSystemAnnouncement", publicKey);
+        if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
+              this.$store.dispatch("deleteSystemAnnouncement", publicKey);
         }
-      }
-      catch(e){
-
-      }
     },
+    
     cancelSystemAnnouncementPosting(){
       this.dialog = false;
     }
+
   },
   computed:{
       ...mapGetters(['authenticatedUser', 'systemAnnouncements', 'accessPrivileges']),
-    
+     
+  
+
       loader(){
         return (this.systemAnnouncements.length / this.page) == 5;
     }
@@ -91,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
     .Container
         margin-left 10px
         margin-right 10px

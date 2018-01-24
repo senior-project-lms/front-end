@@ -49,16 +49,7 @@ export default{
 
             return authenticationService.login(user)
             .then( isAuthendticated => {
-                if(isAuthendticated){
-                    return userService.getProfile()
-                        .then(user => {
-                            if(user != null){
-                                context.commit('setAuthenticatedUser', user);
-                                return true;
-                            }
-                        })
-                }
-                return false;
+                    return isAuthendticated;
             });
         
         },
@@ -67,7 +58,7 @@ export default{
             return userService.getProfile()
             .then(user => {
                 if(user != null){
-                    context.commit('setAuthenticatedUser', user);
+                    context.commit('setAuthenticatedUser', user)
                     return true;
                 }
                 return false;

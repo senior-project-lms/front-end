@@ -13,7 +13,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   pre
     white-space pre-wrap       /* Since CSS 2.1 */
     white-space -moz-pre-wrap  /* Mozilla, since 1999 */

@@ -74,7 +74,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .courses-temp{
         margin-top: 20px;
         margin-left: 25px;
