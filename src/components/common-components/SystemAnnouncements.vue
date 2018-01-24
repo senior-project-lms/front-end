@@ -44,10 +44,15 @@ export default {
     }
   },
   created(){
-    if(!this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)){
-        this.$router.back();
+    console.log(this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT))
+    this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)
+    .then(auth => {
+        if(!auth){
+           this.$router.back();
         return;
-    }
+        }
+    })
+       
     if(this.systemAnnouncements.length == 0){
       this.loadSystemAnnouncements(this.page);
     }
