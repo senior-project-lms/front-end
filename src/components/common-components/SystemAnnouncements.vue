@@ -44,7 +44,6 @@ export default {
     }
   },
   created(){
-    console.log(this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT))
     this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT)
     .then(auth => {
         if(!auth){

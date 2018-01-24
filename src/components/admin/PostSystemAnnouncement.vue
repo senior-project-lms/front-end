@@ -31,7 +31,9 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
-            <v-btn color="green darken-1" flat @click="save">Save</v-btn>
+            <v-btn color="green darken-1" flat @click="save"
+            v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)">
+            Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>  
