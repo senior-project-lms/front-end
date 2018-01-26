@@ -119,9 +119,11 @@ export default {
         }
     },
     cancel(saved){
-      this.systemAnnouncement.resourceKeys.map(publicKey => {
-        this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
-      });
+      if(!saved){
+        this.systemAnnouncement.resourceKeys.map(publicKey => {
+          this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
+        });
+      }
       this.$parent.cancelSystemAnnouncementPosting();
       
 
