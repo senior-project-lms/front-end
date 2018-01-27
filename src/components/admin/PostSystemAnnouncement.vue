@@ -102,7 +102,8 @@ export default {
             this.resources.map((file, index) => {
                 if(file.publicKey === publicKey){
                     this.resources.splice(index, 1);
-                    const index = this.systemAnnouncement.resourceKeys.includes(file.publicKey);
+                    const index = this.systemAnnouncement.resourceKeys.indexOf(file.publicKey);
+                    console.log(index)
                     this.systemAnnouncement.resourceKeys.splice(index, 1);
                 }
             });
