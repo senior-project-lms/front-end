@@ -19,22 +19,10 @@ export default class UserService{
             
             return Axios.get(`/api/me?access_token=${accessToken}`)
             .then(response => {
-                
-                var user = {username: '', name: '', surname: '', authority: {accessLevel: null}};
-
-                if(response.status === 200){
-                    const responseData = response.data;
-                
-                    if(responseData != null){
-                        user = responseData;        
-                    }
-                    return user;
-                }
-                return user;
+                return service.___then(response)
             })
             .catch(() => {
-                var user = {username: '', name: '', surname: '', authority: {accessLevel: null}};
-                return user;
+                return service.catchedResponse;
             });
 
         }

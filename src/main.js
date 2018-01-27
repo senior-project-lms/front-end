@@ -8,11 +8,12 @@ import 'vuetify/dist/vuetify.css'
 import App from './App'
 import router from './router'
 import storeOptions from './stores/index'
-import Uploader from 'vue-simple-uploader'
+
+import Notifications from 'vue-notification'
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
-Vue.use(Uploader)
+Vue.use(Notifications)
 
 const store = new Vuex.Store({
   modules: storeOptions,
@@ -30,3 +31,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+

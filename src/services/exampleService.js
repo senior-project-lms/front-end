@@ -2,9 +2,41 @@ import {Axios} from './axios.js'
 
 export default class ExampleService{
 
+
     constructor(){
+        this.catchedResponse = {
+            status: false,
+            message: "Networking error!",
+            data: null
+        }
         this.testVal = 0;
     }
+
+
+    ___then(response){
+        
+        const responseData = response.data;
+
+        var returnedResponse = {
+            status: false,
+            message: null,
+            data: null
+        }
+        
+        if(response.status === 200){
+            if (responseData != undefined && responseData != null){
+                returnedResponse.status = true;
+                returnedResponse.data = responseData
+            }
+        }
+        else {
+            returnedResponse.message = responseData.message;
+
+        }
+        return returnedResponse;
+
+    }
+
 
     static staticMethod(){
         // static method
@@ -24,18 +56,10 @@ export default class ExampleService{
         const accessToken = ""; // call function to get access token
         return Axios.post(`/path/subpath?access_token=${accessToken}`, parameters)
         .then((response) => {
-            // when request successfull, the data in the response
-
-            if(response.status === 200){
-                var data = response.data; // here is the data returned from api
-                return data;
-
-            }
-            return {}; // status not successful, then return empy object
+            this.___then(response);
         })
         .catch(error => {
-            // error handiling
-            return {}; // there is an error, therefore return empty object
+            return this.catchedResponse;
         });
     }
 

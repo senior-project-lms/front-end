@@ -21,72 +21,40 @@ export default{
         getSystemAnnouncements(context, page){
             return systemAnnouncementService.getAll(page)
             .then(response => {
-                if(page == 0){
-                    context.commit("clearSystemAnnouncements");
-
+                if(response.status){
+                    if(page == 0){
+                        context.commit("clearSystemAnnouncements");
+    
+                    }
+                    if(response.data != null && response.data.length > 0){
+                        context.commit("setSystemAnnouncements", response.data);
+                    }
                 }
-                if(response != null && response.length > 0){
-                    context.commit("setSystemAnnouncements", response);
-                    return true;
-                }
-                return false;
+                return response;
             });
         },
         saveSystemAnnouncement(context, announcement){
             return systemAnnouncementService.save(announcement)
             .then(response => {
-                if(response){
-                   return context.dispatch("getSystemAnnouncements", 0) 
-                      .then(() => {
-                        return true;
-                    });
+                if(response.status){
+                   context.dispatch("getSystemAnnouncements", 0);
                   
                 }
-                else{
-                    return false;
-                }
+                return response;
             })
         },
         deleteSystemAnnouncement(context, publicKey){
             return systemAnnouncementService.delete(publicKey)
             .then(response => {
-                if(response){
-                    return context.dispatch("getSystemAnnouncements", 0) 
-                    .then(() => {
-                        return true;
-                     });
+                if(response.status){
+                     context.dispatch("getSystemAnnouncements", 0) 
                 }
-                else{
-                    return false;
-                }
+                return response;
             })
         },
-        uploadSystemAnnouncementImage(context, image){
-            return systemAnnouncementService.uploadImage(image)
-            .then(data => {
-                if(data != null && data != undefined){
-                    return {
-                        publicKey: data.publicKey,
-                        name: data.name,
-                        url: data.path,
-                    }
-                }
-                return null;
-            });
-        },
-       
-        deleteSystemAnnouncementImage(context, publicKey){
-            return systemAnnouncementService.deleteImage(publicKey);
-        },
-       
+             
         uploadSystemAnnouncementFile(context, file){
-            return systemAnnouncementService.uploadFile(file)
-            .then(data => {
-                if(data != null && data != undefined){
-                    return data;
-                }
-                return null;
-            });
+            return systemAnnouncementService.uploadFile(file);
         },
 
         deleteSystemAnnouncementFile(context, publicKey){

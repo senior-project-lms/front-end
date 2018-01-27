@@ -1,9 +1,9 @@
 import {Axios} from './axios'
 import AuthenticationService from './authentication';
-
+import Service from './common'
 
 const authenticationService = new AuthenticationService();
-
+const service = new Service();
 
 export default class StorageService{
     
@@ -14,14 +14,10 @@ export default class StorageService{
         const accessToken = authenticationService.getAccessToken();
         return Axios.post(`${path}?access_token=${accessToken}`, formData)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                return responseData;
-            }
-            return null;
+            return service.___then(response)
         })
         .catch(() => {
-            return null;
+            return service.catchedResponse;
         });
     }
 
@@ -30,10 +26,10 @@ export default class StorageService{
         const accessToken = authenticationService.getAccessToken();
         return Axios.delete(`${path}/${publicKey}?access_token=${accessToken}`)
         .then(response => {
-           return response.status === 200;
+            return service.___then(response)
         })
         .catch(() => {
-            return false;
+            return service.catchedResponse;
         });
     }
 

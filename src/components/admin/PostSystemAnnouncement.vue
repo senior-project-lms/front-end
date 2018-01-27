@@ -88,33 +88,42 @@ export default {
         const chosenFiles = Array.from(event.target.files);
         chosenFiles.map((file) => {
             this.$store.dispatch("uploadSystemAnnouncementFile", file)
-            .then((data) => {
-                //this.systemAnnouncement.resourceKeys.push(data.publicKey)
-                this.resources.push(data);
-                this.systemAnnouncement.resourceKeys.push(data.publicKey)
+            .then((response) => {
+                if(response.status){
+                  const data = response.data;
+                  this.resources.push(data);
+                  this.systemAnnouncement.resourceKeys.push(data.publicKey)  
+                }
+                
            });
             
         });
     },
     removeFile(publicKey){
         this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
-        .then(result => {
-            this.resources.map((file, index) => {
-                if(file.publicKey === publicKey){
-                    this.resources.splice(index, 1);
-                    const index = this.systemAnnouncement.resourceKeys.indexOf(file.publicKey);
-                    console.log(index)
-                    this.systemAnnouncement.resourceKeys.splice(index, 1);
-                }
-            });
+        .then(response => {
+            if(response.status){
+              this.resources.map((file, index) => {
+                  if(file.publicKey === publicKey){
+                      this.resources.splice(index, 1);
+                      const index = this.systemAnnouncement.resourceKeys.indexOf(file.publicKey);
+                      this.systemAnnouncement.resourceKeys.splice(index, 1);
+                  }
+              });
+            }
+        
         });
     },
     save(){
         if(this.systemAnnouncement.title.length > 0 && this.systemAnnouncement.content.length > 0){
             this.$store.dispatch("saveSystemAnnouncement", this.systemAnnouncement)
             .then(response => {
-              if(response){
+              if(response.status){
+                this.$notify({type: "success", title: "System Announcement", text: "Successfuly published"})
                 this.cancel(true);
+              }
+              else{
+                  this.$notify({type: "error", title: "System Announcement", text: response.data.message})
               }
             });
         }
@@ -129,17 +138,7 @@ export default {
       
 
     },
-    // not used because of responsive image problam.
-    // handleImageAdded(file, Editor, cursorLocation){
-
-    //     this.$store.dispatch("uploadSystemAnnouncementImage", file)
-    //     .then(data => {
-    //         if(data != null && data != undefined){
-    //           this.systemAnnouncement.imagePublicKeys.push(data.publicKey);
-    //           Editor.insertEmbed(cursorLocation, 'image', data.url)
-    //         }
-    //     });
-    // }
+ 
   },
 
 
