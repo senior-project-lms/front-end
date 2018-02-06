@@ -95,7 +95,7 @@ export default {
 
   },
   computed:{
-      ...mapGetters(['authenticatedUser', 'systemAnnouncements', 'accessPrivileges']),
+      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'systemAnnouncements']),
      
   
 

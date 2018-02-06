@@ -116,7 +116,6 @@
       authUser(){
         return {
           username: this.authenticatedUser.username,
-          accessLevel: this.authenticatedUser.authority.accessLevel,
           accessPrivileges: this.authenticatedUser.accessPrivileges,
         }
       }

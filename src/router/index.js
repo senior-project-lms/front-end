@@ -26,7 +26,7 @@ import SystemAnnouncement from '../components/common-components/SystemAnnounceme
 
 import Admin from "../components/admin/Admin";
 import UsersForAdmin from "../components/admin/Users"
-import CoursesForAdmin from "../components/admin/Users"
+import CoursesForAdmin from "../components/admin/Courses"
 
 Vue.use(Router)
 

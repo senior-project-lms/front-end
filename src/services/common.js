@@ -24,7 +24,6 @@ export default class Service{
             message: null,
             data: null
         }
-        
         if(response.status === 200){
             if (responseData != undefined && responseData != null){
                 returnedResponse.status = true;
@@ -52,14 +51,8 @@ export default class Service{
         .then(response => {
             return this.___then(response)
         })
-        .catch(() => {
-            var returnedResponse = {
-                status: false,
-                message: "Networking error!",
-                data: null
-            }
-
-            return this.catchedResponse;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -77,8 +70,8 @@ export default class Service{
             return this.___then(response);
 
         })
-        .catch(() => {
-            return this.catchedResponse;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -96,8 +89,8 @@ export default class Service{
         .then(response => {
             return this.___then(response);
         })
-        .catch(() => {
-            return this.catchedResponse;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
     /*
@@ -112,8 +105,8 @@ export default class Service{
         .then(response => {
             return this.___then(response)
         })
-        .catch(() => {
-            return this.catchedResponse
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -130,8 +123,8 @@ export default class Service{
         .then(response => {
             return this.___then(response)
         })
-        .catch(() => {
-            return this.catchedResponse;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
