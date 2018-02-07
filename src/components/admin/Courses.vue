@@ -7,7 +7,7 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">{{ coursesStatuses.visibleCourses }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
@@ -27,14 +27,14 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">132</div>
+                                    <div class="headline text-md-center">{{ coursesStatuses.invisibleCourses }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Deaactiveted Courses</div>
+                                    <div class="headline text-md-center">Deactiveted Courses</div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -47,14 +47,14 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">99</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Active Courses</div>
+                                    <div class="headline text-md-center">Nothing Determined</div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -67,13 +67,20 @@
                 <v-flex>
                     <v-data-table
                     :headers="headers"
-                    :items="courses">
+                    :items="courses"
+                    :rows-per-page-items="[50, 75]"	>
                         <template slot="items" slot-scope="props">
-                            <tr>
+                            <tr >
                                 <td>{{ props.item.code }}</td>
-                                <td class="text-xs-center">{{ props.item.name }}</td>
+                                <td class="text-xs-center">
+                                    <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
+                                        {{ props.item.name }}
+                                    </router-link>
+                                    
+                                
+                                </td>
                                 <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
-                                <td class="text-xs-right"><a @click="removeCourse(props.index)"><v-icon color="blue darken-2">settings</v-icon></a></td>
+                                <td class="text-xs-right"><a><v-icon color="blue darken-2">settings</v-icon></a></td>
                             </tr>
                         </template>
                     </v-data-table>
@@ -102,6 +109,7 @@ export default {
     data(){
         return {
             dialog: false,
+
            headers: [
                 { text: 'Code', value: 'code', align: 'left' },
                 { text: 'Name', value: 'name', align: 'center'},
@@ -111,8 +119,8 @@ export default {
         }
     },
     created(){
-
-
+        
+        this.$store.dispatch("getCoursesStatuses");
         this.$store.dispatch("getAllActiveCourses");
     },
     methods:{
@@ -123,7 +131,7 @@ export default {
 
     },
     computed:{
-      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courses']),
+      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courses', 'coursesStatuses']),
     },
 
   

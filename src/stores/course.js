@@ -7,11 +7,15 @@ var courseService = new CourseService();
 export default{
     state: {
         courses: [],
+        coursesStatuses: {}
 
     },
     mutations: {
        setCourses(state, courses){
             state.courses = courses;
+       },
+       setCoursesStatuses(state, statuses){
+           state.coursesStatuses = statuses;
        },
 
     },
@@ -32,6 +36,15 @@ export default{
                 }
                 return response;
             })
+        },
+        getCoursesStatuses(context){
+            return courseService.getStatuses()
+            .then(response => {
+                if(response.status){
+                    context.commit("setCoursesStatuses", response.data);
+                }
+            })
+            return response; 
         }
 
     },
@@ -39,7 +52,11 @@ export default{
       
         courses(state){
             return state.courses;
-      },
+        },
+        coursesStatuses(state){
+            return state.coursesStatuses;
+
+        }
 
 
     }
