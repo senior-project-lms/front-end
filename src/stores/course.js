@@ -21,18 +21,44 @@ export default{
     },
     actions: {
         saveCourse(context, params){
-            return courseService.save(params);
+            return courseService.save(params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getAllCoursesByVisibility', true);
+                    context.dispatch('getCoursesStatuses');
+                }
+                return response;
+            });
         },
 
         saveAllCourses(context, params){
-            return courseService.saveAll(params);
+            return courseService.saveAll(params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getAllCoursesByVisibility', true);
+                    context.dispatch('getCoursesStatuses');
+                }
+                return response;
+            });
         },
 
-        getAllActiveCourses(context, params){
-            return courseService.getAllActive()
+        getAllCoursesByVisibility(context, visible){
+            return courseService.getAll(visible)
             .then( response => {
                 if(response.status){
                     context.commit("setCourses", response.data)
+                }
+                return response;
+            })
+        },
+        updateCourseVisiblity(context, params){
+            const publicKey = params.publicKey;
+            const visible = params.visible;
+             
+            return courseService.updateVisibility(publicKey, visible)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getCoursesStatuses');
                 }
                 return response;
             })
@@ -42,6 +68,7 @@ export default{
             .then(response => {
                 if(response.status){
                     context.commit("setCoursesStatuses", response.data);
+
                 }
             })
             return response; 
