@@ -26,7 +26,9 @@ import SystemAnnouncement from '../components/common-components/SystemAnnounceme
 
 import Admin from "../components/admin/Admin";
 import UsersForAdmin from "../components/admin/Users"
-import CoursesForAdmin from "../components/admin/Users"
+import CoursesForAdmin from "../components/common-components/CourseList"
+
+import QASample from "../components/common-components/QAPage"
 
 Vue.use(Router)
 
@@ -102,7 +104,12 @@ export default new Router({
                 path: "qa-global",
                 name: 'QA-Global',
                 component: qaGlobal,
-              },                         
+              },
+              {
+                path: "qa-sample",
+                name: 'QA-Sample',
+                component: QASample,
+              },                                   
           ]
         },
       ]

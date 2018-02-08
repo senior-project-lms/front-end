@@ -45,7 +45,7 @@
                     {
                         publicId: '73982492n941798739127c987298377n123798213',
                         code: 'CS101 #LEC1',
-                        name: 'Introduction To Programing'
+                        name: 'Introduction To Programming'
                     },
                     {
                         publicId: '73982492n941798739127c987298377n123798213231c',
@@ -55,7 +55,7 @@
                     {
                         publicId: '73982492n941798739127c987298377n12379821t235533',
                         code: 'CS424',
-                        name: 'Introduction to Artificial Inteligence'
+                        name: 'Introduction to Artificial Intelligence'
                     },
                     {
                         publicId: '73982492n941798739127c98729hf3458377n123798213',

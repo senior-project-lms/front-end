@@ -42,6 +42,14 @@ export default{
               title: 'QA-Global',
               to: {name: 'QA-Global'},
               authenticated: null,
+              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+            },
+            {
+              icon: 'fa-question-circle-o',
+              title: 'QA-Sample',
+              to: {name: 'QA-Sample'},
+              authenticated: null,
+              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
             {
               icon: 'fa-bullhorn',

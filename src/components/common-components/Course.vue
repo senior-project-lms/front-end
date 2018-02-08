@@ -6,7 +6,7 @@
                 <v-container fill-height fluid>
                     <v-layout fill-height>
                         <v-flex xs12 align-end flexbox>
-                            <span class="headline">Introduction to Programing</span>
+                            <span class="headline">Introduction to Programming</span>
                         </v-flex>
                     </v-layout>
                 </v-container>
