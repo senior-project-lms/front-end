@@ -38,20 +38,20 @@ export default class SystemAnnouncementService{
         function: getAll
         @param (page) page number, api returns 5 object for each page, increment page for new objects
         @return (array) returns empty or filled array of announcment objects
-        used for the fetch system announcments page by page 
+        used for the fetch system announcement page by page 
     */       
     getAll(page){
         const accessToken = authenticationService.getAccessToken();
         return service.getAll(`/api/system-announcements/${page}`)
         .then(response => {
             if(response.status){
-                var announcments = response.data;
-                announcments.map(announcement => {
+                var announcement = response.data;
+                announcement.map(announcement => {
                     announcement.resources.map((resource) => {
                         resource.url = `${Axios.defaults.baseURL}${resource.url}?access_token=${accessToken}`;
                     });
                 })
-                response.data = announcments;
+                response.data = announcement;
             }
             
             return response;
