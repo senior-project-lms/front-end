@@ -129,7 +129,7 @@ export default{
                     this.$store.dispatch('saveCourse', course)
                     .then(response => {
                         if(response.status){
-                            this.$notify({type: "success", title: "Course", text: "Successfuly published"})
+                            this.$notify({type: "success", title: "Course", text: "Successfuly Saved"})
                             this.cancel();
                         }
                         else{
@@ -158,6 +158,15 @@ export default{
 
 
                     this.$store.dispatch("saveAllCourses", courses)
+                    .then(response => {
+                        if(response.status){
+                            this.$notify({type: "success", title: "Course", text: "Course Collection is successfuly saved"})
+                            this.cancel();
+                        }
+                        else{
+                            this.$notify({type: "error", title: "Course", text: response.message})
+                        }
+                    })
                 }
                 else{
                     this.$notify({type: "error", title: "Course", text: "Add course collection."})

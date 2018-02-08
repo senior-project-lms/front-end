@@ -7,14 +7,19 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">{{ coursesStatuses.visibleCourses }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Active Courses</div>
+                                    <div class="headline text-md-center">
+                                        <a class="white--text" @click="fetchActiveCourses">
+                                            Active Courses
+                                        </a>
+                                        
+                                    </div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -27,14 +32,18 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">132</div>
+                                    <div class="headline text-md-center">{{ coursesStatuses.invisibleCourses }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Deaactiveted Courses</div>
+                                    <div class="headline text-md-center">
+                                        <a class="white--text" @click="fetchInactiveCourses">
+                                            Deactiveted Courses
+                                        </a>
+                                    </div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -47,14 +56,14 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">99</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Active Courses</div>
+                                    <div class="headline text-md-center">Nothing Determined</div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -64,21 +73,35 @@
         </v-layout>
         <v-divider class="box-divider"></v-divider>
         <v-layout class="course-list">
-                <v-flex>
-                    <v-data-table
-                    :headers="headers"
-                    :items="courses">
-                        <template slot="items" slot-scope="props">
-                            <tr>
-                                <td>{{ props.item.code }}</td>
-                                <td class="text-xs-center">{{ props.item.name }}</td>
-                                <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
-                                <td class="text-xs-right"><a @click="removeCourse(props.index)"><v-icon color="blue darken-2">settings</v-icon></a></td>
-                            </tr>
-                        </template>
-                    </v-data-table>
+            <v-flex>
+                <v-data-table
+                :headers="headers"
+                :items="courses"
+                :rows-per-page-items="[50, 75]"	>
+                    <template slot="items" slot-scope="props">
+                        <tr :class="props.item.color">
+                            <td>{{ props.item.code }}</td>
+                            <td class="text-xs-center">
+                                <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
+                                    {{ props.item.name }}
+                                </router-link>
+                            </td>
+                            <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
+                            <td>
+                                <v-layout  right>
+                                    <v-flex>
+                                        <v-switch class="course-switch" v-model="props.item.visible" @change="updateVisibility(props.item.publicKey, props.item.visible)"></v-switch>
+                                    </v-flex>
+                                    <v-flex>
+                                        <a><v-icon color="blue darken-2">settings</v-icon></a>
+                                    </v-flex>
+                                </v-layout>    
+                            </td>
+                        </tr>
+                    </template>
+                </v-data-table>
 
-                </v-flex>
+            </v-flex>
         </v-layout>        
         <div>
             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE)"> 
@@ -102,6 +125,7 @@ export default {
     data(){
         return {
             dialog: false,
+
            headers: [
                 { text: 'Code', value: 'code', align: 'left' },
                 { text: 'Name', value: 'name', align: 'center'},
@@ -111,19 +135,40 @@ export default {
         }
     },
     created(){
-
-
-        this.$store.dispatch("getAllActiveCourses");
+        
+        this.$store.dispatch("getCoursesStatuses");
+        this.$store.dispatch("getAllCoursesByVisibility", true);
     },
     methods:{
-          
-    cancelSavingCourse(){
-      this.dialog = false;
-    }
+        fetchActiveCourses(){
+            this.$store.dispatch("getAllCoursesByVisibility", true);
+        },
+        fetchInactiveCourses(){
+            this.$store.dispatch("getAllCoursesByVisibility", false);
+        },
+        updateVisibility(publicKey, visible){
+            for(var index in this.courses){
+                if(publicKey == this.courses[index].publicKey){
+                    if(visible){
+                        this.courses[index].color = 'light-green lighten-4';
+                    }
+                    else{
+                        this.courses[index].color = 'red lighten-4';
+                    }
+                    
+                    break;
+                }
+            }
+            this.$store.dispatch('updateCourseVisiblity', {publicKey: publicKey, visible: visible});
+        },
+
+        cancelSavingCourse(){
+        this.dialog = false;
+        }
 
     },
     computed:{
-      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courses']),
+      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courses', 'coursesStatuses']),
     },
 
   
@@ -153,5 +198,7 @@ export default {
     .course-list
         margin-right 15px
         margin-left 15px
-
+    
+    .course-switch
+        margin-right 20px
 </style>
