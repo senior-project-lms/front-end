@@ -31,7 +31,21 @@ export default class UserService{
 
     getAccessPrivileges(){
         return service.getAll('/api/me/privileges');
-    }    
+    }
+    getAllActiveUsers(){
+        return service.getAll('/api/admin/users');
+    }
+    getAllActiveUsersByUserType(){
+
+    }   
+    save(params){
+        return service.save('/api/admin/user', params);
+    } 
+    saveAll(params){
+        return service.saveAll('/api/admin/users',params);
+    }
+
+    
 
 }
 
