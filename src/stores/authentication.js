@@ -19,7 +19,7 @@ export default{
             username: '',
             name: '',
             surname: '',
-            authority: {accessLevel: null},
+            authority: {code: null},
             accessPrivileges: [],
         }
     },
@@ -38,7 +38,7 @@ export default{
                 username: '',
                 name: '',
                 surname: '',
-                authority: {accessLevel: null},
+                authority: {code: null},
             }
         },
         

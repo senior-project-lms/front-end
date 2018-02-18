@@ -15,11 +15,11 @@ export default class CourseService{
     }
 
     save(params){
-        return service.save('/api/admin/course', params);
+        return service.save('/api/course', params);
     }
 
     saveAll(params){
-        return service.save('/api/admin/courses', params)
+        return service.save('/api/courses', params)
     }
 
     getAll(visible){
@@ -36,7 +36,7 @@ export default class CourseService{
 
     getStatuses(){
         const accessToken = authService.getAccessToken();
-        return Axios.get(`/api/admin/courses/statuses?access_token=${accessToken}`)
+        return Axios.get(`/api/courses/statuses?access_token=${accessToken}`)
         .then(response =>{
             return service.___then(response)
         })
@@ -49,10 +49,10 @@ export default class CourseService{
         const accessToken = authService.getAccessToken();
         var path = '';
         if(visible){
-            path = `/api/admin/course/${publicKey}/visible?access_token=${accessToken}`
+            path = `/api/course/${publicKey}/visible?access_token=${accessToken}`
         }
         else{
-            path = `/api/admin/course/${publicKey}/invisible?access_token=${accessToken}`
+            path = `/api/course/${publicKey}/invisible?access_token=${accessToken}`
         }
         
         return Axios.put(path)

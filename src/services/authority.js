@@ -10,7 +10,7 @@ export default class AuthorityService{
     }
 
     getAll(){
-        return service.getAll('/api/admin/access-level');
+        return service.getAll('/api/access-levels');
     }
 
 }

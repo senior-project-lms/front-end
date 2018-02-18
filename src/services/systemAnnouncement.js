@@ -19,7 +19,7 @@ export default class SystemAnnouncementService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/admin/system-announcement', params);      
+        return service.save('/api/system-announcement', params);      
     }
 
 
@@ -31,7 +31,7 @@ export default class SystemAnnouncementService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/admin/system-announcement', publicKey);
+        return service.delete('/api/system-announcement', publicKey);
     }
 
     /*
@@ -60,7 +60,7 @@ export default class SystemAnnouncementService{
 
     uploadImage(image){
         const accessToken = authenticationService.getAccessToken();
-        return storageService.upload('/api/admin/system-announcement/storage/image', image)
+        return storageService.upload('/api/system-announcement/storage/image', image)
         .then(response => {
             if(response.status){
                 
@@ -75,14 +75,14 @@ export default class SystemAnnouncementService{
     }
 
     deleteImage(publicKey){
-        return storageService.delete('/api/admin/system-announcement/storage/image', publicKey);
+        return storageService.delete('/api/system-announcement/storage/image', publicKey);
     }
 
 
 
     uploadFile(file){
         const accessToken = authenticationService.getAccessToken();
-        return storageService.upload('/api/admin/system-announcement/storage/file', file)
+        return storageService.upload('/api/system-announcement/storage/file', file)
         .then(response => {
             if(response.ata != null && response.data != undefined){
                 response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;
@@ -94,7 +94,7 @@ export default class SystemAnnouncementService{
     }
 
     deleteFile(publicKey){
-        return storageService.delete('/api/admin/system-announcement/storage/file', publicKey);
+        return storageService.delete('/api/system-announcement/storage/file', publicKey);
     }
 
 }
