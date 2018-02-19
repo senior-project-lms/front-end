@@ -19,7 +19,7 @@ export default class SystemAnnouncementService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/admin/system-announcement', params);      
+        return service.save('/api/system-announcement', params);      
     }
 
 
@@ -31,27 +31,27 @@ export default class SystemAnnouncementService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/admin/system-announcement', publicKey);
+        return service.delete('/api/system-announcement', publicKey);
     }
 
     /*
         function: getAll
         @param (page) page number, api returns 5 object for each page, increment page for new objects
         @return (array) returns empty or filled array of announcment objects
-        used for the fetch system announcments page by page 
+        used for the fetch system announcement page by page 
     */       
     getAll(page){
         const accessToken = authenticationService.getAccessToken();
         return service.getAll(`/api/system-announcements/${page}`)
         .then(response => {
             if(response.status){
-                var announcments = response.data;
-                announcments.map(announcement => {
+                var announcement = response.data;
+                announcement.map(announcement => {
                     announcement.resources.map((resource) => {
                         resource.url = `${Axios.defaults.baseURL}${resource.url}?access_token=${accessToken}`;
                     });
                 })
-                response.data = announcments;
+                response.data = announcement;
             }
             
             return response;
@@ -60,7 +60,7 @@ export default class SystemAnnouncementService{
 
     uploadImage(image){
         const accessToken = authenticationService.getAccessToken();
-        return storageService.upload('/api/admin/system-announcement/storage/image', image)
+        return storageService.upload('/api/system-announcement/storage/image', image)
         .then(response => {
             if(response.status){
                 
@@ -75,14 +75,14 @@ export default class SystemAnnouncementService{
     }
 
     deleteImage(publicKey){
-        return storageService.delete('/api/admin/system-announcement/storage/image', publicKey);
+        return storageService.delete('/api/system-announcement/storage/image', publicKey);
     }
 
 
 
     uploadFile(file){
         const accessToken = authenticationService.getAccessToken();
-        return storageService.upload('/api/admin/system-announcement/storage/file', file)
+        return storageService.upload('/api/system-announcement/storage/file', file)
         .then(response => {
             if(response.ata != null && response.data != undefined){
                 response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;
@@ -94,7 +94,7 @@ export default class SystemAnnouncementService{
     }
 
     deleteFile(publicKey){
-        return storageService.delete('/api/admin/system-announcement/storage/file', publicKey);
+        return storageService.delete('/api/system-announcement/storage/file', publicKey);
     }
 
 }

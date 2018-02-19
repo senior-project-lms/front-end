@@ -72,6 +72,8 @@
             </v-flex>             
         </v-layout>
         <v-divider class="box-divider"></v-divider>
+            <h1 class="active-text grey--text darken-4">{{ activeText }}</h1>
+        <v-divider></v-divider>
         <v-layout class="course-list">
             <v-flex>
                 <v-data-table
@@ -125,8 +127,8 @@ export default {
     data(){
         return {
             dialog: false,
-
-           headers: [
+            activeText: 'Active Courses',
+            headers: [
                 { text: 'Code', value: 'code', align: 'left' },
                 { text: 'Name', value: 'name', align: 'center'},
                 { text: 'Lecturer', value: 'lecturer', align: 'center'},
@@ -142,9 +144,11 @@ export default {
     methods:{
         fetchActiveCourses(){
             this.$store.dispatch("getAllCoursesByVisibility", true);
+            this.activeText = 'Active Courses'
         },
         fetchInactiveCourses(){
             this.$store.dispatch("getAllCoursesByVisibility", false);
+            this.activeText = 'Deactivated Courses'
         },
         updateVisibility(publicKey, visible){
             for(var index in this.courses){
@@ -201,4 +205,7 @@ export default {
     
     .course-switch
         margin-right 20px
+    
+    .active-text
+        margin-left 15px
 </style>
