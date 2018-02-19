@@ -66,13 +66,26 @@ export default {
   methods:{
     
     loadSystemAnnouncements(page){
-      this.$store.dispatch("getSystemAnnouncements", page);
+      this.$store.dispatch("getSystemAnnouncements", page)
+      .then(response => {
+          if(!response.status){
+            this.$notify({type: "error", title: "System Announcement", text: response.data.message}) 
+          }
+      });
       this.page++;
     },
     
     deleteAnnouncement(publicKey){
         if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-              this.$store.dispatch("deleteSystemAnnouncement", publicKey);
+              this.$store.dispatch("deleteSystemAnnouncement", publicKey)
+              .then(response => {
+                  if(response.status){
+                      this.$notify({type: "info", title: "System Announcement", text: "Successfuly deleted"})
+                  }
+                  else{
+                    this.$notify({type: "error", title: "System Announcement", text: response.data.message})
+                  }
+              });
         }
     },
     
@@ -82,7 +95,7 @@ export default {
 
   },
   computed:{
-      ...mapGetters(['authenticatedUser', 'systemAnnouncements', 'accessPrivileges']),
+      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'systemAnnouncements']),
      
   
 

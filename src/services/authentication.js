@@ -26,7 +26,6 @@ export default class AuthenticationService{
                     this.setTokenExpiresTime(responseData.expires_in);
 
                     this.setTokens(tokens);
-                    
                     return true;
                 }
                 

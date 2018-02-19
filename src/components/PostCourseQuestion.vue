@@ -103,11 +103,7 @@ export default {
           }
       }
   },
-  beforeDestroy(){
-    if(this.courseQuestion.imagePublicKeys.length > 0){
-      // remove the files
-    }
-  }
+  
 }
 </script>
 <style lang="stylus" scoped>

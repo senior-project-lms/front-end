@@ -56,12 +56,14 @@ export default{
         
         getMe(context){
             return userService.getProfile()
-            .then(user => {
-                if(user != null){
-                    context.commit('setAuthenticatedUser', user)
-                    return true;
+            .then(response => {
+                if(response.status){
+                    
+                    if(response.data != null){
+                        context.commit('setAuthenticatedUser', response.data)
+                    }
                 }
-                return false;
+                return response;
             })
         },
         hasAccessPrivilege(context, privilege){

@@ -4,8 +4,39 @@ import AuthenticationService from './authentication';
 const authService = new AuthenticationService();
 
 export default class Service{
-    constructor(){}
+    constructor(){
+         this.catchedResponse = {
+            status: false,
+            message: "Networking error!",
+            data: null
+        }
 
+
+    }
+
+
+    ___then(response){
+        
+        const responseData = response.data;
+
+        var returnedResponse = {
+            status: false,
+            message: null,
+            data: null
+        }
+        if(response.status === 200){
+            if (responseData != undefined && responseData != null){
+                returnedResponse.status = true;
+                returnedResponse.data = responseData
+            }
+        }
+        else {
+            returnedResponse.message = responseData.message;
+
+        }
+        return returnedResponse;
+
+    }
 
     /*
         function: save
@@ -18,17 +49,10 @@ export default class Service{
         const accessToken = authService.getAccessToken();
         return Axios.post(`${path}?access_token=${accessToken}`, params)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                if (responseData != undefined && responseData != null){
-                    return responseData;
-                }
-            }
-            return false;
+            return this.___then(response)
         })
-        .catch(() => {
-            
-            return false;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -43,16 +67,11 @@ export default class Service{
         const accessToken = authService.getAccessToken();
         return Axios.delete(`${path}/${publicKey}?access_token=${accessToken}`)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                if (responseData != undefined && responseData != null){
-                    return responseData;
-                }
-            }
-            return false;
+            return this.___then(response);
+
         })
-        .catch(() => {
-            return false;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -68,16 +87,10 @@ export default class Service{
         const accessToken = authService.getAccessToken();
         return Axios.put(`${path}/${publicKey}?access_token=${accessToken}`, params)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                if (responseData != undefined && responseData != null){
-                    return responseData;
-                }
-            }
-            return false;
+            return this.___then(response);
         })
-        .catch(() => {
-            return false;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
     /*
@@ -90,16 +103,10 @@ export default class Service{
         const accessToken = authService.getAccessToken();
         return Axios.get(`${path}?access_token=${accessToken}`)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                if (responseData != undefined && responseData != null){
-                    return responseData;
-                }
-            }
-            return [];
+            return this.___then(response)
         })
-        .catch(() => {
-            return [];
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 
@@ -114,16 +121,10 @@ export default class Service{
         const accessToken = authService.getAccessToken();
         return Axios.get(`${path}/${publicKey}?access_token=${accessToken}`)
         .then(response => {
-            if(response.status === 200){
-                const responseData = response.data;
-                if (responseData != undefined && responseData != null){
-                    return responseData;
-                }
-            }
-            return null;
+            return this.___then(response)
         })
-        .catch(() => {
-            return null;
+        .catch(error => {
+            return this.___then(error.response);
         })
     }
 

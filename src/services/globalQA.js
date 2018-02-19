@@ -19,7 +19,7 @@ export default class GlobalQAService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/admin/global-qa', params);      
+        return service.save('/api/globalQaQuestion', params);      
     }
 
 
@@ -31,7 +31,7 @@ export default class GlobalQAService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/admin/global-qa', publicKey);
+        return service.delete('/api/admin/globalQaQuestion', publicKey);
     }
 
     /*
@@ -42,7 +42,7 @@ export default class GlobalQAService{
     */       
     getAll(page){
         const accessToken = authenticationService.getAccessToken();
-        return service.getAll(`/api/global-qa/${page}`);
+        return service.getAll(`/api/globalQaQuestion/${page}`);
         
     }
 

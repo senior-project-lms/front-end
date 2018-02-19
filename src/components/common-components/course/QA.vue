@@ -39,7 +39,7 @@
                     updatedAt: "20180202",
                     createdBy: "Steve Sinclair",
                     numAnswers: 5,
-                    isVerified: false
+                    isVerified: true
                 },
 
                 {

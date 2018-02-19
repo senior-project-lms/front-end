@@ -44,13 +44,13 @@ export default{
               authenticated: null,
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
-            {
+            /*{                                   Burayı tek bir sorunun QA sayfasını düzenlemek için kullandıydım
               icon: 'fa-question-circle-o',
               title: 'QA-Sample',
               to: {name: 'QA-Sample'},
               authenticated: null,
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
-            },
+            },*/
             {
               icon: 'fa-bullhorn',
               title: 'System Announcement',

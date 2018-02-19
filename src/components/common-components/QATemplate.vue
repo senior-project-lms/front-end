@@ -6,7 +6,7 @@
                 <!--<v-card-text class="px-0">12</v-card-text>-->
                 <v-card-text class = "text-xs-center">{{qa.numAnswers}} answers</v-card-text>
                 <v-flex offset-md5>
-                    <v-icon class="text-xs-center" v-if="qa.isVerified">check_circle</v-icon>
+                    
                 </v-flex>
             </v-card>
             
@@ -27,6 +27,7 @@
             
             <v-card-title>
                 <h5 class="headline">{{ qa.title }}</h5>
+                <v-icon class="icon-xs-left" v-if="qa.isVerified">check_circle</v-icon>
             </v-card-title>
             <!--<v-divider class="divider"></v-divider>
             <v-card-text>

@@ -43,7 +43,7 @@ export default{
 
         saveGlobalQuestion(context, publicKey, question){
             return globalQAService.save(question)
-            .then(response => {
+            /*.then(response => {
                 if(response){
                    return context.dispatch("getGlobalQAs", 0) 
                       .then(() => {
@@ -54,7 +54,7 @@ export default{
                 else{
                     return false;
                 }
-            })
+            })*/
         },
 
         deleteGlobalQuestion(context, publicKey){

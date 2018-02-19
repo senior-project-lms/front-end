@@ -43,24 +43,32 @@ export default class SystemAnnouncementService{
     getAll(page){
         const accessToken = authenticationService.getAccessToken();
         return service.getAll(`/api/system-announcements/${page}`)
-        .then(announcmenets => {
-            announcmenets.map(announcement => {
-                announcement.resources.map((resource) => {
-                    resource.url = `${Axios.defaults.baseURL}${resource.url}?access_token=${accessToken}`;
-                });
-            })
-            return announcmenets;
+        .then(response => {
+            if(response.status){
+                var announcments = response.data;
+                announcments.map(announcement => {
+                    announcement.resources.map((resource) => {
+                        resource.url = `${Axios.defaults.baseURL}${resource.url}?access_token=${accessToken}`;
+                    });
+                })
+                response.data = announcments;
+            }
+            
+            return response;
         });
     }
 
     uploadImage(image){
         const accessToken = authenticationService.getAccessToken();
         return storageService.upload('/api/admin/system-announcement/storage/image', image)
-        .then(data => {
-            if(data != null && data != undefined){
-                data.path = `${Axios.defaults.baseURL}${data.path}?access_token=${accessToken}`;
+        .then(response => {
+            if(response.status){
+                
+                if(response.data != null && response.data != undefined){
+                    response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;
+                }
             }
-            return data;
+            return response;
             
         });
     
@@ -75,11 +83,11 @@ export default class SystemAnnouncementService{
     uploadFile(file){
         const accessToken = authenticationService.getAccessToken();
         return storageService.upload('/api/admin/system-announcement/storage/file', file)
-        .then(data => {
-            if(data != null && data != undefined){
-                data.path = `${Axios.defaults.baseURL}${data.path}?access_token=${accessToken}`;
+        .then(response => {
+            if(response.ata != null && response.data != undefined){
+                response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;
             }
-            return data;
+            return response;
             
         });
     

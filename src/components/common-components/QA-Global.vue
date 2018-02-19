@@ -14,6 +14,9 @@
         <post-global-question :dialog="dialog"/>
 
     </div>
+    <template>
+        <v-btn block class="load-more" light outline @click="loadGlobalQuestions(page)" v-if="loader">More</v-btn>
+      </template>
   </v-flex>
 </template>
 
@@ -113,6 +116,87 @@
                       }
                     ]
                 },
+
+                {
+                    title: "How to mod Valkyr's Hysteria?",
+                    content: "Are melee mods affecting the Hysteria or just purely ability mods?",
+                    updatedAt: "20180207",
+                    createdBy: "Scott Taylor",
+                    numAnswers: 846,
+                    isVerified: false,
+                    answers: [
+                      {
+                      content: "I have absolutely no idea.",
+                      updatedAt: "20180202",
+                      createdBy: "Tarik Keceli",
+                      numUpvotes: 3,
+                      numDownvotes: 18,
+                      isVerified: false
+                      },
+                      {
+                      content: "You should check for Eidolon lures. Usually they spawn near an Eidolon.",
+                      updatedAt: "20180202",
+                      createdBy: "Triss Merigold",
+                      numUpvotes: 18,
+                      numDownvotes: 3,
+                      isVerified: true
+                      }
+                    ]
+                },
+
+                {
+                    title: "How to mod Valkyr's Hysteria?",
+                    content: "Are melee mods affecting the Hysteria or just purely ability mods?",
+                    updatedAt: "20180207",
+                    createdBy: "Scott Taylor",
+                    numAnswers: 846,
+                    isVerified: false,
+                    answers: [
+                      {
+                      content: "I have absolutely no idea.",
+                      updatedAt: "20180202",
+                      createdBy: "Tarik Keceli",
+                      numUpvotes: 3,
+                      numDownvotes: 18,
+                      isVerified: false
+                      },
+                      {
+                      content: "You should check for Eidolon lures. Usually they spawn near an Eidolon.",
+                      updatedAt: "20180202",
+                      createdBy: "Triss Merigold",
+                      numUpvotes: 18,
+                      numDownvotes: 3,
+                      isVerified: true
+                      }
+                    ]
+                },
+
+                {
+                    title: "How to mod Valkyr's Hysteria?",
+                    content: "Are melee mods affecting the Hysteria or just purely ability mods?",
+                    updatedAt: "20180207",
+                    createdBy: "Scott Taylor",
+                    numAnswers: 846,
+                    isVerified: false,
+                    answers: [
+                      {
+                      content: "I have absolutely no idea.",
+                      updatedAt: "20180202",
+                      createdBy: "Tarik Keceli",
+                      numUpvotes: 3,
+                      numDownvotes: 18,
+                      isVerified: false
+                      },
+                      {
+                      content: "You should check for Eidolon lures. Usually they spawn near an Eidolon.",
+                      updatedAt: "20180202",
+                      createdBy: "Triss Merigold",
+                      numUpvotes: 18,
+                      numDownvotes: 3,
+                      isVerified: true
+                      }
+                    ]
+                },
                     
                 ]
             }
@@ -135,18 +219,18 @@
                 this.dialog = false;
             },
 
-        }
+        },
 
-        /*computed:{
-      ...mapGetters(['authenticatedUser', 'systemAnnouncements', 'accessPrivileges']),
+    computed:{
+      //...mapGetters(['authenticatedUser', 'systemAnnouncements', 'accessPrivileges']),
      
   
 
       loader(){
-        return (this.systemAnnouncements.length / this.page) == 5;
+        return (this.qas.length / this.page) == 5;
+        }
     }
-  }*/
-    }    
+}    
 </script>
 <style lang="stylus">
     .Container

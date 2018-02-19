@@ -2,7 +2,8 @@ import authentication from './authentication';
 import systemAnnouncement from './systemAnnouncement';
 import menu from './frontend/menu';
 import privileges from './frontend/privileges';
-import globalQA from './globalQA'
+import course from './course'
+import excel from './excel'
 
 export default{
 
@@ -11,7 +12,7 @@ export default{
 
     authentication: authentication,
     systemAnnouncement: systemAnnouncement,
-
-    globalQA: globalQA,
-    
+    course: course,  
+    excel: excel,    
+  
 }
