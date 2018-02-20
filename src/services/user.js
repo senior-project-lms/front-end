@@ -33,16 +33,16 @@ export default class UserService{
         return service.getAll('/api/me/privileges');
     }
     getAllActiveUsers(){
-        return service.getAll('/api/admin/users');
+        return service.getAll('/api/users');
     }
     getAllActiveUsersByUserType(){
 
     }   
     save(params){
-        return service.save('/api/admin/user', params);
+        return service.save('/api/user', params);
     } 
     saveAll(params){
-        return service.saveAll('/api/admin/users',params);
+        return service.saveAll('/api/users',params);
     }
     getAll(visible){
         var path = '';
