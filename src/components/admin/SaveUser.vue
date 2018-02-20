@@ -1,5 +1,5 @@
 <template>
- <v-dialog v-model="dialog" persistent max-width="1000">
+    <v-dialog v-model="dialog" persistent max-width="1000">
         <v-card>
           <v-card-title class="headline">User</v-card-title>
             <v-layout row wrap class="tab-btn">
@@ -12,53 +12,47 @@
                     <v-divider v-if="active" class="grey darken-4"></v-divider>
                 </v-flex>
             </v-layout>
-                
-
+            
             <v-flex xs10 sm10 md10 offset-md1 offset-sm1 offset-xs1 class="post"> 
-            <v-divider></v-divider>
+                <v-divider></v-divider>
                 <div v-if="!active">
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-text-field label="Username" v-model="user.username" required/>
-                        </v-flex>
-                        <v-flex>
-                            <v-text-field label="Password" v-model="user.password" required/>
-                        </v-flex>
-                    </v-layout>   
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-text-field label="Name"  v-model="user.name" required/>
-                        </v-flex>
-                        <v-flex>
-                            <v-text-field label="Surname"  v-model="user.surname" required/>
-                        </v-flex>
-                    </v-layout>
-                    
-                        
-
-
-                    
-                        
-                    
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-text-field label="Email"  v-model="user.email" required/>
-                        </v-flex>
-                    
-                        
-                        <v-flex>
-                        <v-select
-                                :items="accessLevels"
-                                label="Select"
-                                single-line
-                                v-model="user.authority"
-                                bottom
-                        ></v-select>
-                        </v-flex>                        
-                </v-layout>
-            </div>
+                    <v-container grid-list-md>
+                        <v-layout row wrap>
+                            <v-flex md6>
+                                <v-text-field label="Username" v-model="user.username" required/>
+                            </v-flex>
+                            <v-flex md3>
+                                <v-text-field label="Password" v-model="user.password" required disabled/>
+                            </v-flex>
+                            <v-flex md3>
+                                <v-btn color="info" block @click="generatePassword">Generate Password</v-btn>
+                            </v-flex>
+                        </v-layout>   
+                        <v-layout row wrap>
+                            <v-flex md6>
+                                <v-text-field label="Name"  v-model="user.name" required/>
+                            </v-flex>
+                            <v-flex md6>
+                                <v-text-field label="Surname"  v-model="user.surname" required/>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout row wrap>
+                                <v-flex md6>
+                                    <v-text-field label="Email"  v-model="user.email" required/>
+                                </v-flex>
+                                <v-flex md6>
+                                    <v-select
+                                            :items="accessLevels"
+                                            label="Select"
+                                            single-line
+                                            v-model="user.authority"
+                                            bottom
+                                    ></v-select>
+                                </v-flex>                        
+                        </v-layout>
+                    </v-container>
+                </div>
                 <div v-if="active" class="post">
-
                     <v-layout>
                         <v-flex>
                             <div class="upload-btn-wrapper">
@@ -68,28 +62,26 @@
                         </v-flex>
                     </v-layout>
                     <v-layout>
-                            <v-flex>
-                                <v-data-table
-                                :headers="headers"
-                                :items="users">
-                                    <template slot="items" slot-scope="props">
-                                        <tr>
-                                            <td class="text-xs-center">{{ props.item.username }}</td>
-                                            <td class="text-xs-center">{{ props.item.name }}</td>
-                                            <td class="text-xs-center">{{ props.item.surname }}</td>
-                                            <td class="text-xs-center">{{ props.item.password }}</td>
-                                            <td class="text-xs-center">{{ props.item.email }}</td>
-                                            <td class="text-xs-right"><a @click="removeUsers(props.index)"><v-icon color="red darken-2">cancel</v-icon></a></td>
-                                        </tr>
-                                    </template>
-                                </v-data-table>
+                        <v-flex>
+                            <v-data-table
+                            :headers="headers"
+                            :items="users">
+                                <template slot="items" slot-scope="props">
+                                    <tr>
+                                        <td class="text-xs-center">{{ props.item.username }}</td>
+                                        <td class="text-xs-center">{{ props.item.name }}</td>
+                                        <td class="text-xs-center">{{ props.item.surname }}</td>
+                                        <td class="text-xs-center">{{ props.item.password }}</td>
+                                        <td class="text-xs-center">{{ props.item.email }}</td>
+                                        <td class="text-xs-right"><a @click="removeUsers(props.index)"><v-icon color="red darken-2">cancel</v-icon></a></td>
+                                    </tr>
+                                </template>
+                            </v-data-table>
 
-                            </v-flex>
+                        </v-flex>
                     </v-layout>
                 </div> 
             </v-flex>
-    
-          
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
@@ -102,8 +94,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-
-
 export default{
     props: ['dialog'],
     data(){
@@ -116,7 +106,6 @@ export default{
                 email: '',
                 authority:{
                     publicKey:'',
-
                 }
             },
             uploadedFile: null,
@@ -149,12 +138,9 @@ export default{
                 this.$store.dispatch('excelToJson', file);
             }
         },
-        save(){
-            if(!this.active){ // single save
-                
-                if(this.user.username.length > 0 && this.user.name.length > 0 && this.user.surname.length > 0 
+        saveOne(){
+            if(this.user.username.length > 0 && this.user.name.length > 0 && this.user.surname.length > 0 
                 && this.user.password.length > 5 && this.user.email.length > 0){
-
                     const user = {
                         username: this.user.username,
                         name: this.user.name,
@@ -174,43 +160,42 @@ export default{
                             this.$notify({type: "error", title: "User", text: response.message})
                         }
                     });
-                }
-                else{
+            }
+            else{
                     this.$notify({type: "error", title: "User", text: "Fill the empty fields."})
-                }
             }
-            else{ // multi save
-                if(this.users.length > 0){
-                    var users = [];
-                    
-                    this.users.forEach(item => {
-                         const user = {
-                            username : item.username,
-                            name : item.name,
-                            surname : item.surname,
-                            password : item.password,
-                            email : item.email,
-                            authority: item.authority,
-                        }
-                        users.push(user);
-                    })
+        },
+        saveAll(){
+            if(this.users.length > 0){
+                var users = [];
 
+                this.users.forEach(item => {
+                        const user = {
+                        username : item.username,
+                        name : item.name,
+                        surname : item.surname,
+                        password : item.password,
+                        email : item.email,
+                        authority: item.authority,
+                    }
+                    users.push(user);
+                });
 
-                    this.$store.dispatch("saveAllUsers", users)
-                    .then(response => {
-                        if(response.status){
-                            this.$notify({type: "success", title: "User", text: "Saved"})
-                            this.cancel();
-                        }
-                        else{
-                            this.$notify({type: "error", title: "User", text: response.message})
-                        }
-                    })
-                }
-                else{
-                    this.$notify({type: "error", title: "User", text: "Add user collection."})
-                }
+                this.$store.dispatch("saveAllUsers", users)
+                .then(response => {
+                    if(response.status){
+                        this.$notify({type: "success", title: "User", text: "Saved"})
+                        this.cancel();
+                    }
+                    else{
+                        this.$notify({type: "error", title: "User", text: response.message})
+                    }
+                });
             }
+            else{
+                this.$notify({type: "error", title: "User", text: "Add user collection."})
+            }
+        
         },
         removeUser(index){
             this.users.splice(index, 1);
@@ -228,8 +213,34 @@ export default{
             },
             this.$parent.cancelSavingUser();
         
-        }
+        },
+        generatePassword(){
+            var password = '';
+            
+            const minForNumber = 48;
+            const maxForNumber = 57;
+            const minForCapital = 65;
+            const maxForCapital = 90;
+            const minForLover = 97;
+            const maxForLover = 122;
 
+            // capital
+                var ascii = Math.floor(Math.random() * (maxForCapital - minForCapital + 1)) + minForCapital;
+                password += String.fromCharCode(ascii);
+            // lover
+            for(var i = 0; i < 3; i++){
+                var ascii = Math.floor(Math.random() * (maxForLover - minForLover + 1)) + minForLover;
+                password += String.fromCharCode(ascii);
+            }
+
+             // number
+            for(var i = 0; i < 4; i++){
+                var ascii = Math.floor(Math.random() * (maxForNumber - minForNumber + 1)) + minForNumber;
+                password += String.fromCharCode(ascii);
+            }
+
+            this.user.password = password;
+        }
     },
     computed:{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'excelJson','accessLevels']),
@@ -244,14 +255,12 @@ export default{
             }
         }
     }
-
 }
     
 </script>
 <style lang="stylus" scoped>
     .post
         margin-top 30px
-
     .tab-btn
         margin-left 5px
         margin-right 5px
@@ -263,14 +272,11 @@ export default{
         cursor pointer
         overflow hidden
         outline none
-
     .upload-btn-wrapper {
         position: relative;
         overflow: hidden;
         
     }
-
-
     .upload-btn-wrapper input[type=file] 
         font-size: 100px;
         position: absolute;

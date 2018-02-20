@@ -26,24 +26,19 @@ export default class UserService{
             });
 
         }
-
-    }
-
-    getAccessPrivileges(){
-        return service.getAll('/api/me/privileges');
     }
     getAllActiveUsers(){
         return service.getAll('/api/users');
     }
-    getAllActiveUsersByUserType(){
-
-    }   
+  
     save(params){
         return service.save('/api/user', params);
     } 
+
     saveAll(params){
-        return service.saveAll('/api/users',params);
+        return service.save('/api/users', params);
     }
+
     getAll(visible){
         var path = '';
         if(visible){
@@ -54,9 +49,10 @@ export default class UserService{
         }
         return service.getAll(path);
     }
+
     getStatus(){
         const accessToken = authenticationService.getAccessToken();
-        return Axios.get(`/api/admin/users/status?access_token=${accessToken}`)
+        return Axios.get(`/api/users/status?access_token=${accessToken}`)
         .then(response =>{
             return service.___then(response)
         })
@@ -64,14 +60,15 @@ export default class UserService{
             return service.___then(error.response);
         });
     }
+
     updateVisibility(publicKey, visible){
         const accessToken = authenticationService.getAccessToken();
         var path = '';
         if(visible){
-            path = `/api/admin/user/${publicKey}/visible?access_token=${accessToken}`
+            path = `/api/user/${publicKey}/visible?access_token=${accessToken}`
         }
         else{
-            path = `/api/admin/user/${publicKey}/invisible?access_token=${accessToken}`
+            path = `/api/user/${publicKey}/invisible?access_token=${accessToken}`
         }
         
         return Axios.put(path)

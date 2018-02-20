@@ -27,7 +27,7 @@ export default{
             });
         },
 
-        saveAllUSers(context, params){
+        saveAllUsers(context, params){
             return userService.saveAll(params)
             .then(response => {
                 if(response.status){
