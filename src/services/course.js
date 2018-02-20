@@ -61,7 +61,7 @@ export default class CourseService{
         })
         .catch(error => {
             return service.___then(error.response);
-        });
+});
 
     }
 

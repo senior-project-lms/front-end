@@ -7,14 +7,19 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">{{ usersStatus.visibleUsers }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Active Users</div>
+                                   <div class="headline text-md-center">
+                                        <a class="white--text" @click="fetchActiveUsers">
+                                            Active Users
+                                        </a>
+                                        
+                                    </div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -27,14 +32,18 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">132</div>
+                                    <div class="headline text-md-center">{{ usersStatus.invisibleUsers }}</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">?? Users</div>
+                                    <div class="headline text-md-center">
+                                        <a class="white--text" @click="fetchInactiveUsers">
+                                            Deactivated Users
+                                        </a>
+                                    </div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -47,14 +56,14 @@
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">26</div>
+                                    <div class="headline text-md-center">GG</div>
                                 </div>
                             </v-flex>
                         </v-layout>
                         <v-layout row>
                             <v-flex>
                                 <div>
-                                    <div class="headline text-md-center">Active Users</div>
+                                    <div class="headline text-md-center">??</div>
                                 </div>
                             </v-flex>
                         </v-layout>                            
@@ -68,13 +77,35 @@
                     <v-data-table
                     :headers="headers"
                     :items="users">
+                    :rows-per-page-items="[50, 75]"
                         <template slot="items" slot-scope="props">
-                            <tr>
+                            <tr :class="props.item.color">
                                 <td>{{ props.item.username }}</td>
-                                <td class="text-xs-center">{{ props.item.name }}</td>
-                                <td class="text-xs-center">{{props.item.surname}}</td>
+
+
+                                <td class="text-xs-center">
+                                <router-link :to="{name: 'Profile', params: {id: props.item.publicKey}}">
+                                    {{ `${ props.item.name} ${ props.item.surname}` }}
+                                </router-link>
+                                </td>
+                                
+                                
                                 <td class="text-xs-center">{{ props.item.email }}</td>
+                        <!--       
                                 <td class="text-xs-right"><a @click="removeUsers(props.index)"><v-icon color="blue darken-2">settings</v-icon></a></td>
+                        -->
+                        
+                            <td>
+                                <v-layout  right>
+                                    <v-flex>
+                                        <v-switch class="user-switch" v-model="props.item.visible" @change="updateVisibility(props.item.publicKey, props.item.visible)"></v-switch>
+                                    </v-flex>
+                                    <v-flex>
+                                        <a><v-icon color="blue darken-2">settings</v-icon></a>
+                                    </v-flex>
+                                </v-layout>    
+                            </td>
+                            
                             </tr>
                         </template>
                     </v-data-table>
@@ -107,7 +138,6 @@ export default {
            headers: [
                 { text: 'Username', value: 'username', align: 'left' },
                 { text: 'Name', value: 'name', align: 'center'},
-                { text: 'Surname', value: 'surname', align: 'center'},
                 { text: 'Email', value: 'email', align: 'center'},
                 { text: '', value: 'event' },
             ],
@@ -115,18 +145,40 @@ export default {
     },
     created(){
 
+        
+        this.$store.dispatch("getUsersStatus");
 
-        this.$store.dispatch("getAllActiveUsers");
+        this.$store.dispatch("getAllActiveUsers",true);
     },
     methods:{
-          
+        fetchActiveUsers(){
+            this.$store.dispatch("getAllActiveUsers", true);
+        },
+        fetchInactiveUsers(){
+            this.$store.dispatch("getAllActiveUsers", false);
+        },
+        updateVisibility(publicKey, visible){
+            for(var index in this.users){
+                if(publicKey == this.users[index].publicKey){
+                    if(visible){
+                        this.users[index].color = 'light-green lighten-4';
+                    }
+                    else{
+                        this.users[index].color = 'red lighten-4';
+                    }
+                    
+                    break;
+                }
+            }
+            this.$store.dispatch('updateUserVisibility', {publicKey: publicKey, visible: visible});
+        },      
     cancelSavingUser(){
       this.dialog = false;
     }
 
     },
     computed:{
-      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'users']),
+      ...mapGetters(['authenticatedUser', 'accessPrivileges', 'users','usersStatus']),
     },
 
   
@@ -156,5 +208,7 @@ export default {
     .user-list
         margin-right 15px
         margin-left 15px
-
+    
+    .user-switch
+        margin-right 20px
 </style>

@@ -21,29 +21,30 @@
                         <v-flex>
                             <v-text-field label="Username" v-model="user.username" required/>
                         </v-flex>
+                        <v-flex>
+                            <v-text-field label="Password" v-model="user.password" required/>
+                        </v-flex>
                     </v-layout>   
                     <v-layout row wrap>
                         <v-flex>
                             <v-text-field label="Name"  v-model="user.name" required/>
                         </v-flex>
-                    </v-layout>
-                    <v-layout row wrap>
                         <v-flex>
                             <v-text-field label="Surname"  v-model="user.surname" required/>
                         </v-flex>
                     </v-layout>
+                    
+                        
 
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-text-field label="Password" v-model="user.password" required/>
-                        </v-flex>
-                    </v-layout>
+
+                    
+                        
+                    
                     <v-layout row wrap>
                         <v-flex>
                             <v-text-field label="Email"  v-model="user.email" required/>
                         </v-flex>
-                    </v-layout>
-                    <v-layout row wrap>
+                    
                         
                         <v-flex>
                         <v-select
@@ -196,12 +197,20 @@ export default{
 
 
                     this.$store.dispatch("saveAllUsers", users)
+                    .then(response => {
+                        if(response.status){
+                            this.$notify({type: "success", title: "User", text: "Saved"})
+                            this.cancel();
+                        }
+                        else{
+                            this.$notify({type: "error", title: "User", text: response.message})
+                        }
+                    })
                 }
                 else{
-                    this.$notify({type: "error", title: "User", text: "Add User collection."})
+                    this.$notify({type: "error", title: "User", text: "Add user collection."})
                 }
             }
-
         },
         removeUser(index){
             this.users.splice(index, 1);

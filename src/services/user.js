@@ -4,8 +4,8 @@ import {Axios} from './axios';
 import AuthenticationService from './authentication';
 import Service from './common'
 
-const authenticationService = new AuthenticationService();
-const service = new Service();
+var authenticationService = new AuthenticationService();
+var service = new Service();
 
 export default class UserService{
 
@@ -44,6 +44,47 @@ export default class UserService{
     saveAll(params){
         return service.saveAll('/api/admin/users',params);
     }
+    getAll(visible){
+        var path = '';
+        if(visible){
+            path = '/api/users/active';
+        }
+        else{
+            path = '/api/users/deactivated';
+        }
+        return service.getAll(path);
+    }
+    getStatus(){
+        const accessToken = authenticationService.getAccessToken();
+        return Axios.get(`/api/admin/users/status?access_token=${accessToken}`)
+        .then(response =>{
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        });
+    }
+    updateVisibility(publicKey, visible){
+        const accessToken = authenticationService.getAccessToken();
+        var path = '';
+        if(visible){
+            path = `/api/admin/user/${publicKey}/visible?access_token=${accessToken}`
+        }
+        else{
+            path = `/api/admin/user/${publicKey}/invisible?access_token=${accessToken}`
+        }
+        
+        return Axios.put(path)
+        .then(response => {
+            return service.___then(response);
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        });
+
+    }
+
+
 
     
 
