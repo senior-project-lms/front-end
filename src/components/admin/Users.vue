@@ -114,8 +114,14 @@ export default {
         }
     },
     created(){
-
-
+      this.$store.dispatch("hasAccessPrivilege", this.accessPrivileges.READ_ALL_USERS)
+      .then(auth => {
+          if(!auth){
+            this.$router.back();
+          return;
+          }
+      })
+  
         this.$store.dispatch("getAllActiveUsers");
     },
     methods:{

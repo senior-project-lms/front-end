@@ -39,7 +39,9 @@ export default{
             READ_ALL_AUTHORITIES: 10010100,
             DELETE_AUTHORITY: 11111001,
             UPDATE_AUTHORITY: 10001101,
-        
+            
+            // Privilege
+            READ_ALL_PRIVILEGES: 11000110,
         
             // Default Authority
             READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES: 10000100,

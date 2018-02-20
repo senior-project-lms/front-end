@@ -4,9 +4,9 @@
             <v-data-table :headers="tableHeaders" :items="grades"  hide-actions>
                 <template slot="items" slot-scope="props">
                     <td>{{ props.item.text }}</td>
-                    <td class="text-xs-right" >{{ props.item.score }}/{{ props.item.maxScore }}</td>
-                    <td class="text-xs-right" >{{ props.item.average }}</td>
-                    <td v-show="!props.item.visible" class="text-xs-right" >%{{ props.item.affect }}</td>
+                    <td class="" >{{ props.item.score }}/{{ props.item.maxScore }}</td>
+                    <td class="" >{{ props.item.average }}</td>
+                    <td v-show="!props.item.visible" class="" >%{{ props.item.affect }}</td>
                     <td v-show="!props.item.visible" class="text-xs-right">
                         <a href="">view details</a>
                     </td>

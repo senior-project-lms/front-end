@@ -27,6 +27,9 @@ import SystemAnnouncement from '../components/common-components/SystemAnnounceme
 import Admin from "../components/admin/Admin";
 import UsersForAdmin from "../components/admin/Users"
 import CoursesForAdmin from "../components/admin/Courses"
+import Page404 from '../components/404.vue'
+import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
+
 
 Vue.use(Router)
 
@@ -62,6 +65,11 @@ export default new Router({
                     name: 'CoursesForAdmin',
                     component: CoursesForAdmin,
                   },
+                  {
+                    path: '/default-authorities',
+                    name: 'DefaultAuthorities',
+                    component: DefaultAuthorityPrivileges,
+                  }
                 ],
               },
                
@@ -120,5 +128,10 @@ export default new Router({
       name: 'SignOut',
       component: Signout,
     },
+    {
+      path: '/404',
+      name: 'Page404',
+      component: Page404
+    }
   ]
 })

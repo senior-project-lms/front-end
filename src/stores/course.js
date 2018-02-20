@@ -17,7 +17,10 @@ export default{
        setCoursesStatuses(state, statuses){
            state.coursesStatuses = statuses;
        },
-
+       clearCourseStore(state){
+           state.courses = [];
+           state.coursesStatuses = {};
+       }
     },
     actions: {
         saveCourse(context, params){

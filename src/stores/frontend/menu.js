@@ -61,6 +61,12 @@ export default{
               to: {name: 'UsersForAdmin'},
               authenticated: AccessPrivileges.READ_ALL_USERS,
             },
+            {
+              icon: 'fa-shield',
+              title: 'Authorities',
+              to: {name: 'DefaultAuthorities'},
+              authenticated: AccessPrivileges.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES,
+            },
                       
         ],
         topMenuItems: [
