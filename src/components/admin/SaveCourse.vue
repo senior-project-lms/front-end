@@ -1,81 +1,109 @@
 <template>
- <v-dialog v-model="dialog" persistent max-width="1000">
-        <v-card>
-          <v-card-title class="headline">Course</v-card-title>
-            <v-layout row wrap class="tab-btn">
-                <v-flex md6>
-                    <a color="" block @click="active = false" ><p class="text-md-center text-sm-center text-xs-center">Add Single Course</p></a>
-                    <v-divider v-if="!active" class="grey darken-4"></v-divider>
-                </v-flex>
-                <v-flex md6>
-                    <a color="" block @click="active = true"><p class="text-md-center text-sm-center text-xs-center">Add Multiple Course</p></a>
-                    <v-divider v-if="active" class="grey darken-4"></v-divider>
-                </v-flex>
-            </v-layout>
-                
-
-            <v-flex xs10 sm10 md10 offset-md1 offset-sm1 offset-xs1 class="post"> 
-            <v-divider></v-divider>
-                <div v-if="!active">
+  <div>
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        transition="dialog-bottom-transition"
+        :overlay="false"
+        scrollable
+      >
+        <v-card tile>
+            <v-toolbar card dark color="primary">
+                <v-btn icon @click="cancel" dark>
+                    <v-icon>close</v-icon>
+                </v-btn>
+                <v-toolbar-title>Save Course</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                <v-btn dark flat @click.native="saveAll">Save</v-btn>
+                </v-toolbar-items>
+                <v-menu bottom right offset-y>
+                    <v-btn slot="activator" dark icon>
+                        <v-icon>more_vert</v-icon>
+                    </v-btn>
+                </v-menu>
+            </v-toolbar>
+            <v-card-text>
+                <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                     <v-layout row wrap>
-                        <v-flex md3 xs4 lg3 xs3 class="course-code">
-                            <v-text-field label="Code" v-model="course.code" required/>
+                        <v-flex md5 lg5 xs12 sm12>
+                            <v-card>
+                                <v-card-text>
+                                <v-layout row wrap>
+                                        <v-flex md3 xs4 lg3 xs3 class="course-code">
+                                            <v-text-field label="Code" v-model="course.code" required/>
+                                        </v-flex>
+                                        <v-flex >
+                                            <v-text-field label="Name"  v-model="course.name" required/>
+                                        </v-flex>
+                                    </v-layout>   
+                                    <v-layout row wrap>
+                                        <v-flex>
+                                            <!-- <v-text-field label="Lecturer" v-model="course.lecturer"  required/> -->
+                                            <v-select
+                                            :items="users"
+                                            v-model="course.owner"
+                                            label="Search Lecturer"
+                                            autocomplete
+                                            required
+                                            ></v-select>                                            
+                                        </v-flex>
+                                    </v-layout>                                                                      
+                                    <v-layout>
+                                        <v-flex md12>
+                                              <div class="text-xs-right">
+                                                    <v-btn block outline color="indigo" @click="addToList">Add</v-btn>
+                                              </div>
+                                        </v-flex>
+                                    </v-layout>           
+                                </v-card-text>
+                            </v-card>
                         </v-flex>
-                        <v-flex >
-                            <v-text-field label="Name"  v-model="course.name" required/>
-                        </v-flex>
-                    </v-layout>   
-                    <v-layout row wrap>
-                        <v-flex>
-                            <v-text-field label="Lecturer" v-model="course.lecturer"  required/>
-                        </v-flex>
-                    </v-layout>                                
-                </div>
-                <div v-if="active" class="post">
-                    <v-layout>
-                        <v-flex>
-                            <div class="upload-btn-wrapper">
-                                <v-btn block outline>Upload File</v-btn>
-                                <input type="file" @change="processFile($event)"/>
-                            </div>
+                        <v-flex md7 lg7 xs12 sm12>
+                            <v-card>
+                                <v-card-text>
+                                    <v-layout>
+                                        <v-flex md2 sm2>
+                                            <div class="upload-btn-wrapper">
+                                                <v-btn block outline>Upload File</v-btn>
+                                                <input type="file" @change="processFile($event)"/>
+                                            </div>
+                                        </v-flex>
+                                        <v-flex md10 sm10>
+                                            <b>Columns must be in excel file:</b> <p class="red--text">code(unique), name, lecturer(email)</p>
+                                        </v-flex>
+                                    </v-layout>                                         
+                                    <v-layout>
+                                        <v-flex>
+                                            <v-data-table
+                                                :headers="headers"
+                                                :items="courses">
+                                                    <template slot="items" slot-scope="props">
+                                                        <tr>
+                                                            <td>{{ props.item.code }}</td>
+                                                            <td class="text-xs-center">{{ props.item.name }}</td>
+                                                            <td class="text-xs-center">{{ props.item.owner.email }}</td>
+                                                            <td class="text-xs-right"><a @click="removeCourse(props.index)"><v-icon color="red darken-2">cancel</v-icon></a></td>
+                                                        </tr>
+                                                    </template>
+                                            </v-data-table>
+                                        </v-flex>
+                                    </v-layout>                                    
+                                </v-card-text>
+                            </v-card>
                         </v-flex>
                     </v-layout>
-                    <v-layout>
-                            <v-flex>
-                                <v-data-table
-                                :headers="headers"
-                                :items="courses">
-                                    <template slot="items" slot-scope="props">
-                                        <tr>
-                                            <td>{{ props.item.code }}</td>
-                                            <td class="text-xs-center">{{ props.item.name }}</td>
-                                            <td class="text-xs-center">{{ props.item.lecturer }}</td>
-                                            <td class="text-xs-right"><a @click="removeCourse(props.index)"><v-icon color="red darken-2">cancel</v-icon></a></td>
-                                        </tr>
-                                    </template>
-                                </v-data-table>
+                </v-container>                           
 
-                            </v-flex>
-                    </v-layout>
-                </div> 
-            </v-flex>
-          <div class="post">
-          </div>
-
-          
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
-            <v-btn color="green darken-1" flat @click="save"
-            v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE)">
-            Save</v-btn>
-          </v-card-actions>
+            </v-card-text>     
         </v-card>
-      </v-dialog>  
+      </v-dialog>
+    </div>
 </template>
+
 <script>
 import { mapGetters } from 'vuex';
-
+import {AccessLevel} from '../../properties/accessLevel'
 
 export default{
     props: ['dialog'],
@@ -84,7 +112,7 @@ export default{
             course: {
                 code: '',
                 name: '',
-                lecturer: '',
+                owner: null,
             },
             uploadedFile: null,
             active: false,
@@ -111,92 +139,122 @@ export default{
         processFile(event){
             var file = event.target.files[0];
             if(file != undefined || file != null){
+
                 this.$store.dispatch('excelToJson', file);
             }
         },
-        save(){
-            if(!this.active){ // single save
-                
-                if(this.course.code.length > 0 && this.course.name.length > 0 && this.course.lecturer.length > 0){
+        addToList(){
+                     
+            if(this.course.code.length > 0 && this.course.name.length > 0 && this.course.owner != null){
 
-                    const course = {
-                        code: this.course.code,
-                        name: this.course.name,
-                        owner: {
-                            email: this.course.lecturer,
-                        }
+                const course = {
+                    code: this.course.code,
+                    name: this.course.name,
+                    owner: {
+                        email: this.course.owner.email,
                     }
-                    this.$store.dispatch('saveCourse', course)
-                    .then(response => {
-                        if(response.status){
-                            this.$notify({type: "success", title: "Course", text: "Successfuly Saved"})
-                            this.cancel();
-                        }
-                        else{
-                            this.$notify({type: "error", title: "Course", text: response.message})
-                        }
-                    });
-                }
-                else{
-                    this.$notify({type: "error", title: "Course", text: "Fill empty fileds."})
-                }
+                };
+                this.courses.push(course);
             }
-            else{ // multi save
-                if(this.courses.length > 0){
-                    var courses = [];
-                    
-                    this.courses.forEach(item => {
-                         const course = {
+            else{
+                this.$notify({type: "error", title: "Course", text: "Fill empty fileds."})
+            }
+        },
+        saveAll(){
+        
+            if(this.courses.length > 0){
+                var courses = [];
+                
+                this.courses.forEach(item => {
+                        const course = {
                             code: item.code,
                             name: item.name,
                             owner: {
-                                email: item.lecturer,
+                                email: item.owner.email,
                             }
-                        }
-                        courses.push(course);
-                    })
+                    }
+                    courses.push(course);
+                })
 
 
-                    this.$store.dispatch("saveAllCourses", courses)
-                    .then(response => {
-                        if(response.status){
-                            this.$notify({type: "success", title: "Course", text: "Course Collection is successfuly saved"})
-                            this.cancel();
-                        }
-                        else{
-                            this.$notify({type: "error", title: "Course", text: response.message})
-                        }
-                    })
-                }
-                else{
-                    this.$notify({type: "error", title: "Course", text: "Add course collection."})
-                }
+                this.$store.dispatch("saveAllCourses", courses)
+                .then(response => {
+                    if(response.status){
+                        this.$notify({type: "success", title: "Course", text: "Course Collection is successfuly saved"})
+                        this.cancel();
+                    }
+                    else{
+                        this.$notify({type: "error", title: "Course", text: response.message})
+                    }
+                })
             }
+            else{
+                this.$notify({type: "error", title: "Course", text: "Add course collection."})
+            }
+        
 
         },
         removeCourse(index){
             this.courses.splice(index, 1);
         },
-        cancel(){
-            this.$store.dispatch("clearExcelJson");
-            this.courses = [];
+        cancelForm(){
+            
             this.course = {
                 code: '',
                 name: '',
                 lecturer: '',
-            },
-            this.$parent.cancelSavingCourse();
+            };
+        },
+        cancel(){
+            this.$store.commit("clearExcelStore");
+            this.cancelForm();
+            this.course = [];
+            this.$parent.cancelDialog();
         
+        },
+        getLecturers(){
+            this.$store.dispatch("getAllUsersByAuthority", AccessLevel.LECTURER);
         }
 
     },
+    beforeDestroy(){
+
+    },
     computed:{
-        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'excelJson']),
+        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'excelJson', 'users']),
     },
     watch:{
         excelJson(nValue, oValue){
-            this.courses = nValue;
+            if(nValue != null){
+                var courses = [];
+                nValue.forEach(item => {
+                        const course = {
+                            code: item.code,
+                            name: item.name,
+                            owner: {
+                                email: item.lecturer,
+                            }
+                    }
+                    courses.push(course);
+                })
+                this.courses = courses;
+            }
+        },
+        dialog(nVal, oVal){
+            if(nVal){
+                this.getLecturers();
+            }
+        },
+        users(nVal, oVal){
+            if(nVal != null){
+                nVal.map(user => {
+                    user.text = user.name + " " +user.surname;
+                });
+            }
+
+            return nVal;
         }
+ 
     }
 
 }

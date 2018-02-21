@@ -95,13 +95,9 @@
                                     :search="search">
                                         <template slot="items" slot-scope="props">
                                             <tr :class="props.item.color">
-                                                <td>{{ props.item.username }}</td>
-
-
+                                                <td :to="{name: 'Profile', params: {id: props.item.publicKey}}">{{ props.item.username }}</td>
                                                 <td class="text-xs-center">
-                                                <router-link :to="{name: 'Profile', params: {id: props.item.publicKey}}">
-                                                    {{ `${ props.item.name} ${ props.item.surname}` }}
-                                                </router-link>
+                                                    {{props.item.name}} {{ props.item.surname}}
                                                 </td>
                                                 
                                                 
@@ -138,7 +134,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import SaveUser from "./SaveUser2";
+import SaveUser from "./SaveUser";
 import Loader from "@/components/Loader";
 
 export default {

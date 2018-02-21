@@ -17,7 +17,7 @@
                                 <v-divider :key="`defaultAuth-${i}`"></v-divider>
                             </template>
                         </v-list>
-                        <div class="text-xs-center">
+                        <div class="text-xs-center text-sm-center text-md-center">
                             <v-pagination  class="center" :length="authorityPageCount" v-model="authorityPage"></v-pagination>
                         </div>
                     </v-card>
@@ -36,7 +36,7 @@
                             </v-list-tile>
                         </v-list>
                         <v-divider></v-divider>
-                        <div class="text-xs-center">
+                        <div class="text-xs-center text-sm-center text-md-center">
                             <v-pagination center :length="privilegePageCount" v-model="privilegePage"></v-pagination>
                         </div>
                     </v-card>

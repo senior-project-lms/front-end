@@ -3,6 +3,8 @@
 import {Axios} from './axios';
 import AuthenticationService from './authentication';
 import Service from './common'
+import {AccessLevel} from '../properties/accessLevel'
+
 
 var authenticationService = new AuthenticationService();
 var service = new Service();
@@ -83,7 +85,14 @@ export default class UserService{
 
 
 
-    
+    getAllByAuthority(param){
+        var path = '';
+        if(AccessLevel.LECTURER == param){
+            path = '/api/users/lecturer';
+        }
+
+        return service.getAll(path);
+    }
 
 }
 

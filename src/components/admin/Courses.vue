@@ -204,7 +204,7 @@ export default {
       });
     },
 
-    cancelSavingCourse() {
+    cancelDialog() {
       this.dialog = false;
     }
   },

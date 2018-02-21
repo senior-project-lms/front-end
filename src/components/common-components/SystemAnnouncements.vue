@@ -28,7 +28,7 @@ import {AccessLevel} from "../../properties/accessLevel";
 import {AccessPrivileges} from '../../properties/accessPrivileges'
 
 import AnnouncementTemplate from './AnnouncementTemplate';
-import PostSystemAnnouncement from '../admin/PostSystemAnnouncement'
+import PostSystemAnnouncement from '../admin/SaveSystemAnnouncement'
 
 
 export default {
@@ -88,7 +88,7 @@ export default {
         }
     },
     
-    cancelSystemAnnouncementPosting(){
+    cancelDialog(){
       this.dialog = false;
     }
 

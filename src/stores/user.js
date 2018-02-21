@@ -49,28 +49,37 @@ export default{
         },
 
     
-    updateUserVisibility(context, params){
-        const publicKey = params.publicKey;
-        const visible = params.visible;
-         
-        return userService.updateVisibility(publicKey, visible)
-        .then(response => {
-            if(response.status){
-                context.dispatch('getUsersStatus');
-            }
-            return response;
-        })
-    },
-    getUsersStatus(context){
-        return userService.getStatus()
-        .then(response => {
-            if(response.status){
-                context.commit("setUsersStatus", response.data);
+        updateUserVisibility(context, params){
+            const publicKey = params.publicKey;
+            const visible = params.visible;
+            
+            return userService.updateVisibility(publicKey, visible)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getUsersStatus');
+                }
+                return response;
+            })
+        },
+        getUsersStatus(context){
+            return userService.getStatus()
+            .then(response => {
+                if(response.status){
+                    context.commit("setUsersStatus", response.data);
 
-            }
-        })
-        return response; 
-    }
+                }
+            })
+            return response; 
+        },
+        getAllUsersByAuthority(context, param){
+            return userService.getAllByAuthority(param)
+            .then( response => {
+                if(response.status){
+                    context.commit("setUsers", response.data)
+                }
+                return response;
+            })
+        }
 
     },
     getters: {
