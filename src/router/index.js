@@ -17,7 +17,7 @@ import Profile from '../components/common-components/Profile'
 import PublicResources from '../components/common-components/PublicResources'
 import qaGlobal from '../components/common-components/QA-Global'
 import CourseContainer from '../components/common-components/CourseContainer'
-import CourseList from '../components/common-components/CourseList'
+import Courses from '../components/common-components/Courses'
 
 import CourseDetail from './course/course' 
 import SignIn from '../components/authentication/Signin.vue'
@@ -29,7 +29,7 @@ import UsersForAdmin from "../components/admin/Users"
 import CoursesForAdmin from "../components/admin/Courses"
 import Page404 from '../components/404.vue'
 import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
-
+import Home from '../components/common-components/Home'
 
 Vue.use(Router)
 
@@ -46,11 +46,16 @@ export default new Router({
           component: Container,
           children: [  
               {
+                path: 'home',
+                name: 'Home',
+                component: Home,
+              },
+              { // SYSTEM ANNOUNCEMENT
                 path: 'system-announcements',
                 name: 'SystemAnnouncements',
                 component: SystemAnnouncement,
               },
-              {
+              { // ADMIN 
                 path: 'admin',
                 name: 'Admin',
                 component: Admin,
@@ -73,7 +78,7 @@ export default new Router({
                 ],
               },
                
-              {
+              { // COURSES
                 path: 'courses',
                 //name: 'CourseConatiner',
                 component: CourseContainer,
@@ -81,9 +86,9 @@ export default new Router({
                     CourseDetail,
                     {
                       path: '',
-                      name: 'CourseList',
-                      component: CourseList,
-                    }
+                      name: 'Courses',
+                      component: Courses,
+                    },
                 ]
               },
               {

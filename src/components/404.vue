@@ -16,11 +16,10 @@ export default{
     },
     methods:{
         countDown(){
-            console.log("worked")
             --this.remainingTime 
             if(this.remainingTime == 0){
                 clearInterval(this.intervar);
-                this.$router.push({name: 'HomePage'})
+                this.$router.push({name: 'Home'})
             }
         }
 

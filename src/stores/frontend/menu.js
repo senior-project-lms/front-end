@@ -5,49 +5,24 @@ export default{
 
     state:{
         leftMenuItems: [
+            
             {
               icon: 'fa-tachometer',
               title: 'Home',
-              to: {name: 'Announcement'},
-              authenticated: null,
-              
-            },
-            {
-              icon: 'fa-bullhorn',
-              title: 'Announcement',
-              to: {name: 'Announcement'},
-              badge: true,
-              authenticated: null,
-            },
-            {
-              icon: 'fa-book',
-              title: 'Courses',
-              to: {name: 'CourseList'},
-              authenticated: null,
-            },
-            {
-              icon: 'fa-calendar',
-              title: 'Calendar',
-              to: {name:'Calendar'},
-              authenticated: null,
-            },
-            {
-              icon: 'fa-files-o',
-              title: 'Public Resources',
-              to: {name:'PublicResources'},
-              authenticated: null,
-            },
-            {
-              icon: 'fa-question-circle-o',
-              title: 'QA-Global',
-              to: {name: 'QA-Global'},
-              authenticated: null,
+              to: {name: 'Home'},
+              authenticated: AccessPrivileges.GLOBAL_ACCESS,
             },
             {
               icon: 'fa-bullhorn',
               title: 'System Announcement',
               to: {name: 'SystemAnnouncements'},
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+            },
+            {
+              icon: 'fa-book',
+              title: 'Courses',
+              to: {name: 'Courses'},
+              authenticated: AccessPrivileges.ACCESS_COURSES_PAGE,
             },
             {
               icon: 'fa-book',
@@ -66,6 +41,24 @@ export default{
               title: 'Authorities',
               to: {name: 'DefaultAuthorities'},
               authenticated: AccessPrivileges.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES,
+            },
+            {
+              icon: 'fa-calendar',
+              title: 'Calendar',
+              to: {name:'Calendar'},
+              authenticated: null,
+            },
+            {
+              icon: 'fa-files-o',
+              title: 'Public Resources',
+              to: {name:'PublicResources'},
+              authenticated: null,
+            },
+            {
+              icon: 'fa-question-circle-o',
+              title: 'QA-Global',
+              to: {name: 'QA-Global'},
+              authenticated: null,
             },
                       
         ],

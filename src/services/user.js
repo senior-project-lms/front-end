@@ -11,6 +11,7 @@ var service = new Service();
 
 export default class UserService{
 
+
     constructor(){
 
     }
@@ -21,6 +22,7 @@ export default class UserService{
             
             return Axios.get(`/api/me?access_token=${accessToken}`)
             .then(response => {
+
                 return service.___then(response)
             })
             .catch(() => {

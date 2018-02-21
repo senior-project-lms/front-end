@@ -7,19 +7,24 @@ var courseService = new CourseService();
 export default{
     state: {
         courses: [],
-        coursesStatuses: {}
+        coursesStatuses: {},
+        notEnrolledCourses: [],
 
     },
     mutations: {
-       setCourses(state, courses){
-            state.courses = courses;
+       setCourses(state, list){
+            state.courses = list;
        },
        setCoursesStatuses(state, statuses){
            state.coursesStatuses = statuses;
        },
+       setNotEnrolledCourses(state, list){
+        state.notEnrolledCourses = list;
+    },
        clearCourseStore(state){
            state.courses = [];
            state.coursesStatuses = {};
+           state.notEnrolledCourses = [];
        }
     },
     actions: {
@@ -75,7 +80,17 @@ export default{
                 }
             })
             return response; 
-        }
+        },
+
+        searchNotRegisteredCoursesBySearchParam(context, searchParam){
+            return courseService.searchNotRegisteredBySearchParam(searchParam)
+            .then( response => {
+                if(response.status){
+                    context.commit("setNotEnrolledCourses", response.data)
+                }
+                return response;
+            })
+        },
 
     },
     getters: {
@@ -85,6 +100,10 @@ export default{
         },
         coursesStatuses(state){
             return state.coursesStatuses;
+
+        },
+        notEnrolledCourses(state){
+            return state.notEnrolledCourses;
 
         }
 

@@ -60,8 +60,14 @@ export default class CourseService{
         })
         .catch(error => {
             return service.___then(error.response);
-});
+        });
 
     }
+
+
+    searchNotRegisteredBySearchParam(searchParam){
+        return service.getAll(`/api/courses/not-registered/${searchParam}`);
+    }
+
 
 }

@@ -17,7 +17,7 @@
                 <v-card class="courses-temp"> 
                     <v-list>                      
                         <template v-for="(course, i) in courses">
-                                <v-list-tile  :key="i" :to="{name: 'CourseAnnouncements', params: {id: course.publicId}}">                           
+                                <v-list-tile  :key="`course-${i}`" :to="{name: 'CourseAnnouncements', params: {id: course.publicId}}">                           
                                     <v-list-tile-content>
                                         <v-list-tile-title><p class="course">{{course.code}} - {{course.name}}</p></v-list-tile-title>
                                     </v-list-tile-content>

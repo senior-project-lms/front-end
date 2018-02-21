@@ -4,6 +4,10 @@ export default{
 
     state: {
         accessPrivileges : {
+            GLOBAL_ACCESS: 11100001,
+            //    READ_HOME_DATA: 11100000,
+            //    UPDATE_HOME_DATA: 11101110,
+            //    ADD_FAVORITE_DATA: 11100001,
             
             SAVE_SYSTEM_ANNOUNCEMENT: 10111001,
             READ_SYSTEM_ANNOUNCEMENT: 11101100,
@@ -32,7 +36,8 @@ export default{
             READ_COURSE_STATUSES: 11110100,
             UPDATE_COURSE_VISIBILITY: 10000000,
             READ_NOT_REGISTERED_COURSES: 10100110,
-        
+            ACCESS_COURSES_PAGE: 10000110,
+
         
             // Authority
             SAVE_AUTHORITY: 11101000,
