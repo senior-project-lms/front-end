@@ -6,7 +6,7 @@
                 <v-layout row wrap>   
                     <v-flex md4 sm4 xs6>
                         <v-card color="green lighten-2" class="white--text">
-                            <v-container fluid>
+                            <v-container fluid grid-list-lg>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
@@ -55,7 +55,7 @@
                     </v-flex>   
                     <v-flex md4 sm4>
                         <v-card color="red lighten-1" class="white--text">
-                            <v-container fluid>
+                            <v-container fluid grid-list-lg>
                                 <v-layout row>
                                     <v-flex>
                                         <div>

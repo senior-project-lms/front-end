@@ -30,12 +30,12 @@
                             <v-card>
                                 <v-card-text>
                                 <v-layout row wrap>
-                                        <v-flex md3 sm12 xs12 class="course-code">
-                                            <v-text-field label="Code" v-model="course.code" required/>
-                                        </v-flex>
-                                        <v-flex md9 sm12 xs12>
-                                            <v-text-field label="Name"  v-model="course.name" required/>
-                                        </v-flex>
+                                            <v-flex md3 sm12 xs12>
+                                                <v-text-field label="Code" v-model="course.code" required/>
+                                            </v-flex>
+                                            <v-flex md9 sm12 xs12>
+                                                <v-text-field label="Name"  v-model="course.name" required/>
+                                            </v-flex>
                                     </v-layout>   
                                     <v-layout row wrap>
                                         <v-flex>
@@ -227,7 +227,6 @@ export default{
     watch:{
         excelJson(nValue, oValue){
             if(nValue != null){
-                var courses = [];
                 nValue.forEach(item => {
                         const course = {
                             code: item.code,
@@ -236,9 +235,9 @@ export default{
                                 email: item.lecturer,
                             }
                     }
-                    courses.push(course);
+                    this.courses.push(course);
                 })
-                this.courses = courses;
+                
             }
         },
         dialog(nVal, oVal){
@@ -262,15 +261,6 @@ export default{
     
 </script>
 <style lang="stylus" scoped>
-    .post
-        margin-top 30px
-
-    .course-code
-        margin-right 20px
-    
-    .tab-btn
-        margin-left 5px
-        margin-right 5px
     
     .input-file
         background-color Transparent

@@ -15,7 +15,6 @@
                     <v-toolbar-title>Courses</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn dark flat @click.native="dialog = false">Save</v-btn>
                     </v-toolbar-items>
                     <v-menu bottom right offset-y>
                         <v-btn slot="activator" dark icon>
@@ -26,48 +25,75 @@
                 <v-card-text>
                     <v-container grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                         <v-layout row wrap>
-                            <v-flex md4 sm9 xs9 offset-md2>
-                                <v-text-field
-                                v-model="searchParam"
-                                label="Search..."
-                                placeholder="ex: CS101"
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex md1 xs1 sm1>
-                                <v-btn
-                                color="secondary"
-                                :loading="loading"
-                                @click.native="filterCourses"
-                                :disabled="loading"
-                                >
-                                    Search
-                                </v-btn>
+                            <v-flex md8 sm12 xs12>
+                                <v-layout row wrap justify-center>
+                                    <v-flex md2 sm2 xs2>
+                                        <v-select
+                                        label="Search By"
+                                        :items="selectItems"
+                                        v-model="selectedSearchType"
+                                        ></v-select>
+                                    </v-flex>    
+                                    <v-flex md4 sm9 xs9
+                                    v-if="selectedSearchType == null || selectedSearchType.type != SearchType.Course.LECTURER"
+                                    >
+                                        <v-text-field
+                                        v-model="searchParam"
+                                        label="Search"
+                                        ></v-text-field>
+                                    </v-flex>                        
+                                    <v-flex md2 sm9 xs9
+                                    v-if="selectedSearchType != null && selectedSearchType.type == SearchType.Course.LECTURER"
+                                    >
+                                        <v-text-field
+                                        v-model="searchLecturerParam.name"
+                                        label="Name"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex md2 sm9 xs9
+                                    v-if="selectedSearchType != null && selectedSearchType.type == SearchType.Course.LECTURER"
+                                    >
+                                        <v-text-field
+                                        v-model="searchLecturerParam.surname"
+                                        label="Surname"
+                                        ></v-text-field>
+                                    </v-flex>
+                                    <v-flex md1 xs1 sm1>
+                                        <v-btn
+                                        color="secondary"
+                                        :loading="loading"
+                                        @click.native="filterCourses"
+                                        :disabled="loading"
+                                        >
+                                            Search
+                                        </v-btn>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row wrap>
+                                    <v-flex md12 xs12 sm12>
+                                        <v-data-table
+                                        :headers="headers"
+                                        :items="notEnrolledCourses"
+                                        :rows-per-page-items="[10]"	
+                                        class="elevation-1">
+                                            <template slot="items" slot-scope="props">
+                                                <tr :class="props.item.color">
+                                                    <td>{{ props.item.code }}</td>
+                                                    <td class="text-xs-center">
+                                                        {{ props.item.name }}
+                                                    </td>
+                                                    <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
+                                                    <td>
+                                                    <a>enroll</a>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </v-data-table>                                
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
                         </v-layout>
-                        <v-layout row wrap>
-                            <v-flex md9 xs12 sm12>
-                                <v-data-table
-                                :headers="headers"
-                                :items="notEnrolledCourses"
-                                :rows-per-page-items="[10]"	
-                                class="elevation-1">
-                                    <template slot="items" slot-scope="props">
-                                        <tr :class="props.item.color">
-                                            <td>{{ props.item.code }}</td>
-                                            <td class="text-xs-center">
-                                                <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
-                                                    {{ props.item.name }}
-                                                </router-link>
-                                            </td>
-                                            <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
-                                            <td>
-                                               <a>enroll</a>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                </v-data-table>                                
-                            </v-flex>
-                        </v-layout>
+
                     </v-container>
                     
                 </v-card-text>
@@ -78,12 +104,19 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import {SearchType} from '../../properties/searchType'
 
 export default{
     props: ['dialog'],
     data(){
         return{
+
+            SearchType: SearchType,
             searchParam: '',
+            searchLecturerParam: {
+                name: null,
+                surname: null,
+            },
             loading: null,
             headers: [
             { text: "Code", value: "code", align: "left" },
@@ -91,6 +124,22 @@ export default{
             { text: "Lecturer", value: "lecturer", align: "center" },
             { text: "", value: "event" },
             ],
+            selectedSearchType: null,
+            selectItems: [
+                {
+                    text: 'Code',
+                    type: SearchType.Course.CODE
+                },
+                {
+                    text: 'Name',
+                    type: SearchType.Course.NAME
+                },
+                {
+                    text: 'Lecturer',
+                    type: SearchType.Course.LECTURER
+                },
+                
+            ]
         }
     },
     created(){
@@ -98,8 +147,40 @@ export default{
     },
     methods:{
         filterCourses(){
+
+
+            if(this.selectedSearchType == null){
+                this.$notify({type: "error", title: "Course Enrolment", text: "Select a search type"})
+                return;
+            }
+            else if (this.selectedSearchType.type != SearchType.Course.LECTURER && this.searchParam.length == 0){
+                this.$notify({type: "error", title: "Course Enrolment", text: "Enter a search parameter"})
+                return;
+            }
+            else if(this.selectedSearchType.type == SearchType.Course.LECTURER && (this.searchLecturerParam.name == null && this.searchLecturerParam.surname == null)){
+                this.$notify({type: "error", title: "Course Enrolment", text: "Enter a Lecturer information parameter"})
+                return;
+            }
             this.loading = true;
-            this.$store.dispatch("searchNotRegisteredCoursesBySearchParam", this.searchParam)
+
+            if(this.selectedSearchType.type == SearchType.Course.LECTURER){
+
+                var searchItems = {
+                    searchType: this.selectedSearchType.type,
+                    searchParam: this.searchLecturerParam
+                
+                };
+            }
+            else{
+                var searchItems = {
+                    searchType: this.selectedSearchType.type,
+                    searchParam: this.searchParam
+                
+                };
+            }
+            
+            
+            this.$store.dispatch("searchNotRegisteredCoursesBySearchParam", searchItems)
             .then(response => {
                 this.loading = false;
             });

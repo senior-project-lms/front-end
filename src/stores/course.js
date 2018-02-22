@@ -82,8 +82,11 @@ export default{
             return response; 
         },
 
-        searchNotRegisteredCoursesBySearchParam(context, searchParam){
-            return courseService.searchNotRegisteredBySearchParam(searchParam)
+        searchNotRegisteredCoursesBySearchParam(context, searchItems){
+            const searchType = searchItems.searchType;
+            const searchParam = searchItems.searchParam;
+
+            return courseService.searchNotRegisteredBySearchParam(searchType, searchParam)
             .then( response => {
                 if(response.status){
                     context.commit("setNotEnrolledCourses", response.data)

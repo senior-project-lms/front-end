@@ -2,6 +2,7 @@
 import {Axios} from './axios'
 import Service from "./common"
 import AuthenticationService from './authentication';
+import {SearchType} from '../properties/searchType';
 
 
 var service = new Service();
@@ -65,8 +66,18 @@ export default class CourseService{
     }
 
 
-    searchNotRegisteredBySearchParam(searchParam){
-        return service.getAll(`/api/courses/not-registered/${searchParam}`);
+    searchNotRegisteredBySearchParam(searchType, searchParam){
+        if(searchType == SearchType.Course.CODE){
+            return service.getAll(`/api/courses/not-registered/code/${searchParam}`);
+        }
+        else if(searchType == SearchType.Course.NAME){
+            return service.getAll(`/api/courses/not-registered/name/${searchParam}`);
+        }
+        else if(searchType == SearchType.Course.LECTURER){
+            // not saving, but save method use post request
+            return service.save(`/api/courses/not-registered/lecturer`, searchParam);
+        }
+        
     }
 
 
