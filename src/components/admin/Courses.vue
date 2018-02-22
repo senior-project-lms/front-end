@@ -2,22 +2,22 @@
     <div>
         <loader v-if="!isLoaded"/>
         <div v-if="isLoaded">
-            <v-container fluid grid-list-md>
+            <v-container fluid grid-list-md grid-list-sm grid-list-xs>
                 <v-layout row wrap>   
-                    <v-flex md4 sm4>
+                    <v-flex md4 sm4 xs6>
                         <v-card color="green lighten-2" class="white--text">
-                            <v-container fluid grid-list-lg>
+                            <v-container fluid>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">{{ coursesStatuses.visibleCourses }}</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ coursesStatuses.visibleCourses }}</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">
+                                            <div class="headline text-md-center text-sm-center text-xs-center">
                                                 <a class="white--text" @click="fetchActiveCourses">
                                                     Actives
                                                 </a>
@@ -29,20 +29,20 @@
                             </v-container>
                         </v-card>
                     </v-flex>
-                    <v-flex md4 sm4>
+                    <v-flex md4 sm4 xs6>
                         <v-card color="blue lighten-2" class="white--text">
                             <v-container fluid grid-list-lg>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">{{ coursesStatuses.invisibleCourses }}</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ coursesStatuses.invisibleCourses }}</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">
+                                            <div class="headline text-md-center text-sm-cente text-xs-center">
                                                 <a class="white--text" @click="fetchInactiveCourses">
                                                     Deactiveted
                                                 </a>
@@ -55,18 +55,18 @@
                     </v-flex>   
                     <v-flex md4 sm4>
                         <v-card color="red lighten-1" class="white--text">
-                            <v-container fluid grid-list-lg>
+                            <v-container fluid>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">99</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">99</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">Nothing</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">Nothing</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>                            
@@ -75,8 +75,8 @@
                     </v-flex>             
                 </v-layout>
                 <v-divider class="box-divider"></v-divider>
-                <v-layout>
-                    <v-flex>
+                <v-layout row wrap>
+                    <v-flex md12 sm12 xs12>
                         <v-card>
                             <v-card-title>
                                 <h2 class="active-text grey--text darken-4">{{ activeText }}</h2>
@@ -92,7 +92,9 @@
                             <v-data-table
                             :headers="headers"
                             :items="courses"
-                            :rows-per-page-items="[50, 75]"	>
+                            :rows-per-page-items="[10, 20, 30, 40, 50, 75]"	
+                            class="elevation-1"
+                            >
                                 <template slot="items" slot-scope="props">
                                     <tr :class="props.item.color">
                                         <td>{{ props.item.code }}</td>

@@ -2,22 +2,22 @@
     <div>
         <loader v-if="!isLoaded"/>
         <div v-if="isLoaded">
-            <v-container fluid grid-list-md>
-                <v-layout >   
-                    <v-flex md4 sm4>
+            <v-container fluid grid-list-md grid-list-sm grid-list-xs>
+                <v-layout row wrap >   
+                    <v-flex md4 sm4 xs6>
                         <v-card color="green lighten-2" class="white--text">
                             <v-container fluid grid-list-lg>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">{{ usersStatus.visibleUsers }}</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ usersStatus.visibleUsers }}</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                        <div class="headline text-md-center text-sm-center">
+                                        <div class="headline text-md-center text-sm-center text-xs-center">
                                                 <a class="white--text" @click="fetchActiveUsers">
                                                     Active
                                                 </a>
@@ -28,20 +28,20 @@
                             </v-container>
                         </v-card>
                     </v-flex>
-                    <v-flex md4 sm4>
+                    <v-flex md4 sm4 xs6>
                         <v-card color="blue lighten-2" class="white--text">
                             <v-container fluid grid-list-lg>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">{{ usersStatus.invisibleUsers }}</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ usersStatus.invisibleUsers }}</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">
+                                            <div class="headline text-md-center text-sm-center text-xs-center">
                                                 <a class="white--text" @click="fetchInactiveUsers">
                                                     Deactivated
                                                 </a>
@@ -58,14 +58,14 @@
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">0</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">0</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center">Nothing</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">Nothing</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>                            
@@ -74,8 +74,8 @@
                     </v-flex>             
                 </v-layout>
                 <v-divider class="box-divider"></v-divider>
-                <v-layout class="user-list">
-                        <v-flex>
+                <v-layout row wrap>
+                        <v-flex md12 sm12 xs12>
                             <v-card>
                                 <v-card-title>
                                     <h2 class="active-text grey--text darken-4">{{ activeText }}</h2>
@@ -92,7 +92,8 @@
                                     :headers="headers"
                                     :items="users"
                                     :rows-per-page-items="[50, 75]"
-                                    :search="search">
+                                    :search="search"
+                                    class="elevation-1">
                                         <template slot="items" slot-scope="props">
                                             <tr :class="props.item.color">
                                                 <td :to="{name: 'Profile', params: {id: props.item.publicKey}}">{{ props.item.username }}</td>

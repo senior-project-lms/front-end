@@ -26,7 +26,7 @@
                 <v-card-text>
                     <v-container grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                         <v-layout row wrap>
-                            <v-flex md4 xs4 sm4 offset-md2>
+                            <v-flex md4 sm9 xs9 offset-md2>
                                 <v-text-field
                                 v-model="searchParam"
                                 label="Search..."
@@ -45,11 +45,12 @@
                             </v-flex>
                         </v-layout>
                         <v-layout row wrap>
-                            <v-flex md9>
+                            <v-flex md9 xs12 sm12>
                                 <v-data-table
                                 :headers="headers"
                                 :items="notEnrolledCourses"
-                                :rows-per-page-items="[50, 75]"	>
+                                :rows-per-page-items="[10]"	
+                                class="elevation-1">
                                     <template slot="items" slot-scope="props">
                                         <tr :class="props.item.color">
                                             <td>{{ props.item.code }}</td>

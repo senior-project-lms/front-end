@@ -30,10 +30,10 @@
                             <v-card>
                                 <v-card-text>
                                 <v-layout row wrap>
-                                        <v-flex md3 xs4 lg3 xs3 class="course-code">
+                                        <v-flex md3 sm12 xs12 class="course-code">
                                             <v-text-field label="Code" v-model="course.code" required/>
                                         </v-flex>
-                                        <v-flex >
+                                        <v-flex md9 sm12 xs12>
                                             <v-text-field label="Name"  v-model="course.name" required/>
                                         </v-flex>
                                     </v-layout>   
@@ -49,7 +49,7 @@
                                             ></v-select>                                            
                                         </v-flex>
                                     </v-layout>                                                                      
-                                    <v-layout>
+                                    <v-layout row wrap>
                                         <v-flex md12>
                                               <div class="text-xs-right">
                                                     <v-btn block outline color="indigo" @click="addToList">Add</v-btn>
@@ -59,7 +59,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex md7 lg7 xs12 sm12>
+                        <v-flex md7 xs12 sm12>
                             <v-card>
                                 <v-card-text>
                                     <v-layout>
@@ -74,10 +74,11 @@
                                         </v-flex>
                                     </v-layout>                                         
                                     <v-layout>
-                                        <v-flex>
+                                        <v-flex md12 sm12 xs12>
                                             <v-data-table
                                                 :headers="headers"
-                                                :items="courses">
+                                                :items="courses"
+                                                class="elevator-1">
                                                     <template slot="items" slot-scope="props">
                                                         <tr>
                                                             <td>{{ props.item.code }}</td>
