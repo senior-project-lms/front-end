@@ -1,7 +1,6 @@
 
 import {Axios} from './axios'
 import Service from "./common"
-import AuhenticationService from './authentication';
 import AuthenticationService from './authentication';
 
 
@@ -64,5 +63,11 @@ export default class CourseService{
         });
 
     }
+
+
+    searchNotRegisteredBySearchParam(searchParam){
+        return service.getAll(`/api/courses/not-registered/${searchParam}`);
+    }
+
 
 }

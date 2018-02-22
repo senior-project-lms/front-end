@@ -5,25 +5,42 @@ export default{
 
     state:{
         leftMenuItems: [
+            
             {
               icon: 'fa-tachometer',
               title: 'Home',
-              to: {name: 'Announcement'},
-              authenticated: null,
-              
+              to: {name: 'Home'},
+              authenticated: AccessPrivileges.GLOBAL_ACCESS,
             },
             {
               icon: 'fa-bullhorn',
-              title: 'Announcement',
-              to: {name: 'Announcement'},
-              badge: true,
-              authenticated: null,
+              title: 'System Announcement',
+              to: {name: 'SystemAnnouncements'},
+              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
             {
               icon: 'fa-book',
               title: 'Courses',
-              to: {name: 'CourseList'},
-              authenticated: null,
+              to: {name: 'Courses'},
+              authenticated: AccessPrivileges.ACCESS_COURSES_PAGE,
+            },
+            {
+              icon: 'fa-book',
+              title: 'Courses',
+              to: {name: 'CoursesForAdmin'},
+              authenticated:  AccessPrivileges.READ_ALL_COURSES,
+            },
+            {
+              icon: 'fa-users',
+              title: 'Users',
+              to: {name: 'UsersForAdmin'},
+              authenticated: AccessPrivileges.READ_ALL_USERS,
+            },
+            {
+              icon: 'fa-shield',
+              title: 'Authorities',
+              to: {name: 'DefaultAuthorities'},
+              authenticated: AccessPrivileges.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES,
             },
             {
               icon: 'fa-calendar',
@@ -44,6 +61,7 @@ export default{
               authenticated: null,
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
+<<<<<<< HEAD
             /*{                                   Burayı tek bir sorunun QA sayfasını düzenlemek için kullandıydım
               icon: 'fa-question-circle-o',
               title: 'QA-Sample',
@@ -69,6 +87,8 @@ export default{
               to: {name: 'UsersForAdmin'},
               authenticated: AccessPrivileges.READ_ALL_USERS,
             },
+=======
+>>>>>>> development
                       
         ],
         topMenuItems: [

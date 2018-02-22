@@ -72,6 +72,7 @@ export default {
                 'super.admin',
                 'mock.admin',
                 'mock.lecturer',
+                'mock.assistant',
                 'mock.student'
             ],
             authUser: {

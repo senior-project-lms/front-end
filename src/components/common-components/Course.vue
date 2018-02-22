@@ -14,7 +14,33 @@
             </v-card>
         </v-flex>
         <v-flex md12>
-            <v-tabs grow>
+                <v-tabs
+                    v-model="active"
+                    color="grey lighten-4"
+                    light
+                    slider-color="blue"
+                    grow
+                    >
+                    <v-tab
+                        v-for="(item, i) in courseTabMenus"
+                        :key="i"
+                        ripple
+                         :to="item.to">
+                        {{ item.text }}
+                        <v-badge class="notification" v-if="notifications[item.text]">
+                            <span slot="badge">{{ notifications[item.text] }}</span>
+                        </v-badge>
+                    </v-tab>
+                    <v-tab-item>
+
+                    </v-tab-item>
+                </v-tabs>
+                <v-card flat>
+                    <main>
+                        <router-view></router-view>
+                    </main>
+                </v-card>
+            <!-- <v-tabs grow>                
                 <v-tabs-bar color="grey lighten-4" light >
                     <v-tabs-slider class="blue"></v-tabs-slider>
                     <v-tabs-item v-for="(item, i) in courseTabMenus" :key="i" :to="item.to" router :href="'#tab-'+`${i}`">
@@ -31,7 +57,7 @@
                         </main>
                     </v-card>
                 
-            </v-tabs>
+            </v-tabs> -->
         </v-flex>      
     </div>
 </template>
@@ -43,7 +69,8 @@ export default {
         
     data () {
         return {
-        notifications: {'Announcements': 1, 'Quiz - Testing': 1}
+            active: null,
+            notifications: {'Announcements': 1, 'Quiz - Testing': 1}
 
         }
     },

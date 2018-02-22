@@ -8,7 +8,10 @@ export default{
     mutations: {
         setAccessLevels(state, accessLevels){
             state.accessLevels = accessLevels;
-        }
+        },
+        clearAuthorityStore(state){
+           state.accessLevels = [];
+       }
         
     },
     actions: {

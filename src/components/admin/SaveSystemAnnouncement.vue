@@ -1,42 +1,65 @@
 <template>
-      <v-dialog v-model="dialog" persistent max-width="1000">
-        <v-card>
-          <v-card-title class="headline">System Announcement</v-card-title>
-          <v-flex class="post">      
-              <v-flex>
-                  <v-text-field label="Title" v-model="systemAnnouncement.title" required=""/>
-              </v-flex>
-              <v-flex>
-                <vue-editor :editorToolbar="customToolbar" 
-                v-model="systemAnnouncement.content" required />
-              </v-flex>
-              <v-flex class="uploader">
-                <v-flex>
-                  <input type="file" @change="processFiles($event)" multiple
-                  v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
-                </v-flex>
-                <v-flex>
-                    <ul class="file-list">
-                      <li v-for="(resource, i) in resources" :key="i">
-                          <a class="red--text lighten-1" @click="removeFile(resource.publicKey)">
-                              <i class="fa fa-times" aria-hidden="true"></i>
-                          </a>
-                          {{ i + 1}} - {{ resource.originalFileName }} 
-                      </li>
-                    </ul>
-                    <v-divider></v-divider>  
-                    {{ resources.length }} file is uploaded                  
-                </v-flex>                  
-              </v-flex>                  
-          </v-flex>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
-            <v-btn color="green darken-1" flat @click="save"
-            v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)">
-            Save</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        transition="dialog-bottom-transition"
+        :overlay="false"
+        scrollable
+      >
+       <v-card tile>
+            <v-toolbar card dark color="primary">
+                <v-btn icon @click="cancel" dark>
+                    <v-icon>close</v-icon>
+                </v-btn>
+                <v-toolbar-title>System Announcement</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                <v-btn dark flat @click.native="save">Save</v-btn>
+                </v-toolbar-items>
+                <v-menu bottom right offset-y>
+                    <v-btn slot="activator" dark icon>
+                        <v-icon>more_vert</v-icon>
+                    </v-btn>
+                </v-menu>
+            </v-toolbar>
+            <v-card-text>
+              <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
+                <v-layout row wrap>
+                        <v-flex>
+                            <v-text-field label="Title" v-model="systemAnnouncement.title" required=""/>
+                        </v-flex>
+
+                      
+                </v-layout>
+                <v-layout row wrap>
+                        <v-flex>
+                          <vue-editor class="editor" :editorToolbar="customToolbar" 
+                          v-model="systemAnnouncement.content" required/>
+                        </v-flex>
+                </v-layout>
+                <v-layout row wrap >
+                    <v-flex class="uploader">
+                      <input type="file" @change="processFiles($event)" multiple
+                      v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
+                    </v-flex>
+                </v-layout>
+                <v-layout row wrap>
+                    <v-flex>
+                        <ul class="file-list">
+                          <li v-for="(resource, i) in resources" :key="i">
+                              <a class="red--text lighten-1" @click="removeFile(resource.publicKey)">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                              </a>
+                              {{ i + 1}} - {{ resource.originalFileName }} 
+                          </li>
+                        </ul>
+                        <v-divider></v-divider>  
+                        {{ resources.length }} file is uploaded                  
+                    </v-flex>                    
+                </v-layout>
+                </v-container>
+            </v-card-text>
+       </v-card>
       </v-dialog>  
 </template>
 
@@ -128,14 +151,25 @@ export default {
             });
         }
     },
+    clearForm(){
+        this.resources = [];
+        this.systemAnnouncement = {
+            title: '',
+            content: '',
+            resources: [],
+            resourceKeys: [],            
+            imagePublicKeys: [],
+          }
+    },
     cancel(saved){
       if(!saved){
         this.systemAnnouncement.resourceKeys.map(publicKey => {
           this.$store.dispatch("deleteSystemAnnouncementFile", publicKey)
         });
       }
-      this.$parent.cancelSystemAnnouncementPosting();
-      
+      this.clearForm();
+      this.$parent.cancelDialog();
+      this.$store.commit("clearExcelStore");
 
     },
  
@@ -146,16 +180,7 @@ export default {
     ...mapGetters(['authenticatedUser', 'accessPrivileges']),
   },
   watch:{
-      dialog(){
-        this.resources = [];
-        this.systemAnnouncement = {
-            title: '',
-            content: '',
-            resources: [],
-            resourceKeys: [],            
-            imagePublicKeys: [],
-          }
-      }
+  
   },
   beforeDestroy(){
     if(this.systemAnnouncement.imagePublicKeys.length > 0){
@@ -165,12 +190,9 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-    .post
-      margin-right 20px
-      margin-left  20px
 
     .uploader
-      margin-top 10px
+      margin-top 50px
     
     .file-list
       margin-top 10px
@@ -178,4 +200,7 @@ export default {
     
     .remove-file
       margin-right 10px
+    
+    .editor
+      height 500px
 </style>

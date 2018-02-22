@@ -1,6 +1,6 @@
 <template>
   <div>
-      <v-flex>
+      <v-flex md12 sm12>
           <v-flex no-content md2 offset-md5 v-if="systemAnnouncements.length == 0">
                 <h3 class="text-md-center text-xs-center">There is no announcement.</h3>
           </v-flex>
@@ -28,7 +28,7 @@ import {AccessLevel} from "../../properties/accessLevel";
 import {AccessPrivileges} from '../../properties/accessPrivileges'
 
 import AnnouncementTemplate from './AnnouncementTemplate';
-import PostSystemAnnouncement from '../admin/PostSystemAnnouncement'
+import PostSystemAnnouncement from '../admin/SaveSystemAnnouncement'
 
 
 export default {
@@ -45,7 +45,6 @@ export default {
   },
   created(){
 
-      this.hasAccessPrivilege
       this.$store.dispatch("hasAccessPrivilege", this.accessPrivileges.READ_SYSTEM_ANNOUNCEMENT)
       .then(auth => {
           if(!auth){
@@ -89,16 +88,13 @@ export default {
         }
     },
     
-    cancelSystemAnnouncementPosting(){
+    cancelDialog(){
       this.dialog = false;
     }
 
   },
   computed:{
       ...mapGetters(['authenticatedUser', 'accessPrivileges', 'systemAnnouncements']),
-     
-  
-
       loader(){
         return (this.systemAnnouncements.length / this.page) == 5;
     }

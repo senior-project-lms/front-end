@@ -33,7 +33,7 @@ export default{
             
         },
         
-        cleareAuthenticatedUser(state){
+        cleareAuthenticatedStore(state){
             state.authenticatedUser = {
                 username: '',
                 name: '',

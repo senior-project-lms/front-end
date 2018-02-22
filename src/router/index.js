@@ -17,7 +17,7 @@ import Profile from '../components/common-components/Profile'
 import PublicResources from '../components/common-components/PublicResources'
 import qaGlobal from '../components/common-components/QA-Global'
 import CourseContainer from '../components/common-components/CourseContainer'
-import CourseList from '../components/common-components/CourseList'
+import Courses from '../components/common-components/Courses'
 
 import CourseDetail from './course/course' 
 import SignIn from '../components/authentication/Signin.vue'
@@ -27,6 +27,9 @@ import SystemAnnouncement from '../components/common-components/SystemAnnounceme
 import Admin from "../components/admin/Admin";
 import UsersForAdmin from "../components/admin/Users"
 import CoursesForAdmin from "../components/admin/Courses"
+import Page404 from '../components/404.vue'
+import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
+import Home from '../components/common-components/Home'
 
 import QASample from "../components/common-components/QAPage"
 
@@ -45,11 +48,16 @@ export default new Router({
           component: Container,
           children: [  
               {
+                path: 'home',
+                name: 'Home',
+                component: Home,
+              },
+              { // SYSTEM ANNOUNCEMENT
                 path: 'system-announcements',
                 name: 'SystemAnnouncements',
                 component: SystemAnnouncement,
               },
-              {
+              { // ADMIN 
                 path: 'admin',
                 name: 'Admin',
                 component: Admin,
@@ -64,10 +72,15 @@ export default new Router({
                     name: 'CoursesForAdmin',
                     component: CoursesForAdmin,
                   },
+                  {
+                    path: '/default-authorities',
+                    name: 'DefaultAuthorities',
+                    component: DefaultAuthorityPrivileges,
+                  }
                 ],
               },
                
-              {
+              { // COURSES
                 path: 'courses',
                 //name: 'CourseConatiner',
                 component: CourseContainer,
@@ -75,9 +88,9 @@ export default new Router({
                     CourseDetail,
                     {
                       path: '',
-                      name: 'CourseList',
-                      component: CourseList,
-                    }
+                      name: 'Courses',
+                      component: Courses,
+                    },
                 ]
               },
               {
@@ -127,5 +140,10 @@ export default new Router({
       name: 'SignOut',
       component: Signout,
     },
+    {
+      path: '/404',
+      name: 'Page404',
+      component: Page404
+    }
   ]
 })

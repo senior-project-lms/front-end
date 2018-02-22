@@ -15,6 +15,9 @@ export default{
         },
         clearSystemAnnouncements(state){
             state.systemAnnouncements = [];
+       },
+        clearSystemAnnouncementStore(state){
+            state.systemAnnouncements = [];
         }
     },
     actions:{

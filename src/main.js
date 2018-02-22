@@ -24,6 +24,16 @@ Vue.config.productionTip = false
 Vue.config.devtools = true
 
 /* eslint-disable no-new */
+
+
+router.beforeEach((to, from, next) => {
+  if (!to.matched.length) {
+    next('/404');
+  } else {
+    next();
+  }
+});
+
 new Vue({
   el: '#app',
   router,

@@ -15,6 +15,9 @@ export default{
     mutations: {
         setExcelJson(state, list){
             state.excelJson =  list;
+        },
+        clearExcelStore(state){
+            state.excelJson = [];
         }
         
     },
