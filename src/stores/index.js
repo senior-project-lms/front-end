@@ -8,6 +8,7 @@ import user from './user'
 import authority from './authority'
 import defaultAuthorityPrivileges from './defaultAuthorityPrivilege'
 import privilege from './privilege'
+import enrollmentRequest from './enrollmentRequest'
 
 export default{
 
@@ -22,4 +23,5 @@ export default{
     authority: authority,
     defaultAuthorityPrivileges: defaultAuthorityPrivileges,
     privilege: privilege,
+    enrollmentRequest: enrollmentRequest,
 }

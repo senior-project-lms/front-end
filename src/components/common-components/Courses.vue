@@ -52,7 +52,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Loader from "@/components/Loader";
-import CourseEnrollment from './CourseEnrolment'
+import CourseEnrollment from './CourseEnrollment'
 export default{
     components:{
         Loader,

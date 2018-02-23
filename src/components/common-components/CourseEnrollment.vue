@@ -23,9 +23,9 @@
                     </v-menu>
                 </v-toolbar>
                 <v-card-text>
-                    <v-container grid-list-md grid-list-lg grid-list-xs grid-list-sm>
+                    <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                         <v-layout row wrap>
-                            <v-flex md8 sm12 xs12>
+                            <v-flex md6 sm12 xs12 offset-md1>
                                 <v-layout row wrap justify-center>
                                     <v-flex md2 sm2 xs2>
                                         <v-select
@@ -84,13 +84,35 @@
                                                     </td>
                                                     <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
                                                     <td>
-                                                    <a>enroll</a>
+                                                    <a @click="enroll(props.item.publicKey)">enroll</a>
                                                     </td>
                                                 </tr>
                                             </template>
                                         </v-data-table>                                
                                     </v-flex>
                                 </v-layout>
+                            </v-flex>
+                            <v-flex md4 sm12 xs12 offset-md1>
+                            <v-card>
+                                <v-card-text>
+                                    <v-list two-line>
+                                        <v-subheader>Enrollment Request</v-subheader>
+                                        <template v-for="(request, i) in enrollmentRequests">
+                                            <v-divider :key="`req-divider-${i}`"></v-divider>
+                                            <v-list-tile :key="`request-tile-${i}`">
+                                            <v-list-tile-content>
+                                                <v-list-tile-sub-title class="text-md-right"><a @click="cancelEnrollment(request.publicKey)">cancel</a></v-list-tile-sub-title>
+                                                <v-list-tile-title >{{request.course.code}}</v-list-tile-title>
+                                                <v-list-tile-sub-title class="">{{request.course.name}}</v-list-tile-sub-title>
+                                                <v-list-tile-sub-title>{{ request.course.owner.username }}</v-list-tile-sub-title>
+                                            </v-list-tile-content>
+                                            </v-list-tile>
+                                            
+                                        </template>
+                                    </v-list>
+                                </v-card-text>
+                            </v-card>
+
                             </v-flex>
                         </v-layout>
 
@@ -143,22 +165,48 @@ export default{
         }
     },
     created(){
-
+        this.$store.dispatch("getAuthUserEnrollmentRequests");
     },
     methods:{
+        enroll(publicKey){
+            this.$store.dispatch("enrollCourse", publicKey)
+            .then(response => {
+                if(response.status){
+                    this.$notify({type: "success", title: "Course Enrollment", text: "Enrolled Successfully"});
+                    this.$store.dispatch("getAuthUserEnrollmentRequests");
+                    this.filterCourses();
+                }
+                else{
+                    this.$notify({type: "error", title: "Course Enrollment", text: "Enrollement Failed"});
+                }
+            });
+        },
+        cancelEnrollment(publicKey){
+
+            this.$store.dispatch("cancelEnrollementCourse", publicKey)
+            .then(response => {
+                if(response.status){
+                    this.$notify({type: "success", title: "Course Enrollment", text: "Enrolment is cancelled Successfully"});
+                    this.$store.dispatch("getAuthUserEnrollmentRequests");
+                }
+                else{
+                    this.$notify({type: "error", title: "Course Enrollment", text: "Enrollement cancel Failed"});
+                }
+            });
+        },
         filterCourses(){
 
 
             if(this.selectedSearchType == null){
-                this.$notify({type: "error", title: "Course Enrolment", text: "Select a search type"})
+                this.$notify({type: "error", title: "Course Enrollment", text: "Select a search type"})
                 return;
             }
             else if (this.selectedSearchType.type != SearchType.Course.LECTURER && this.searchParam.length == 0){
-                this.$notify({type: "error", title: "Course Enrolment", text: "Enter a search parameter"})
+                this.$notify({type: "error", title: "Course Enrollment", text: "Enter a search parameter"})
                 return;
             }
             else if(this.selectedSearchType.type == SearchType.Course.LECTURER && (this.searchLecturerParam.name == null && this.searchLecturerParam.surname == null)){
-                this.$notify({type: "error", title: "Course Enrolment", text: "Enter a Lecturer information parameter"})
+                this.$notify({type: "error", title: "Course Enrollment", text: "Enter a Lecturer information parameter"})
                 return;
             }
             this.loading = true;
@@ -190,7 +238,7 @@ export default{
         }
     },
     computed: {
-        ...mapGetters(["authenticatedUser", "accessPrivileges", "notEnrolledCourses"
+        ...mapGetters(["authenticatedUser", "accessPrivileges", "notEnrolledCourses" ,"enrollmentRequests"
         ])
   },
 }

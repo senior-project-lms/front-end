@@ -209,7 +209,7 @@ export default{
         cancel(){
             this.$store.commit("clearExcelStore");
             this.cancelForm();
-            this.course = [];
+            this.courses = [];
             this.$parent.cancelDialog();
         
         },
