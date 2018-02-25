@@ -82,36 +82,6 @@ export default{
               authenticated: [],
             },
         ],
-        courseTabMenus: [
-          {
-              text: 'Announcements',
-              to: {name: 'CourseAnnouncements'},
-          },
-          {
-              text: 'Grades',
-              to: {name: 'CourseGrades'}
-          },
-          {
-              text: 'Assignments',
-              to: {name: 'CourseAssignments'}
-          },
-          {
-              text: 'Quiz - Testing',
-              to: {name: 'CourseTestQuiz'},
-          },
-          {
-              text: 'Resources',
-              to: {name: 'CourseResources'}
-          },
-          {
-              text: 'QA',
-              to: {name: 'CourseQA'}
-          },
-          {
-              text: 'Calendar',
-              to: {name: 'CourseCalendar'}
-          },
-      ],
     },
     mutations:{
         

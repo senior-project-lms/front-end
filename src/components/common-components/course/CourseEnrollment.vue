@@ -27,14 +27,14 @@
                         <v-layout row wrap>
                             <v-flex md6 sm12 xs12 offset-md1>
                                 <v-layout row wrap justify-center>
-                                    <v-flex md2 sm2 xs2>
+                                    <v-flex md2 sm3 xs3>
                                         <v-select
                                         label="Search By"
                                         :items="selectItems"
                                         v-model="selectedSearchType"
                                         ></v-select>
                                     </v-flex>    
-                                    <v-flex md4 sm9 xs9
+                                    <v-flex md4 sm6 xs4
                                     v-if="selectedSearchType == null || selectedSearchType.type != SearchType.Course.LECTURER"
                                     >
                                         <v-text-field
@@ -42,7 +42,7 @@
                                         label="Search"
                                         ></v-text-field>
                                     </v-flex>                        
-                                    <v-flex md2 sm9 xs9
+                                    <v-flex md2 sm3 xs3
                                     v-if="selectedSearchType != null && selectedSearchType.type == SearchType.Course.LECTURER"
                                     >
                                         <v-text-field
@@ -50,7 +50,7 @@
                                         label="Name"
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex md2 sm9 xs9
+                                    <v-flex md2 sm3 xs3
                                     v-if="selectedSearchType != null && selectedSearchType.type == SearchType.Course.LECTURER"
                                     >
                                         <v-text-field
@@ -58,7 +58,7 @@
                                         label="Surname"
                                         ></v-text-field>
                                     </v-flex>
-                                    <v-flex md1 xs1 sm1>
+                                    <v-flex md1 sm3 xs3>
                                         <v-btn
                                         color="secondary"
                                         :loading="loading"
@@ -83,7 +83,7 @@
                                                         {{ props.item.name }}
                                                     </td>
                                                     <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
-                                                    <td>
+                                                    <td class="text-xs-right text-md-right text-sm-right">
                                                     <a @click="enroll(props.item.publicKey)">enroll</a>
                                                     </td>
                                                 </tr>
@@ -93,25 +93,37 @@
                                 </v-layout>
                             </v-flex>
                             <v-flex md4 sm12 xs12 offset-md1>
-                            <v-card>
-                                <v-card-text>
-                                    <v-list two-line>
-                                        <v-subheader>Enrollment Request</v-subheader>
-                                        <template v-for="(request, i) in enrollmentRequests">
-                                            <v-divider :key="`req-divider-${i}`"></v-divider>
-                                            <v-list-tile :key="`request-tile-${i}`">
-                                            <v-list-tile-content>
-                                                <v-list-tile-sub-title class="text-md-right"><a @click="cancelEnrollment(request.publicKey)">cancel</a></v-list-tile-sub-title>
-                                                <v-list-tile-title >{{request.course.code}}</v-list-tile-title>
-                                                <v-list-tile-sub-title class="">{{request.course.name}}</v-list-tile-sub-title>
-                                                <v-list-tile-sub-title>{{ request.course.owner.username }}</v-list-tile-sub-title>
-                                            </v-list-tile-content>
+                                <v-card>
+                                    <v-card-text>
+                                        <v-list two-line>
+                                            <v-subheader>Enrollment Request</v-subheader>
+                                            <template v-for="(request, i) in enrollmentRequests">
+                                                <v-divider :key="`req-divider-${i}`"></v-divider>
+                                                
+                                                <v-list-tile :key="`request-tile-${i}`">
+                                                    <v-list-tile-content>
+                                                        <v-list-tile-sub-title class="text-md-right text-sm-right text-xs-right">
+                                                            <a
+                                                            class="red--text text--lighten-2" 
+                                                            @click="cancelEnrollment(request.publicKey)">cancel</a>
+                                                        </v-list-tile-sub-title>
+                                                        <v-list-tile-sub-title class="">{{request.course.code}} - {{request.course.name}}</v-list-tile-sub-title>
+                                                        <v-list-tile-sub-title
+                                                        >
+                                                            {{ request.course.owner.username }}
+                                                            </v-list-tile-sub-title>
+                                                    </v-list-tile-content>
+                                                </v-list-tile>
+                                            </template>
+                                            <v-divider v-if="enrollmentRequests.length == 0"></v-divider>
+                                            <v-list-tile v-if="enrollmentRequests.length == 0">
+                                                
+                                                <v-list-tile-sub-title class="text-md-center text-sm-center text-xs-center">No such a enrollment is found</v-list-tile-sub-title>
                                             </v-list-tile>
-                                            
-                                        </template>
-                                    </v-list>
-                                </v-card-text>
-                            </v-card>
+
+                                        </v-list>
+                                    </v-card-text>
+                                </v-card>
 
                             </v-flex>
                         </v-layout>
@@ -126,7 +138,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import {SearchType} from '../../properties/searchType'
+import {SearchType} from '../../../properties/searchType'
 
 export default{
     props: ['dialog'],
@@ -183,10 +195,10 @@ export default{
         },
         cancelEnrollment(publicKey){
 
-            this.$store.dispatch("cancelEnrollementCourse", publicKey)
+            this.$store.dispatch("cancelEnrollementRequest", publicKey)
             .then(response => {
                 if(response.status){
-                    this.$notify({type: "success", title: "Course Enrollment", text: "Enrolment is cancelled Successfully"});
+                    this.$notify({type: "info", title: "Course Enrollment", text: "Enrolment is cancelled Successfully"});
                     this.$store.dispatch("getAuthUserEnrollmentRequests");
                 }
                 else{
@@ -234,6 +246,7 @@ export default{
             });
         },
         cancel(){
+            this.$store.commit("setNotEnrolledCourses", []);
             this.$parent.cancelCourseDialog();
         }
     },

@@ -81,4 +81,11 @@ export default class CourseService{
     }
 
 
+    getAuthUserCourses(){
+        return service.getAll('/api/me/courses');
+    }
+
+    getEnrolledUsers(publicKey){
+        return service.getAll(`/api/course/${publicKey}/enrolled-users`);
+    }
 }

@@ -9,23 +9,28 @@ export default{
         courses: [],
         coursesStatuses: {},
         notEnrolledCourses: [],
+        students: []
 
     },
     mutations: {
-       setCourses(state, list){
+        setCourses(state, list){
             state.courses = list;
-       },
-       setCoursesStatuses(state, statuses){
+        },
+        setCoursesStatuses(state, statuses){
            state.coursesStatuses = statuses;
-       },
-       setNotEnrolledCourses(state, list){
+        },
+        setNotEnrolledCourses(state, list){
         state.notEnrolledCourses = list;
-    },
-       clearCourseStore(state){
+        },
+        setStudents(state, list){
+            state.students = list;
+        },
+        clearCourseStore(state){
            state.courses = [];
            state.coursesStatuses = {};
            state.notEnrolledCourses = [];
-       }
+           state.students = [];
+        }
     },
     actions: {
         saveCourse(context, params){
@@ -95,11 +100,33 @@ export default{
             })
         },
 
+        getAllCoursesOfAuthUser(context){
+            return courseService.getAuthUserCourses()
+            .then( response => {
+                if(response.status){
+                    context.commit("setCourses", response.data)
+                }
+                return response;
+            })
+        },
+        getEnrolledUsers(context, publicKey){
+            return courseService.getEnrolledUsers(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setStudents", response.data)
+                }
+                return response;
+            })
+        },
+
     },
     getters: {
       
         courses(state){
             return state.courses;
+        },
+        students(state){
+            return state.students;
         },
         coursesStatuses(state){
             return state.coursesStatuses;

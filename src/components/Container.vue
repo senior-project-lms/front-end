@@ -64,7 +64,10 @@
       </v-menu>
     </v-toolbar>
       <v-content>
-        <router-view></router-view>
+        <v-card class="full-height grey lighten-5">  
+            <router-view></router-view>
+        </v-card>
+        
       </v-content>
   </v-app>
 </template>
@@ -137,5 +140,7 @@
   .left-menu-list v-list-tile:hover 
     color dark
     
+  .full-height
+    height calc(100%) !important    
 
 </style>

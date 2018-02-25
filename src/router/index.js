@@ -10,16 +10,19 @@ import Router from 'vue-router'
 // common
 import  Container from '../components/Container'
 
+import CourseContainer from '../components/common-components/course/CourseContainer'
+import Courses from '../components/common-components/course/Courses'
+
+
 import Calendar from '../components/common-components/Calendar'
 import Settings from '../components/common-components/Settings'
 import Signout from '../components/authentication/Signout'
 import Profile from '../components/common-components/Profile'
 import PublicResources from '../components/common-components/PublicResources'
 import qaGlobal from '../components/common-components/QA-Global'
-import CourseContainer from '../components/common-components/CourseContainer'
-import Courses from '../components/common-components/Courses'
 
-import CourseDetail from './course/course' 
+import CourseRoute from './course/course' 
+
 import SignIn from '../components/authentication/Signin.vue'
 import Authenticatior from '../components/authentication/Authenticator';
 import SystemAnnouncement from '../components/common-components/SystemAnnouncements'
@@ -83,7 +86,7 @@ export default new Router({
                 //name: 'CourseConatiner',
                 component: CourseContainer,
                 children: [
-                    CourseDetail,
+                    CourseRoute,
                     {
                       path: '',
                       name: 'Courses',

@@ -1,4 +1,4 @@
-import Course from '../../components/common-components/Course'
+import Course from '../../components/common-components/course/Course'
 
 //Insede Course
 import CourseTestQuiz from '../../components/common-components/course/TestQuiz';
@@ -8,6 +8,8 @@ import CourseGrades from '../../components/common-components/course/Grades';
 import CourseQA from '../../components/common-components/course/QA';
 import CourseResources from '../../components/common-components/course/Resources';
 import CourseAssignments from '../../components/common-components/course/Assignments';
+import CourseSettings from '../../components/common-components/course/Settings';
+import CourseStudents from '../../components/common-components/course/Students';
 
 
 var testQuiz = {
@@ -49,7 +51,20 @@ var qa = {
     name: 'CourseQA',
     component: CourseQA
   }
-  
+
+
+var settings = {
+  path: 'settings',
+  name: 'CourseSettings',
+  component: CourseSettings
+}
+
+var students = {
+  path: 'students',
+  name: 'CourseStudents',
+  component: CourseStudents
+}
+
 
 export default {
     
@@ -64,5 +79,7 @@ export default {
       calendar,
       testQuiz,
       assignments,
+      settings,
+      students,
   ]
 }
