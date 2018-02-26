@@ -49,6 +49,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {AccessPrivileges} from '../../../properties/accessPrivileges';
 export default {
         
     data () {
@@ -58,39 +59,49 @@ export default {
             courseTabMenus: [
                 {
                     text: 'Announcements',
-                    to: {name: 'CourseAnnouncements', params: {id: this.$route.params.id}},
+                    to: {name: 'CourseAnnouncements'},
+                    privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
+            
                 },
                 {
                     text: 'Grades',
-                    to: {name: 'CourseGrades'}
+                    to: {name: 'CourseGrades'},
+                    privilege: AccessPrivileges.PAGE_COURSE_GRADES,
                 },
                 {
                     text: 'Assignments',
-                    to: {name: 'CourseAssignments'}
+                    to: {name: 'CourseAssignments'},
+                    privilege: AccessPrivileges.PAGE_COURSE_ASSIGNMENTS,
                 },
                 {
                     text: 'Quiz - Testing',
                     to: {name: 'CourseTestQuiz'},
+                    privilege: AccessPrivileges.PAGE_COURSE_QT,
                 },
                 {
                     text: 'Resources',
-                    to: {name: 'CourseResources'}
+                    to: {name: 'CourseResources'},
+                    privilege: AccessPrivileges.PAGE_COURSE_RESOURCES,
                 },
                 {
                     text: 'QA',
-                    to: {name: 'CourseQA'}
+                    to: {name: 'CourseQA'},
+                    privilege: AccessPrivileges.PAGE_COURSE_QA,
                 },
                 {
                     text: 'Calendar',
-                    to: {name: 'CourseCalendar'}
+                    to: {name: 'CourseCalendar'},
+                    privilege: AccessPrivileges.PAGE_COURSE_CALENDAR,
                 },
                 {
                     text: 'Students',
-                    to: {name: 'CourseStudents'}
+                    to: {name: 'CourseStudents'},
+                    privilege: AccessPrivileges.PAGE_COURSE_STUDENTS,
                 },
                 {
                     text: 'Settings',
-                    to: {name: 'CourseSettings'}
+                    to: {name: 'CourseSettings'},
+                    privilege: AccessPrivileges.PAGE_COURSE_SETTINGS,
                 },
             ],            
 

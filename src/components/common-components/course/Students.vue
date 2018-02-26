@@ -80,8 +80,18 @@
                                                 rejected
                                             </td>   
                                             <td class="text-md-right" v-else>
-                                                <a @click="approve(props.item.publicKey)">approve</a> | 
-                                                <a @click="reject(props.item.publicKey)">reject</a>
+                                                
+                                                <a
+                                                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.APPROVE_ENROLLMENT_REQUEST}"
+                                                 @click="approve(props.item.publicKey)"
+                                                >
+                                                approve
+                                                </a> | 
+                                                <a 
+                                                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.REJECT_ENROLLMENT_REQUEST}"
+                                                @click="reject(props.item.publicKey)">
+                                                    reject
+                                                    </a>
                                             </td>                                                                                                                        
                                         </tr>
                                     </template>

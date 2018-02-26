@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import {AccessPrivileges} from '../properties/accessPrivileges'
 // Insede component
 
 //Insede Course
@@ -31,6 +31,8 @@ import Admin from "../components/admin/Admin";
 import UsersForAdmin from "../components/admin/Users"
 import CoursesForAdmin from "../components/admin/Courses"
 import Page404 from '../components/404.vue'
+import Page401 from '../components/401.vue'
+
 import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
 import Home from '../components/common-components/Home'
 
@@ -52,11 +54,21 @@ export default new Router({
                 path: 'home',
                 name: 'Home',
                 component: Home,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_HOME,
+                  requeiresAuthentication: true,
+                  
+                }
               },
               { // SYSTEM ANNOUNCEMENT
                 path: 'system-announcements',
                 name: 'SystemAnnouncements',
                 component: SystemAnnouncement,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_SYSTEM_ANNOUNCEMENT,
+                  requeiresAuthentication: true,
+                },
+                
               },
               { // ADMIN 
                 path: 'admin',
@@ -67,16 +79,31 @@ export default new Router({
                     path: 'users',
                     name: 'UsersForAdmin',
                     component: UsersForAdmin,
+                    meta: {
+                      privilege: AccessPrivileges.PAGE_USER_FOR_ADMIN,
+                      requeiresAuthentication: true,
+                    },
+
                   },
                   {
                     path: 'courses',
                     name: 'CoursesForAdmin',
                     component: CoursesForAdmin,
+                    meta: {
+                      privilege: AccessPrivileges.PAGE_COURSE_FOR_ADMIN,
+                      requeiresAuthentication: true,
+
+                    },
                   },
                   {
                     path: '/default-authorities',
                     name: 'DefaultAuthorities',
                     component: DefaultAuthorityPrivileges,
+                    meta: {
+                      privilege: AccessPrivileges.PAGE_AUTHORITIES,
+                      requeiresAuthentication: true,
+                    },
+
                   }
                 ],
               },
@@ -91,6 +118,10 @@ export default new Router({
                       path: '',
                       name: 'Courses',
                       component: Courses,
+                      meta: {
+                        privilege: AccessPrivileges.PAGE_COURSES,
+                        requeiresAuthentication: true,
+                      },
                     },
                 ]
               },
@@ -98,26 +129,50 @@ export default new Router({
                 path: 'calendar',
                 name: 'Calendar',
                 component: Calendar,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_GLOBAL_CALENDAR,
+                  requeiresAuthentication: true,
+                },
+
               },
               {
                 path: 'settings',
                 name: 'Settings',
                 component: Settings,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_SETTINGS,
+                  requeiresAuthentication: true,
+                },
+
               },
               {
                 path: 'me',
                 name: 'Profile',
                 component: Profile,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_OWN_PROFILE,
+                  requeiresAuthentication: true,
+                },
               },       
               {
                 path: 'public-resources',
                 name: 'PublicResources',
                 component: PublicResources,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_AUTHORITIES,
+                  requeiresAuthentication: true,
+                },
+
               },
               {
                 path: "qa-global",
                 name: 'QA-Global',
                 component: qaGlobal,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_GLOBAL_QA,
+                  requeiresAuthentication: true,
+                },
+
               },                         
           ]
         },
@@ -128,18 +183,38 @@ export default new Router({
       path: '/',
       name: 'SignIn',
       component: SignIn,
-      alias: ['/signin']
+      alias: ['/signin'],
+      meta: {
+        requeiresAuthentication: false,
 
+      }
     },
     {
-      path: '/signout',
+      path: '/sign-out',
       name: 'SignOut',
       component: Signout,
+      meta: {
+        privilege: null,
+        requeiresAuthentication: false,
+      }
     },
     {
       path: '/404',
       name: 'Page404',
-      component: Page404
-    }
+      component: Page404,
+      meta: {
+        privilege: null,
+        requeiresAuthentication: false,
+      }
+    },  
+    {
+      path: '/401',
+      name: 'Page401',
+      component: Page401,
+      meta: {
+        privilege: null,
+        requeiresAuthentication: false,
+      }
+    },
   ]
 })

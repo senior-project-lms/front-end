@@ -177,7 +177,6 @@ export default{
         }
     },
     created(){
-        this.$store.dispatch("getAuthUserEnrollmentRequests");
     },
     methods:{
         enroll(publicKey){
@@ -253,7 +252,15 @@ export default{
     computed: {
         ...mapGetters(["authenticatedUser", "accessPrivileges", "notEnrolledCourses" ,"enrollmentRequests"
         ])
-  },
+    },
+    watch: {
+        dialog(nval, oval){
+            if(nval == true){
+                    this.$store.dispatch("getAuthUserEnrollmentRequests");
+            }
+            return nval;
+        }
+    }
 }
 </script>
 <style lang="stylus" scoped>

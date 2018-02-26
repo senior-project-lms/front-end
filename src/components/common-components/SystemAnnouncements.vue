@@ -20,11 +20,16 @@
       </v-layout>
     </v-container>
     <div>
-            <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"> 
+            <v-btn fixed dark fab bottom right color="pink" 
+             v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT}"
+             @click="dialog = !dialog" 
+             > 
             <v-icon>add</v-icon>
           </v-btn>
     </div>
-    <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
+    <post-system-announcement :dialog="dialog"
+      v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT}"
+    />
           
 
   </div>

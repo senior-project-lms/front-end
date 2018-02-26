@@ -9,7 +9,8 @@
                                 <v-spacer></v-spacer>
                                 <v-btn flat class="white--text courses-btn"
                                 @click="coursesDialog = true"
-                                v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.ENROLL_COURSE)"
+                                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.ENROLL_COURSE}"
+                                
                                 >
                                 Courses
                                 </v-btn>
@@ -41,7 +42,7 @@
             </v-layout>
         </v-container>
         <course-enrollment
-        v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.ENROLL_COURSE)"
+        v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.ENROLL_COURSE}"
         :dialog="coursesDialog"
         />
      

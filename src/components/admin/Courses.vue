@@ -19,7 +19,7 @@
                                         <div>
                                             <div class="headline text-md-center text-sm-center text-xs-center">
                                                 <a class="white--text" @click="fetchActiveCourses">
-                                                    Actives
+                                                    Active
                                                 </a>
                                                 
                                             </div>
@@ -126,7 +126,9 @@
 
                 
             <div>
-                <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE)"> 
+                <v-btn fixed dark fab bottom right color="pink"  
+                @click="dialog = !dialog" 
+                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_COURSE}"> 
                     <v-icon>add</v-icon>
                     </v-btn>
             </div>
@@ -151,7 +153,7 @@ export default {
   data() {
     return {
       search: "",
-      isLoaded: false,
+      isLoaded: true,
       dialog: false,
       activeText: "Active Courses",
       headers: [
@@ -163,16 +165,17 @@ export default {
     };
   },
   created() {
-    this.$store
-      .dispatch("hasAccessPrivilege", this.accessPrivileges.READ_ALL_COURSES)
-      .then(auth => {
-        if (!auth) {
-          this.$router.push({ name: "Page404" });
-          return;
-        }
-        this.initializeData();
-        this.isLoaded = true;
-      });
+    // this.$store
+    //   .dispatch("hasAccessPrivilege", this.accessPrivileges.READ_ALL_COURSES)
+    //   .then(auth => {
+    //     if (!auth) {
+    //       this.$router.push({ name: "Page404" });
+    //       return;
+    //     }
+    //     this.initializeData();
+    //     this.isLoaded = true;
+    //   });
+    this.initializeData();
   },
   methods: {
     initializeData() {

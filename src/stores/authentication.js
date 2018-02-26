@@ -39,6 +39,7 @@ export default{
                 name: '',
                 surname: '',
                 authority: {code: null},
+                accessPrivileges: [],
             }
         },
         
@@ -49,7 +50,16 @@ export default{
 
             return authenticationService.login(user)
             .then( isAuthendticated => {
+                if(isAuthendticated){
+                    return context.dispatch("getMe")
+                    .then(response => {
+                        return response.status;
+                    });
+                }
+                else{
                     return isAuthendticated;
+                }
+                    
             });
         
         },

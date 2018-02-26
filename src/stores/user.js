@@ -13,6 +13,10 @@ export default{
         setUsersStatus(state, status){
             state.usersStatus = status;
         },
+        clearUserStore(state){
+            state.users = [];
+            usersStatus: {}
+        }
         
     },
     actions: {

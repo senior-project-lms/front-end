@@ -9,7 +9,11 @@
       width="250"
       >
       <v-list  dense class="left-menu-list" >
-        <template v-for="(item, i) in leftMenuItems" v-if="authUser.accessPrivileges.includes(item.authenticated)">
+        <template v-for="(item, i) in leftMenuItems"
+          
+
+         v-if="authUser.accessPrivileges.includes(item.privilege)"
+         >
           
           <v-list-tile  v-bind:to="item.to" :key="i">
             <v-list-tile-action>

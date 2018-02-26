@@ -1,3 +1,5 @@
+import {AccessPrivileges} from '../../properties/accessPrivileges'
+
 import Course from '../../components/common-components/course/Course'
 
 //Insede Course
@@ -15,54 +17,91 @@ import CourseStudents from '../../components/common-components/course/Students';
 var testQuiz = {
     path: 'test-quiz',
     name: 'CourseTestQuiz',
-    component: CourseTestQuiz
+    component: CourseTestQuiz,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_QT,
+      requeiresAuthentication: true,
+    },
   }
   
 var announcements = {
     path: 'announcements',
     name: 'CourseAnnouncements',
-    component: CourseAnnouncements
+    component: CourseAnnouncements,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
+      requeiresAuthentication: true,
+    },
   }
 
 var assignments = {
     path: 'assignments',
     name: 'CourseAssignments',
-    component: CourseAssignments
+    component: CourseAssignments,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_ASSIGNMENTS,
+      requeiresAuthentication: true,
+    },
   }
 
 var calendar = {
     path: 'calendar',
     name: 'CourseCalendar',
-    component: CourseCalendar
+    component: CourseCalendar,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_CALENDAR,
+      requeiresAuthentication: true,
+    },
   }
 var grades = {
     path: 'grades',
     name: 'CourseGrades',
-    component: CourseGrades
+    component: CourseGrades,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_GRADES,
+      requeiresAuthentication: true,
+    },
   }
 var resources = {
     path: 'resources',
     name: 'CourseResources',
-    component: CourseResources
+    component: CourseResources,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_RESOURCES,
+      requeiresAuthentication: true,
+    },
   }
 
 var qa = {
     path: 'QA',
     name: 'CourseQA',
-    component: CourseQA
+    component: CourseQA,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_QA,
+      requeiresAuthentication: true,
+    },
   }
 
 
 var settings = {
   path: 'settings',
   name: 'CourseSettings',
-  component: CourseSettings
+  component: CourseSettings,
+  meta: {
+    privilege: AccessPrivileges.PAGE_COURSE_SETTINGS,
+    requeiresAuthentication: true,
+  },
+  
 }
 
 var students = {
   path: 'students',
   name: 'CourseStudents',
-  component: CourseStudents
+  component: CourseStudents,
+  meta: {
+    privilege: AccessPrivileges.PAGE_COURSE_STUDENTS,
+    requeiresAuthentication: true,
+  },
 }
 
 

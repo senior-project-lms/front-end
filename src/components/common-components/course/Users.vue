@@ -147,7 +147,7 @@ export default {
     return {
       search: "",
       activeText: "",
-      isLoaded: true,
+      isLoaded: false,
       dialog: false,
       headers: [
         { text: "Username", value: "username", align: "left" },
@@ -159,7 +159,16 @@ export default {
     };
   },
   created() {
-    this.initializeData();
+    this.$store
+      .dispatch("hasAccessPrivilege", this.accessPrivileges.READ_ALL_USERS)
+      .then(auth => {
+        if (!auth) {
+          this.$router.push({ name: "Page404" });
+          return;
+        }
+        this.initializeData();
+        this.isLoaded = true;
+      });
   },
   methods: {
     initializeData() {
