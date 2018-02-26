@@ -19,9 +19,9 @@ export default class EnrollmentRequestService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
-            return service.catchedResponse;
-        });
+        .catch(error => {
+            return service.___then(error.response);
+        })
     }
 
     cancel(publicKey){
@@ -30,9 +30,9 @@ export default class EnrollmentRequestService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
-            return service.catchedResponse;
-        });
+        .catch(error => {
+            return service.___then(error.response);
+        })
     }
 
     reject(publicKey){
@@ -41,8 +41,8 @@ export default class EnrollmentRequestService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
-            return service.catchedResponse;
+        .catch(error => {
+            return service.___then(error.response);
         });
     }
     approve(publicKey){
@@ -51,9 +51,9 @@ export default class EnrollmentRequestService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
-            return service.catchedResponse;
-        });
+        .catch(error => {
+            return service.___then(error.response);
+        })
     }
 
 

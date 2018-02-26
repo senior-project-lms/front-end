@@ -6,14 +6,19 @@ var enrollmentRequestService = new EnrollmentRequestService();
 
 export default{
     state: {
-        enrollmentRequests: []
+        enrollmentRequests: [],
+        courseEnrollmentRequests: [],
     },
     mutations: {
         setEnrollmentRequests(state, list){
             state.enrollmentRequests = list;
         },
+        setCourseEnrollmentRequests(state, list){
+            state.courseEnrollmentRequests = list;
+        },
         clearEnrollmentRequestStore(state, array){
             state.enrollmentRequests = [];
+            state.courseEnrollmentRequests = [];
         },
 
         
@@ -48,7 +53,7 @@ export default{
             return enrollmentRequestService.getEnrollmentRequestsOfCourse(publicKey)
                 .then( response => {
                     if(response.status){
-                        context.commit("setEnrollmentRequests", response.data)
+                        context.commit("setCourseEnrollmentRequests", response.data)
                     }
                     return response;
                 })    
@@ -59,6 +64,8 @@ export default{
         enrollmentRequests(state){
             return state.enrollmentRequests;
         },
-
+        courseEnrollmentRequests(state){
+            return state.courseEnrollmentRequests;
+        },
     }
 }

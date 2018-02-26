@@ -55,6 +55,9 @@ export default class SystemAnnouncementService{
             }
             
             return response;
+        })
+        .catch(error => {
+            return service.___then(error.response);
         });
     }
 
@@ -70,6 +73,9 @@ export default class SystemAnnouncementService{
             }
             return response;
             
+        })
+        .catch(error => {
+            return service.___then(error.response);
         });
     
     }
@@ -89,7 +95,10 @@ export default class SystemAnnouncementService{
             }
             return response;
             
-        });
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
     
     }
 

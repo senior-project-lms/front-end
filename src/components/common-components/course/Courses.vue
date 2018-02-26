@@ -35,6 +35,11 @@
                                     </v-list-tile>
                                     <v-divider :key="i" v-if="i + 1 < courses.length"></v-divider>                      
                             </template>
+                            <v-list-tile v-if="courses.length == 0">                           
+                                <v-list-tile-content>
+                                    <v-list-tile-title class="text-md-center text-sm-center text-xs-center"><p class="grey--text">No such a course is found</p></v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>                            
                             
                         </v-list>
                     </v-card>
@@ -65,6 +70,7 @@ export default{
         }
     },
     created(){
+        console.log(this)
         this.$store.dispatch('getAllCoursesOfAuthUser');
     },
     methods:{

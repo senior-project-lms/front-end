@@ -63,7 +63,7 @@
                             <v-flex>
                                 <v-data-table
                                 :headers="enrollmentRequestsTable"
-                                :items="enrollmentRequests"
+                                :items="courseEnrollmentRequests"
                                 class="elevation-1"
                                 :rows-per-page-items="[10, 20]"
                                 :search="searchEnrollmentRequest">
@@ -165,7 +165,7 @@ export default{
         },
     },
     computed: {
-        ...mapGetters(["authenticatedUser", "accessPrivileges", 'students', 'enrollmentRequests']),
+        ...mapGetters(["authenticatedUser", "accessPrivileges", 'students', 'courseEnrollmentRequests']),
     },
 }
 </script>

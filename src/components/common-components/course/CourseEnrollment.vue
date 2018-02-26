@@ -6,6 +6,7 @@
             transition="dialog-bottom-transition"
             :overlay="false"
             scrollable
+            v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.ENROLL_COURSE}"
         >
             <v-card tile>
                 <v-toolbar card dark color="primary">
@@ -102,24 +103,37 @@
                                                 
                                                 <v-list-tile :key="`request-tile-${i}`">
                                                     <v-list-tile-content>
-                                                        <v-list-tile-sub-title class="text-md-right text-sm-right text-xs-right">
+                                                        <v-list-tile-sub-title class="text-md-right green--text" v-if="request.enrolled">
+                                                            enrolled
+                                                        </v-list-tile-sub-title>   
+                                                        <v-list-tile-sub-title class="text-md-right red--text text--lighten-3" v-else-if="request.cancelled">
+                                                            cancelled
+                                                        </v-list-tile-sub-title>   
+                                                        <v-list-tile-sub-title class="text-md-right red--text text--darken-3" v-else-if="request.rejected">
+                                                            rejected
+                                                        </v-list-tile-sub-title>                                                           
+                                                        <v-list-tile-sub-title class="text-md-right text-sm-right text-xs-right" v-else>
                                                             <a
                                                             class="red--text text--lighten-2" 
                                                             @click="cancelEnrollment(request.publicKey)">cancel</a>
                                                         </v-list-tile-sub-title>
-                                                        <v-list-tile-sub-title class="">{{request.course.code}} - {{request.course.name}}</v-list-tile-sub-title>
-                                                        <v-list-tile-sub-title
-                                                        >
+                                                        <v-list-tile-sub-title class="">
+                                                            {{request.course.code}} - {{request.course.name}}
+                                                        </v-list-tile-sub-title>
+                                                        <v-list-tile-sub-title>
                                                             {{ request.course.owner.username }}
-                                                            </v-list-tile-sub-title>
+                                                        </v-list-tile-sub-title>
+                                                        <v-list-tile-sub-title class="text-md-right text-sm-right text-xs-right time-text">
+                                                            {{ moment(request.updatedAt).fromNow() }}
+                                                        </v-list-tile-sub-title>
                                                     </v-list-tile-content>
                                                 </v-list-tile>
                                             </template>
                                             <v-divider v-if="enrollmentRequests.length == 0"></v-divider>
                                             <v-list-tile v-if="enrollmentRequests.length == 0">
-                                                
                                                 <v-list-tile-sub-title class="text-md-center text-sm-center text-xs-center">No such a enrollment is found</v-list-tile-sub-title>
                                             </v-list-tile>
+                                            <v-divider ></v-divider>
 
                                         </v-list>
                                     </v-card-text>
@@ -139,12 +153,13 @@
 <script>
 import { mapGetters } from "vuex";
 import {SearchType} from '../../../properties/searchType'
+import * as moment from 'moment';
 
 export default{
     props: ['dialog'],
     data(){
         return{
-
+            moment: moment,
             SearchType: SearchType,
             searchParam: '',
             searchLecturerParam: {
@@ -188,7 +203,7 @@ export default{
                     this.filterCourses();
                 }
                 else{
-                    this.$notify({type: "error", title: "Course Enrollment", text: "Enrollement Failed"});
+                    this.$notify({type: "error", title: "Course Enrollment", text: response.message});
                 }
             });
         },
@@ -201,7 +216,7 @@ export default{
                     this.$store.dispatch("getAuthUserEnrollmentRequests");
                 }
                 else{
-                    this.$notify({type: "error", title: "Course Enrollment", text: "Enrollement cancel Failed"});
+                    this.$notify({type: "error", title: "Course Enrollment",  text: response.message});
                 }
             });
         },
@@ -245,8 +260,8 @@ export default{
             });
         },
         cancel(){
-            this.$store.commit("setNotEnrolledCourses", []);
             this.$parent.cancelCourseDialog();
+            this.$store.commit("setNotEnrolledCourses", []);
         }
     },
     computed: {
@@ -256,7 +271,8 @@ export default{
     watch: {
         dialog(nval, oval){
             if(nval == true){
-                    this.$store.dispatch("getAuthUserEnrollmentRequests");
+                this.$store.dispatch("getAuthUserEnrollmentRequests");
+                
             }
             return nval;
         }
@@ -264,5 +280,6 @@ export default{
 }
 </script>
 <style lang="stylus" scoped>
-
+    .time-text
+        font-size 10px
 </style>
