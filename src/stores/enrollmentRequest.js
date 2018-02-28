@@ -30,11 +30,15 @@ export default{
         cancelEnrollementRequest(context, publicKey){
             return enrollmentRequestService.cancel(publicKey);
         },
-        rejecetEnrollementRequest(context, publicKey){
-            return enrollmentRequestService.reject(publicKey);
+        rejecetEnrollementRequest(context, data){
+            const coursePublicKey = data.coursePublicKey;
+            const  enrollmentRequestPublicKey = data.enrollmentRequestPublicKey;
+            return enrollmentRequestService.reject(coursePublicKey, enrollmentRequestPublicKey);
         },
-        approveEnrollementRequest(context, publicKey){
-            return enrollmentRequestService.approve(publicKey);
+        approveEnrollementRequest(context, data){
+            const coursePublicKey = data.coursePublicKey;
+            const  enrollmentRequestPublicKey = data.enrollmentRequestPublicKey;
+            return enrollmentRequestService.approve(coursePublicKey, enrollmentRequestPublicKey);
         },
 
         getAuthUserEnrollmentRequests(context){

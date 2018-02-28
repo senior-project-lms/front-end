@@ -174,7 +174,6 @@ export default{
         }
     },
     created(){
-        this.$store.dispatch('getAllAccessLevels');
      
         
     },
@@ -296,6 +295,12 @@ export default{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'excelJson','accessLevels']),
     },
     watch:{
+        dialog(nval, oval){
+            if(nval){
+                this.$store.dispatch('getAllAccessLevels');
+            }
+            return nval;
+        },
         excelJson(nValue, oValue){
             if(this.multiUserAuthority == null){
                 return nValue;

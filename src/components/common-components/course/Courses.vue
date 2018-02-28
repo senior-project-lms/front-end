@@ -28,7 +28,7 @@
                             <v-subheader>Courses</v-subheader>       
                             <v-divider></v-divider>   
                             <template v-for="(course, i) in courses">
-                                    <v-list-tile  :key="`course-${i}`" :to="{name: 'CourseAnnouncements', params: {id: course.publicKey}}">                           
+                                    <v-list-tile  :key="`course-${i}`" :to="{name: 'Course', params: {id: course.publicKey}}">                           
                                         <v-list-tile-content>
                                             <v-list-tile-title><p class="course">{{course.code}} - {{course.name}}</p></v-list-tile-title>
                                         </v-list-tile-content>

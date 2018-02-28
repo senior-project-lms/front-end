@@ -7,8 +7,8 @@ export default{
         leftMenuItems: [
             
             {
-              icon: 'fa-tachometer',
-              title: 'Home',
+              icon: 'fa-home',
+              title: 'Dashboard',
               to: {name: 'Home'},
               privilege: AccessPrivileges.PAGE_HOME,
             },
@@ -37,25 +37,25 @@ export default{
               privilege: AccessPrivileges.PAGE_USER_FOR_ADMIN,
             },
             {
-              icon: 'fa-shield',
+              icon: 'fa-lock',
               title: 'Authorities',
               to: {name: 'DefaultAuthorities'},
               privilege: AccessPrivileges.PAGE_AUTHORITIES,
             },
             {
-              icon: 'fa-calendar',
+              icon: 'fas fa-calendar-alt',
               title: 'Calendar',
               to: {name:'Calendar'},
               privilege: AccessPrivileges.PAGE_GLOBAL_CALENDAR,
             },
             {
-              icon: 'fa-files-o',
+              icon: 'fas fa-copy',
               title: 'Public Resources',
               to: {name:'PublicResources'},
               privilege: AccessPrivileges.PAGE_GLOBAL_RESOURCES,
             },
             {
-              icon: 'fa-question-circle-o',
+              icon: 'fas fa-question',
               title: 'QA-Global',
               to: {name: 'QA-Global'},
               privilege: AccessPrivileges.PAGE_GLOBAL_QA,
@@ -78,7 +78,7 @@ export default{
 
             },
             {
-              icon: 'fa-sign-out',
+              icon: 'fas fa-sign-out-alt',
               title: 'Sign Out',
               to: {name:'SignOut'},
             },

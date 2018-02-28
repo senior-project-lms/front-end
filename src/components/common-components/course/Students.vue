@@ -139,7 +139,8 @@ export default{
     },
     methods:{
         approve(publicKey){
-            this.$store.dispatch("approveEnrollementRequest", publicKey)
+            const data = {coursePublicKey: this.$route.params.id, enrollmentRequestPublicKey: publicKey}
+            this.$store.dispatch("approveEnrollementRequest", data)
                 .then(response => {
                     if(response.status){
                         this.$notify({type: "success", title: "Course Enrollment", text: "Approved Successfully"});
@@ -152,7 +153,8 @@ export default{
                 });
         },
         reject(publicKey){
-            this.$store.dispatch("rejecetEnrollementRequest", publicKey)
+            const data = {coursePublicKey: this.$route.params.id, enrollmentRequestPublicKey: publicKey}
+            this.$store.dispatch("rejecetEnrollementRequest", data)
                 .then(response => {
                     if(response.status){
                         this.$notify({type: "info", title: "Course Enrollment", text: "Request Rejected"});

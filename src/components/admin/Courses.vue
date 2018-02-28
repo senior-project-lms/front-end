@@ -44,7 +44,7 @@
                                         <div>
                                             <div class="headline text-md-center text-sm-cente text-xs-center">
                                                 <a class="white--text" @click="fetchInactiveCourses">
-                                                    Deactiveted
+                                                    Deactivated
                                                 </a>
                                             </div>
                                         </div>
@@ -93,10 +93,19 @@
                             :headers="headers"
                             :items="courses"
                             :rows-per-page-items="[10, 20, 30, 40, 50, 75]"	
+                            select-all
+                            v-model="selectedCurses"
                             class="elevation-1"
                             >
                                 <template slot="items" slot-scope="props">
                                     <tr :class="props.item.color">
+                                        <td>
+                                            <v-checkbox
+                                            primary
+                                            hide-details
+                                            v-model="props.selected"
+                                            ></v-checkbox>
+                                        </td>                                        
                                         <td>{{ props.item.code }}</td>
                                         <td class="text-xs-center">
                                             <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
@@ -107,7 +116,12 @@
                                         <td>
                                             <v-layout  right>
                                                 <v-flex>
-                                                    <v-switch class="course-switch" v-model="props.item.visible" @change="updateVisibility(props.item.publicKey, props.item.visible)"></v-switch>
+                                                    <v-switch class="course-switch" 
+                                                    v-model="props.item.visible" 
+                                                    @change="updateVisibility(props.item.publicKey, props.item.visible)"
+                                                    v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.UPDATE_COURSE_VISIBILITY}">
+
+                                                    </v-switch>
                                                 </v-flex>
                                                 <v-flex>
                                                     <a><v-icon color="blue darken-2">settings</v-icon></a>
@@ -117,7 +131,6 @@
                                     </tr>
                                 </template>
                             </v-data-table>
-
                         </v-card>
 
                     </v-flex>
@@ -153,6 +166,7 @@ export default {
   data() {
     return {
       search: "",
+      selectedCurses: [],
       isLoaded: true,
       dialog: false,
       activeText: "Active Courses",

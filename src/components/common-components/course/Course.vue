@@ -25,7 +25,8 @@
                     v-for="(item, i) in courseTabMenus"
                     :key="i"
                     ripple
-                        :to="item.to">
+                    :to="item.to"
+                    v-has-privilege="{user: authenticatedUser, privilege: item.privilege}">
                     {{ item.text }}
                     <v-badge class="notification" v-if="notifications[item.text]">
                         <span slot="badge">{{ notifications[item.text] }}</span>
@@ -108,10 +109,10 @@ export default {
         }
     },
     created(){
-    
+        this.$router.push({name: 'CourseAnnouncements'});
     },
     computed: {
-        ...mapGetters([]),
+        ...mapGetters(["authenticatedUser",]),
     }
 
 }

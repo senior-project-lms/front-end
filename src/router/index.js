@@ -35,6 +35,7 @@ import Page401 from '../components/401.vue'
 
 import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
 import Home from '../components/common-components/Home'
+import Page from '../components/mock/page'
 
 Vue.use(Router)
 
@@ -57,6 +58,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_HOME,
                   requeiresAuthentication: true,
+                  base: '',
                   
                 }
               },
@@ -67,6 +69,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_SYSTEM_ANNOUNCEMENT,
                   requeiresAuthentication: true,
+                  base: '',
                 },
                 
               },
@@ -82,6 +85,7 @@ export default new Router({
                     meta: {
                       privilege: AccessPrivileges.PAGE_USER_FOR_ADMIN,
                       requeiresAuthentication: true,
+                      base: '',
                     },
 
                   },
@@ -121,6 +125,7 @@ export default new Router({
                       meta: {
                         privilege: AccessPrivileges.PAGE_COURSES,
                         requeiresAuthentication: true,
+                        base: '',
                       },
                     },
                 ]
@@ -132,6 +137,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_GLOBAL_CALENDAR,
                   requeiresAuthentication: true,
+                  base: '',
                 },
 
               },
@@ -142,6 +148,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_SETTINGS,
                   requeiresAuthentication: true,
+                  base: '',
                 },
 
               },
@@ -152,6 +159,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_OWN_PROFILE,
                   requeiresAuthentication: true,
+                  base: '',
                 },
               },       
               {
@@ -159,8 +167,9 @@ export default new Router({
                 name: 'PublicResources',
                 component: PublicResources,
                 meta: {
-                  privilege: AccessPrivileges.PAGE_AUTHORITIES,
+                  privilege: AccessPrivileges.PAGE_GLOBAL_RESOURCES,
                   requeiresAuthentication: true,
+                  base: '',
                 },
 
               },
@@ -171,6 +180,7 @@ export default new Router({
                 meta: {
                   privilege: AccessPrivileges.PAGE_GLOBAL_QA,
                   requeiresAuthentication: true,
+                  base: '',
                 },
 
               },                         
@@ -186,6 +196,7 @@ export default new Router({
       alias: ['/signin'],
       meta: {
         requeiresAuthentication: false,
+        base: '',
 
       }
     },
@@ -196,6 +207,7 @@ export default new Router({
       meta: {
         privilege: null,
         requeiresAuthentication: false,
+        base: '',
       }
     },
     {
@@ -205,6 +217,7 @@ export default new Router({
       meta: {
         privilege: null,
         requeiresAuthentication: false,
+        base: '',
       }
     },  
     {
@@ -214,6 +227,17 @@ export default new Router({
       meta: {
         privilege: null,
         requeiresAuthentication: false,
+        base: '',
+      }
+    },
+    {
+      path: '/page',
+      name: 'Page',
+      component: Page,
+      meta: {
+        privilege: null,
+        requeiresAuthentication: false,
+        base: '',
       }
     },
   ]

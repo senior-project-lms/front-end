@@ -35,9 +35,9 @@ export default class EnrollmentRequestService{
         })
     }
 
-    reject(publicKey){
+    reject(coursePublicKey, enrollmentRequestPublicKey){
         const access_token = auth.getAccessToken();
-        return Axios.post(`/api/enrollment-request/${publicKey}/reject?access_token=${access_token}`)
+        return Axios.post(`/api/course/${coursePublicKey}/enrollment-request/${enrollmentRequestPublicKey}/reject?access_token=${access_token}`)
         .then(response => {
             return service.___then(response)
         })
@@ -45,9 +45,9 @@ export default class EnrollmentRequestService{
             return service.___then(error.response);
         });
     }
-    approve(publicKey){
+    approve(coursePublicKey, enrollmentRequestPublicKey){
         const access_token = auth.getAccessToken();
-        return Axios.post(`/api/enrollment-request/${publicKey}/approve?access_token=${access_token}`)
+        return Axios.post(`/api/course/${coursePublicKey}/enrollment-request/${enrollmentRequestPublicKey}/approve?access_token=${access_token}`)
         .then(response => {
             return service.___then(response)
         })

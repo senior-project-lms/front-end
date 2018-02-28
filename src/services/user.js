@@ -96,6 +96,15 @@ export default class UserService{
         return service.getAll(path);
     }
 
+
+    getCoursePrivilegesOfAuthUser(publicKey){
+        return service.getAll(`/api/course/${publicKey}/me/privileges`);
+    }
+
+    getAllUsernames(){
+        return Axios.get('/usernames');
+    }
+
 }
 
 

@@ -21,6 +21,7 @@ var testQuiz = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_QT,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
   
@@ -31,6 +32,7 @@ var announcements = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 
@@ -41,6 +43,7 @@ var assignments = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_ASSIGNMENTS,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 
@@ -51,6 +54,7 @@ var calendar = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_CALENDAR,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 var grades = {
@@ -60,6 +64,7 @@ var grades = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_GRADES,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 var resources = {
@@ -69,6 +74,7 @@ var resources = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_RESOURCES,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 
@@ -79,6 +85,7 @@ var qa = {
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_QA,
       requeiresAuthentication: true,
+      base: 'Course',
     },
   }
 
@@ -90,6 +97,7 @@ var settings = {
   meta: {
     privilege: AccessPrivileges.PAGE_COURSE_SETTINGS,
     requeiresAuthentication: true,
+    base: 'Course',
   },
   
 }
@@ -101,6 +109,7 @@ var students = {
   meta: {
     privilege: AccessPrivileges.PAGE_COURSE_STUDENTS,
     requeiresAuthentication: true,
+    base: 'Course',
   },
 }
 
@@ -120,5 +129,10 @@ export default {
       assignments,
       settings,
       students,
-  ]
+  ],
+  meta: {
+    privilege: AccessPrivileges.PAGE_COURSE,
+    requeiresAuthentication: true,
+    base: 'Course',
+  },
 }

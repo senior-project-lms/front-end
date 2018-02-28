@@ -4,7 +4,8 @@ var userService = new UserService();
 export default{
     state: {
         users: [],
-        usersStatus: {}
+        usersStatus: {},
+        usernames: [],
     },
     mutations: {
         setUsers(state, users){
@@ -16,7 +17,10 @@ export default{
         clearUserStore(state){
             state.users = [];
             usersStatus: {}
-        }
+        },
+        setUsernames(state, list){
+            state.usernames = list;
+        },
         
     },
     actions: {
@@ -83,17 +87,30 @@ export default{
                 }
                 return response;
             })
-        }
+        },
+        getAllUsernames(context){
+            return userService.getAllUsernames()
+            .then(response => {
+                if(response.status){
+                    context.commit("setUsernames", response.data);
+
+                }
+            })
+            return response; 
+        },
+
 
     },
     getters: {
         users(state){
             return state.users;
-      },
-      usersStatus(state){
-        return state.usersStatus;
-
-    }
+        },
+        usersStatus(state){
+            return state.usersStatus;
+        },
+        usernames(state){
+            return state.usernames;
+        },
     
     }
 }

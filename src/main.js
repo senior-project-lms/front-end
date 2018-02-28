@@ -11,6 +11,7 @@ import storeOptions from './stores/index'
 
 import Notifications from 'vue-notification'
 import Security from './directives/security'
+import course from './router/course/course';
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
@@ -30,12 +31,12 @@ Vue.config.devtools = true
 
 /* eslint-disable no-new */
 
-var auth = function(to, from, next, accessPrivileges){
+var auth = function(to, from, next, accessPrivileges, coursePrivileges){
 
   if (!to.matched.length) {
     next('/404');
   }
-  else if(to.meta.requeiresAuthentication  && !accessPrivileges.includes(to.meta.privilege)){
+  else if(to.meta.requeiresAuthentication  && (!accessPrivileges.includes(to.meta.privilege) && !coursePrivileges.includes(to.meta.privilege))){
     next('/401');
   }
   else {
@@ -45,21 +46,78 @@ var auth = function(to, from, next, accessPrivileges){
 
 }
 
+
+var courseRouting = function(to, from, next, accessPrivileges){
+  const coursePublicKey = to.params.id; // get course public key
+  store.dispatch("getCoursePrivileges", coursePublicKey) // then fetch privileges
+  .then(response => {
+    if(response.status){
+        const coursePrivileges = store.state.authentication.authenticatedUser.coursePrivileges;
+        auth(to, from, next, accessPrivileges, coursePrivileges); // redirect by all privileges
+    }
+    else{
+      next('/401');
+    }
+  });
+
+}
+
 router.beforeEach((to, from, next) => {
 
+  //console.log(to)
+  
   var accessPrivileges = store.state.authentication.authenticatedUser.accessPrivileges; // get privileges
+  var coursePrivileges = store.state.authentication.authenticatedUser.coursePrivileges;
 
   if((to.meta.requeiresAuthentication && accessPrivileges.length == 0)){ // this works if page is refreshed
     store.dispatch('getMe')
     .then(response => {
       if(response.status){ // if ok
+
         accessPrivileges = store.state.authentication.authenticatedUser.accessPrivileges; // get access privileges again
-        auth(to, from, next, accessPrivileges) // redirect by new privileges
+        coursePrivileges = store.state.authentication.authenticatedUser.coursePrivileges;
+
+        if(to.name == 'Course'){ // if user wants to open course details page
+          courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
+        }
+        else if(to.meta.base == 'Course' && coursePrivileges.length == 0){
+          console.log('buradan 2')
+          courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
+        }
+        else{
+          console.log(console.log('buradan 3'))
+          store.commit("setCoursePrivileges", []);
+          auth(to, from, next, accessPrivileges, []) // redirect by new privileges
+        }
+      }
+      else{
+        next('/401');
       } 
     });
   }
   else{
-    auth(to, from, next, accessPrivileges); // if privileges exis, redirect
+
+    if(to.name == 'Course'){
+      console.log('worked')
+      courseRouting(to, from, next, accessPrivileges);
+    }
+    else if(to.meta.base === 'Course' && coursePrivileges.length == 0){
+      console.log("buradan")
+      courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
+    }
+    else if(to.meta.base === 'Course' && coursePrivileges.length > 0){
+      console.log('buradan 1')
+      auth(to, from, next, accessPrivileges, coursePrivileges) // if privileges exis, redirect
+    }
+    else if(to.meta.base === 'Course' && to.params.id != from.params.id){
+      console.log("buradan 4")
+      courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
+    }
+    else{
+      console.log('heleee')
+      store.commit("setCoursePrivileges", []);
+      auth(to, from, next, accessPrivileges, coursePrivileges) // if privileges exis, redirect
+    }
   }
   
 });

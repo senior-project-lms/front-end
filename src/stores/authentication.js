@@ -21,6 +21,7 @@ export default{
             surname: '',
             authority: {code: null},
             accessPrivileges: [],
+            coursePrivileges: [],
         }
     },
     mutations: {
@@ -30,9 +31,11 @@ export default{
             state.authenticatedUser.surname = object.surname
             state.authenticatedUser.authority = object.authority;
             state.authenticatedUser.accessPrivileges = object.accessPrivileges;
-            
+            //state.authenticatedUser.coursePrivileges = [];
         },
-        
+        setCoursePrivileges(state, list){
+            state.authenticatedUser.coursePrivileges = list;
+        },
         cleareAuthenticatedStore(state){
             state.authenticatedUser = {
                 username: '',
@@ -40,6 +43,7 @@ export default{
                 surname: '',
                 authority: {code: null},
                 accessPrivileges: [],
+                coursePrivileges: [],
             }
         },
         
@@ -79,6 +83,19 @@ export default{
         hasAccessPrivilege(context, privilege){
             return context.state.authenticatedUser.accessPrivileges.includes(privilege);
         },
+
+        getCoursePrivileges(context, publicKey){
+            return userService.getCoursePrivilegesOfAuthUser(publicKey)
+            .then(response => {
+                if(response.status){
+                    
+                    if(response.data != null){
+                        context.commit('setCoursePrivileges', response.data)
+                    }
+                }
+                return response;
+            })      
+          },
         cleareAuthenticatedUser(context){
             context.commit("cleareAuthenticatedUser");
         }

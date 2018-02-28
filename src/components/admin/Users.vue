@@ -108,7 +108,12 @@
                                             <td>
                                                 <v-layout  right>
                                                     <v-flex>
-                                                        <v-switch class="user-switch" v-model="props.item.visible" @change="updateVisibility(props.item.publicKey, props.item.visible)"></v-switch>
+                                                        <v-switch 
+                                                        class="user-switch" 
+                                                        v-model="props.item.visible" 
+                                                        @change="updateVisibility(props.item.publicKey, props.item.visible)"
+                                                        v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.UPDATE_USER_VISIBILITY}">
+                                                        </v-switch>
                                                     </v-flex>
                                                     <v-flex>
                                                         <a><v-icon color="blue darken-2">settings</v-icon></a>
