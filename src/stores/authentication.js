@@ -81,7 +81,7 @@ export default{
             })
         },
         hasAccessPrivilege(context, privilege){
-            return context.state.authenticatedUser.accessPrivileges.includes(privilege);
+            return context.state.authenticatedUser.accessPrivileges.includes(privilege) ||  context.state.authenticatedUser.coursePrivileges.includes(privilege);
         },
 
         getCoursePrivileges(context, publicKey){

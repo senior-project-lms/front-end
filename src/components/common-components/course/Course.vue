@@ -28,7 +28,7 @@
                     :to="item.to"
                     v-has-privilege="{user: authenticatedUser, privilege: item.privilege}">
                     {{ item.text }}
-                    <v-badge class="notification" v-if="notifications[item.text]">
+                    <v-badge class="notification" v-if="notifications[item.text] > 0">
                         <span slot="badge">{{ notifications[item.text] }}</span>
                     </v-badge>
                 </v-tab>
@@ -52,7 +52,8 @@ export default {
     data () {
         return {
             active: null,
-            notifications: {'Announcements': 1, 'Quiz - Testing': 1},
+                    text: 'QA',
+            notifications: {'Announcements': 1, 'Quiz - Testing': 1, 'Grades': 0, 'Assignments': 0, 'Resources': 0, 'QA': 0, 'Calendar': 0, 'Users': 0},
             courseTabMenus: [
                 {
                     text: 'Announcements',
@@ -108,10 +109,25 @@ export default {
     created(){
         this.$store.dispatch('getCourse', this.$route.params.id);
         //this.$router.push({name: 'CourseAnnouncements'});
+        this.initialize();
         
     },
+    beforeDestroy(){
+        this.$store.commit('setCoursePrivileges', []);
+    },
+    methods: {
+        initialize(){
+            this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.PAGE_COURSE_USERS)
+            .then(resp => {
+                console.log(resp)
+                if(resp){
+                    this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
+                }
+            })
+        }
+    },
     computed: {
-        ...mapGetters(["authenticatedUser", 'course']),
+        ...mapGetters(["authenticatedUser", 'accessPrivileges', 'course', 'enrollmentRequestCounts']),
         displayedMenus(){
             const menus = [];
             for(var i in this.courseTabMenus){
@@ -123,6 +139,12 @@ export default {
             return menus;
         }
     },
+    watch:{
+        enrollmentRequestCounts(nval, oval){
+            this.notifications['Users'] = nval.pending;
+            return nval;
+        }
+    }
     
 }
 </script>

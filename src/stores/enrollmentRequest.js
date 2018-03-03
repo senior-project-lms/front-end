@@ -6,6 +6,7 @@ var enrollmentRequestService = new EnrollmentRequestService();
 
 export default{
     state: {
+        enrollmentRequestCounts: {},
         enrollmentRequests: [],
         courseEnrollmentRequests: [],
     },
@@ -13,10 +14,13 @@ export default{
         setEnrollmentRequests(state, list){
             state.enrollmentRequests = list;
         },
+        setEnrollmentRequestCounts(state, obj){
+            state.enrollmentRequestCounts = obj;
+        },
         setCourseEnrollmentRequests(state, list){
             state.courseEnrollmentRequests = list;
         },
-        clearEnrollmentRequestStore(state, array){
+        clearEnrollmentRequestStore(state){
             state.enrollmentRequests = [];
             state.courseEnrollmentRequests = [];
         },
@@ -64,7 +68,16 @@ export default{
                     }
                     return response;
                 })    
-        }
+        },
+        getEnrollmentRequestCounts(context, publicKey){
+            return enrollmentRequestService.getEnrollmentRequestCounts(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setEnrollmentRequestCounts", response.data)
+                }
+                return response;
+            })   
+        },
 
     },
     getters: {
@@ -74,5 +87,8 @@ export default{
         courseEnrollmentRequests(state){
             return state.courseEnrollmentRequests;
         },
+        enrollmentRequestCounts(state){
+            return state.enrollmentRequestCounts;
+        }
     }
 }

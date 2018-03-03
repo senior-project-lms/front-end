@@ -69,7 +69,6 @@ export default{
         }
     },
     created(){
-        console.log(this)
         this.$store.dispatch('getAllCoursesOfAuthUser');
     },
     methods:{

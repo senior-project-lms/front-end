@@ -69,13 +69,15 @@ export default class EnrollmentRequestService{
         })
     }
 
-
-
     getAuthUserEnrollmentRequests(){
         return service.getAll('/api/me/enrollment-requests');
     }
     
     getEnrollmentRequestsOfCourse(publicKey){
         return service.getAll(`/api/course/${publicKey}/enrollment-requests`);
+    }
+
+    getEnrollmentRequestCounts(publicKey){
+        return service.get(`/api/course/${publicKey}/enrollment-request/counts`);
     }
 }

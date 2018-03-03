@@ -114,7 +114,6 @@ router.beforeEach((to, from, next) => {
       courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
     }
     else{
-      console.log('heleee')
       //store.commit("setCoursePrivileges", []);
       auth(to, from, next, accessPrivileges, coursePrivileges) // if privileges exis, redirect
     }

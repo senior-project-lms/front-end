@@ -11,6 +11,10 @@
          :to="menu.to">
             <span>{{ menu.text }}</span>
             <v-icon>{{ menu.icon }}</v-icon>
+            <v-badge class="notification"
+            v-if="enrollmentRequestCounts[menu.notification] > 0">
+                <span slot="badge">{{ enrollmentRequestCounts[menu.notification] }}</span>
+            </v-badge>  
         </v-btn>
     </v-bottom-nav>     
   </div>
@@ -29,27 +33,28 @@ export default{
                     text: 'Students',
                     to: {name: 'CourseStudents'},
                     privilege: AccessPrivileges.PAGE_COURSE_ENROLLED_STUDENTS,
-            
+                },
+                {
+                    icon: 'accessibility',                    
+                    text: 'Assistants',
+                    to: {name: 'CourseAuthenticatedUsers'},
+                    privilege: AccessPrivileges.PAGE_COURSE_AUTHENTICATED_USERS,
                 },
                 {
                     icon: 'group_add',                    
                     text: 'Enrollment Requests',
                     to: {name: 'CourseEnrollmentRequests'},
                     privilege: AccessPrivileges.PAGE_COURSE_ENROLLED_STUDENTS,
-                },
-                {
-                    icon: 'accessibility',                    
-                    text: 'Authenticated Users',
-                    to: {name: 'CourseAuthenticatedUsers'},
-                    privilege: AccessPrivileges.PAGE_COURSE_AUTHENTICATED_USERS,
+                    notification: 'pending',
                 },
             ],
         }
     },
-  
-
+    created(){
+        this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
+    },
     computed: {
-        ...mapGetters(["authenticatedUser",]),
+        ...mapGetters(["authenticatedUser", 'enrollmentRequestCounts']),
         displayedMenus(){
             const menus = [];
             for(var i in this.bottomMenus){
@@ -64,3 +69,7 @@ export default{
     },
 }
 </script>
+<style lang="stylus" scoped>
+    .notification
+        margin-left 30px
+</style>

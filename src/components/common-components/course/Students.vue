@@ -2,6 +2,17 @@
   <div>
     <v-container fluid grid-list-md grid-list-sm grid-list-xs>
         <v-layout row wrap>
+            <v-flex class="">
+                <v-text-field
+                    append-icon="search"
+                    label="Search"
+                    single-line
+                    hide-details
+                    v-model="searchStudent"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>        
+        <v-layout row wrap>
             <v-flex md12 sm12 xs12>
                 <v-data-table
                 :headers="headersStudentTable"
@@ -36,7 +47,6 @@ export default{
     data(){
         return{
             searchStudent: '',
-            searchEnrollmentRequest: '',
 
             headersStudentTable: [
                 { text: "Name", value: "name", align: "left" },

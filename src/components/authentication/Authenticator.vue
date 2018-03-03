@@ -52,7 +52,6 @@ export default {
                     });
             }
             else{
-                console.log("--ups");
                 return true;
             }
             
