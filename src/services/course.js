@@ -88,4 +88,12 @@ export default class CourseService{
     getEnrolledUsers(publicKey){
         return service.getAll(`/api/course/${publicKey}/enrolled-users`);
     }
+
+    getEnrolledObserverUsers(publicKey){
+        return service.getAll(`/api/course/${publicKey}/observer-users`);
+    }
+
+    getCourseInfo(publicKey){
+        return service.get(`/api/course/${publicKey}/info`);
+    }
 }

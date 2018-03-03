@@ -10,7 +10,6 @@
                                 <v-btn flat class="white--text courses-btn"
                                 @click="coursesDialog = true"
                                 v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.ENROLL_COURSE}"
-                                
                                 >
                                 Courses
                                 </v-btn>

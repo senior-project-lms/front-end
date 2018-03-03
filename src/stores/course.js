@@ -6,13 +6,21 @@ var courseService = new CourseService();
 
 export default{
     state: {
+        course: {
+            name: '',
+            code: '',
+        },
         courses: [],
         coursesStatuses: {},
         notEnrolledCourses: [],
-        students: []
+        students: [],
+        observerStudents: [],
 
     },
     mutations: {
+        setCourse(state, object){
+            state.course = object;
+        },
         setCourses(state, list){
             state.courses = list;
         },
@@ -25,11 +33,16 @@ export default{
         setStudents(state, list){
             state.students = list;
         },
+        setObserverStudents(state, list){
+            state.observerStudents = list;
+        },
         clearCourseStore(state){
-           state.courses = [];
-           state.coursesStatuses = {};
-           state.notEnrolledCourses = [];
-           state.students = [];
+            state.course = {}
+            state.courses = [];
+            state.coursesStatuses = {};
+            state.notEnrolledCourses = [];
+            state.students = [];
+            state.observerStudents = [];
         }
     },
     actions: {
@@ -118,6 +131,24 @@ export default{
                 return response;
             })
         },
+        getEnrolledObserverUsers(context, publicKey){
+            return courseService.getEnrolledObserverUsers(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setObserverStudents", response.data)
+                }
+                return response;
+            })
+        },
+        getCourse(context, publicKey){
+            return courseService.getCourseInfo(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setCourse", response.data)
+                }
+                return response;
+            })
+        },
 
     },
     getters: {
@@ -128,6 +159,9 @@ export default{
         students(state){
             return state.students;
         },
+        observerStudents(state){
+            return state.observerStudents;
+        },
         coursesStatuses(state){
             return state.coursesStatuses;
 
@@ -135,6 +169,9 @@ export default{
         notEnrolledCourses(state){
             return state.notEnrolledCourses;
 
+        },
+        course(state){
+            return state.course;
         }
 
 

@@ -27,6 +27,9 @@ export default{
         enrollCourse(context, publicKey){
             return enrollmentRequestService.enroll(publicKey);
         },
+        enrollCourseAsObserver(context, publicKey){
+            return enrollmentRequestService.enrollAsObserver(publicKey);
+        },
         cancelEnrollementRequest(context, publicKey){
             return enrollmentRequestService.cancel(publicKey);
         },

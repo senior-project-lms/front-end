@@ -81,11 +81,11 @@ router.beforeEach((to, from, next) => {
           courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
         }
         else if(to.meta.base == 'Course' && coursePrivileges.length == 0){
-          console.log('buradan 2')
+          //console.log('buradan 2')
           courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
         }
         else{
-          console.log(console.log('buradan 3'))
+          //console.log(console.log('buradan 3'))
           store.commit("setCoursePrivileges", []);
           auth(to, from, next, accessPrivileges, []) // redirect by new privileges
         }
@@ -98,24 +98,24 @@ router.beforeEach((to, from, next) => {
   else{
 
     if(to.name == 'Course'){
-      console.log('worked')
+      //console.log('worked')
       courseRouting(to, from, next, accessPrivileges);
     }
     else if(to.meta.base === 'Course' && coursePrivileges.length == 0){
-      console.log("buradan")
+      //console.log("buradan")
       courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
     }
     else if(to.meta.base === 'Course' && coursePrivileges.length > 0){
-      console.log('buradan 1')
+      //console.log('buradan 1')
       auth(to, from, next, accessPrivileges, coursePrivileges) // if privileges exis, redirect
     }
     else if(to.meta.base === 'Course' && to.params.id != from.params.id){
-      console.log("buradan 4")
+      //console.log("buradan 4")
       courseRouting(to, from, next, accessPrivileges); // first get users priviveleges for current course
     }
     else{
       console.log('heleee')
-      store.commit("setCoursePrivileges", []);
+      //store.commit("setCoursePrivileges", []);
       auth(to, from, next, accessPrivileges, coursePrivileges) // if privileges exis, redirect
     }
   }

@@ -86,6 +86,9 @@
                                                     <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
                                                     <td class="text-xs-right text-md-right text-sm-right">
                                                     <a @click="enroll(props.item.publicKey)">enroll</a>
+                                                    |
+                                                    <a @click="enrollAsObserver(props.item.publicKey)">enroll as observer</a>
+
                                                     </td>
                                                 </tr>
                                             </template>
@@ -103,20 +106,34 @@
                                                 
                                                 <v-list-tile :key="`request-tile-${i}`">
                                                     <v-list-tile-content>
-                                                        <v-list-tile-sub-title class="text-md-right green--text" v-if="request.enrolled">
-                                                            enrolled
+                                                        <v-list-tile-sub-title class="" v-if="request.enrolled">
+                                                            <span class="left lime--text text--lighten-1" v-if="request.observer">Observer</span>
+                                                            <span class="left light-green--text text--lighten-1" v-else>Student</span>
+                                                            <span class="right green--text">enrolled</span>
                                                         </v-list-tile-sub-title>   
-                                                        <v-list-tile-sub-title class="text-md-right red--text text--lighten-3" v-else-if="request.cancelled">
-                                                            cancelled
+                                                        <v-list-tile-sub-title class="" v-else-if="request.cancelled">
+                                                            <span class="left lime--text text--lighten-1" v-if="request.observer">Observer</span>
+                                                            <span class="left light-green--text text--lighten-1" v-else>Student</span>                                                  
+                                                            <span class="right red--text text--lighten-3">cancelled</span>
                                                         </v-list-tile-sub-title>   
-                                                        <v-list-tile-sub-title class="text-md-right red--text text--darken-3" v-else-if="request.rejected">
-                                                            rejected
+                                                        <v-list-tile-sub-title class="" v-else-if="request.rejected">
+                                                            <span class="left lime--text text--lighten-1" v-if="request.observer">Observer</span>
+                                                            <span class="left light-green--text text--lighten-1" v-else>Student</span>                                                      
+                                                            <span class="right red--text text--darken-3">rejected</span>
                                                         </v-list-tile-sub-title>                                                           
-                                                        <v-list-tile-sub-title class="text-md-right text-sm-right text-xs-right" v-else>
+                                                        <v-list-tile-sub-title class="" v-else>
+                                                            <span class="left lime--text text--lighten-1" v-if="request.observer">Observer</span>
+                                                            <span class="left light-green--text text--lighten-1" v-else>Student</span>
+
+                                                            <span class="right">
                                                             <a
                                                             class="red--text text--lighten-2" 
-                                                            @click="cancelEnrollment(request.publicKey)">cancel</a>
+                                                            @click="cancelEnrollment(request.publicKey)">cancel
+                                                            </a>
+                                                            </span>
+
                                                         </v-list-tile-sub-title>
+
                                                         <v-list-tile-sub-title class="">
                                                             {{request.course.code}} - {{request.course.name}}
                                                         </v-list-tile-sub-title>
@@ -199,6 +216,19 @@ export default{
             .then(response => {
                 if(response.status){
                     this.$notify({type: "success", title: "Course Enrollment", text: "Enrolled Successfully"});
+                    this.$store.dispatch("getAuthUserEnrollmentRequests");
+                    this.filterCourses();
+                }
+                else{
+                    this.$notify({type: "error", title: "Course Enrollment", text: response.message});
+                }
+            });
+        },
+        enrollAsObserver(publicKey){
+            this.$store.dispatch("enrollCourseAsObserver", publicKey)
+            .then(response => {
+                if(response.status){
+                    this.$notify({type: "success", title: "Course Enrollment", text: "Enrolled Successfully as observer"});
                     this.$store.dispatch("getAuthUserEnrollmentRequests");
                     this.filterCourses();
                 }

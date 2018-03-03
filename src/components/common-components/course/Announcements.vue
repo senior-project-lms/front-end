@@ -21,8 +21,6 @@
         }
     }    
 </script>
-<style lang="stylus">
-    .Container
-        margin-left 10px
-        margin-right 10px
+<style lang="stylus" scoped>
+
 </style>

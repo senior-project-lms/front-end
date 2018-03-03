@@ -24,6 +24,19 @@ export default class EnrollmentRequestService{
         })
     }
 
+
+
+    enrollAsObserver(publicKey){
+        const access_token = auth.getAccessToken();
+        return Axios.post(`/api/course/${publicKey}/enroll-as-observer?access_token=${access_token}`)
+        .then(response => {
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
+    }
+
     cancel(publicKey){
         const access_token = auth.getAccessToken();
         return Axios.post(`/api/enrollment-request/${publicKey}/cancel?access_token=${access_token}`)

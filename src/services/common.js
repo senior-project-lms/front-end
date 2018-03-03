@@ -84,9 +84,9 @@ export default class Service{
         @return (boolean) returns boolean that represent updated or not
         used in services, to delete data, requests with PUT method
     */    
-    update(path, publicKey, params){
+    update(path, params){
         const accessToken = authService.getAccessToken();
-        return Axios.put(`${path}/${publicKey}?access_token=${accessToken}`, params)
+        return Axios.put(`${path}?access_token=${accessToken}`, params)
         .then(response => {
             return this.___then(response);
         })
@@ -118,9 +118,9 @@ export default class Service{
         @return (null or object) returns null or fetched object from api
         used in services, to fetch single object from api and returns it, requests with GET method
     */  
-    get(path, publicKey){
+    get(path){
         const accessToken = authService.getAccessToken();
-        return Axios.get(`${path}/${publicKey}?access_token=${accessToken}`)
+        return Axios.get(`${path}?access_token=${accessToken}`)
         .then(response => {
             return this.___then(response)
         })

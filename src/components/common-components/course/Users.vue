@@ -1,227 +1,66 @@
 <template>
-    <div>
-        <loader v-if="!isLoaded"/>
-        <div v-if="isLoaded">
-            <v-container fluid grid-list-md grid-list-sm grid-list-xs>
-                <v-layout row wrap >   
-                    <v-flex md4 sm4 xs6>
-                        <v-card color="green lighten-2" class="white--text">
-                            <v-container fluid grid-list-lg>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ usersStatus.visibleUsers }}</div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                        <div class="headline text-md-center text-sm-center text-xs-center">
-                                                <a class="white--text" @click="fetchActiveUsers">
-                                                    Active
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>                            
-                            </v-container>
-                        </v-card>
-                    </v-flex>
-                    <v-flex md4 sm4 xs6>
-                        <v-card color="blue lighten-2" class="white--text">
-                            <v-container fluid grid-list-lg>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">{{ usersStatus.invisibleUsers }}</div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">
-                                                <a class="white--text" @click="fetchInactiveUsers">
-                                                    Deactivated
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>                            
-                            </v-container>
-                        </v-card>
-                    </v-flex>   
-                    <v-flex md4 class="outer-right-box">
-                        <v-card color="red lighten-1" class="white--text">
-                            <v-container fluid grid-list-lg>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">0</div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout row>
-                                    <v-flex>
-                                        <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">Nothing</div>
-                                        </div>
-                                    </v-flex>
-                                </v-layout>                            
-                            </v-container>
-                        </v-card>
-                    </v-flex>             
-                </v-layout>
-                <v-divider class="box-divider"></v-divider>
-                <v-layout row wrap>
-                        <v-flex md12 sm12 xs12>
-                            <v-card>
-                                <v-card-title>
-                                    <h2 class="active-text grey--text darken-4">{{ activeText }}</h2>
-                                    <v-spacer></v-spacer>
-                                    <v-text-field
-                                        append-icon="search"
-                                        label="Search"
-                                        single-line
-                                        hide-details
-                                        v-model="search"
-                                    ></v-text-field>
-                                </v-card-title>
-                                <v-data-table
-                                    :headers="headers"
-                                    :items="users"
-                                    :rows-per-page-items="[50, 75]"
-                                    :search="search"
-                                    class="elevation-1">
-                                        <template slot="items" slot-scope="props">
-                                            <tr :class="props.item.color">
-                                                <td :to="{name: 'Profile', params: {id: props.item.publicKey}}">{{ props.item.username }}</td>
-                                                <td class="text-xs-center">
-                                                    {{props.item.name}} {{ props.item.surname}}
-                                                </td>
-                                                
-                                                
-                                                <td class="text-xs-center">{{ props.item.email }}</td>
-                                                <td class="text-xs-center">{{ props.item.authority.name }}</td>
-    
-                                            <td>
-                                                <v-layout  right>
-                                                    <v-flex>
-                                                        <v-switch class="user-switch" v-model="props.item.visible" @change="updateVisibility(props.item.publicKey, props.item.visible)"></v-switch>
-                                                    </v-flex>
-                                                    <v-flex>
-                                                        <a><v-icon color="blue darken-2">settings</v-icon></a>
-                                                    </v-flex>
-                                                </v-layout>    
-                                            </td>
-                                            
-                                            </tr>
-                                        </template>
-                                </v-data-table>
-                            </v-card>
-                        </v-flex>
-                </v-layout> 
-            </v-container>
-            <div>
-                <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" 
-                 v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_USER}"> 
-                    <v-icon>add</v-icon>
-                </v-btn>
-            </div>
-            <save-user :dialog="dialog"/>
-        </div>
-    </div>
+  <div>
+    <v-container fluid grid-list-md grid-list-sm grid-list-xs>
+        <router-view></router-view>
+    </v-container>
+    <v-bottom-nav absolute :value="true" :active.sync="selected">
+        <v-btn
+         v-for="(menu, i) in displayedMenus"
+         :key="`bottom-btn-${i}`"
+         flat color="primary" :value="menu.text" 
+         :to="menu.to">
+            <span>{{ menu.text }}</span>
+            <v-icon>{{ menu.icon }}</v-icon>
+        </v-btn>
+    </v-bottom-nav>     
+  </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import SaveUser from "./SaveUser";
-import Loader from "@/components/Loader";
+import {AccessPrivileges} from '../../../properties/accessPrivileges';
 
-export default {
-  components: {
-    SaveUser,
-    Loader
-  },
-  data() {
-    return {
-      search: "",
-      activeText: "",
-      isLoaded: false,
-      dialog: false,
-      headers: [
-        { text: "Username", value: "username", align: "left" },
-        { text: "Name", value: "name", align: "center" },
-        { text: "Email", value: "email", align: "center" },
-        { text: "Role", value: "authority.name", align: "center" },
-        { text: "", value: "event" }
-      ]
-    };
-  },
-  created() {
-    this.$store
-      .dispatch("hasAccessPrivilege", this.accessPrivileges.READ_ALL_USERS)
-      .then(auth => {
-        if (!auth) {
-          this.$router.push({ name: "Page404" });
-          return;
+export default{
+    data(){
+        return{
+            selected: 'Students',
+            bottomMenus: [
+                {
+                    icon: 'group',                    
+                    text: 'Students',
+                    to: {name: 'CourseStudents'},
+                    privilege: AccessPrivileges.PAGE_COURSE_ENROLLED_STUDENTS,
+            
+                },
+                {
+                    icon: 'group_add',                    
+                    text: 'Enrollment Requests',
+                    to: {name: 'CourseEnrollmentRequests'},
+                    privilege: AccessPrivileges.PAGE_COURSE_ENROLLED_STUDENTS,
+                },
+                {
+                    icon: 'accessibility',                    
+                    text: 'Authenticated Users',
+                    to: {name: 'CourseAuthenticatedUsers'},
+                    privilege: AccessPrivileges.PAGE_COURSE_AUTHENTICATED_USERS,
+                },
+            ],
         }
-        this.initializeData();
-        this.isLoaded = true;
-      });
-  },
-  methods: {
-    initializeData() {
-      this.fetchActiveUsers();
-      this.$store.dispatch("getUsersStatus");
-      this.activeText = "Active Users";
     },
-    fetchActiveUsers() {
-      this.$store.dispatch("getAllActiveUsers", true);
-      this.activeText = "Active Users";
-    },
-    fetchInactiveUsers() {
-      this.$store.dispatch("getAllActiveUsers", false);
-      this.activeText = "Deactiveted Users";
-    },
-    updateVisibility(publicKey, visible) {
-      for (var index in this.users) {
-        if (publicKey == this.users[index].publicKey) {
-          if (visible) {
-            this.users[index].color = "light-green lighten-4";
-          } else {
-            this.users[index].color = "red lighten-4";
-          }
+  
 
-          break;
+    computed: {
+        ...mapGetters(["authenticatedUser",]),
+        displayedMenus(){
+            const menus = [];
+            for(var i in this.bottomMenus){
+                const privilege = this.bottomMenus[i].privilege;  
+                if(this.authenticatedUser.coursePrivileges.includes(privilege)){
+                    menus.push(this.bottomMenus[i]);
+                }
+            }
+            return menus;
         }
-      }
-      this.$store.dispatch("updateUserVisibility", {
-        publicKey: publicKey,
-        visible: visible
-      });
+    
     },
-    closeDialog() {
-      this.dialog = false;
-    }
-  },
-  computed: {
-    ...mapGetters([
-      "authenticatedUser",
-      "accessPrivileges",
-      "users",
-      "usersStatus"
-    ])
-  },
-};
+}
 </script>
-
-<style lang="stylus" scoped>
-
-.box-divider 
-    margin-top 20px
-    margin-bottom 10px
-
-
-
-</style>

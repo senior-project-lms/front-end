@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-flex md12>
+        <v-flex md12 sm12 xm12>
             <v-card height="70">
                <v-card-media class="white--text" height="70" src="/static/parallax2.jpg">
-                <v-container fill-height fluid>
-                    <v-layout fill-height>
+                <v-container fluid>
+                    <v-layout>
                         <v-flex xs12 align-end flexbox>
-                            <span class="headline">Introduction to Programing</span>
+                            <span class="title">{{ course.name }}</span>
                         </v-flex>
                     </v-layout>
                 </v-container>
@@ -22,7 +22,7 @@
                 grow
                 >
                 <v-tab
-                    v-for="(item, i) in courseTabMenus"
+                    v-for="(item, i) in displayedMenus"
                     :key="i"
                     ripple
                     :to="item.to"
@@ -35,15 +35,11 @@
                 <v-tab-item>
 
                 </v-tab-item>
-            </v-tabs>
-            <v-container fluid>
-                    <v-layout row wrap>
-                        <v-flex fill-height>
-                            <router-view></router-view>
-                        </v-flex>
-                    </v-layout>
-            </v-container>                
-        </v-flex>      
+            </v-tabs>             
+        </v-flex>    
+        <v-flex>
+            <router-view></router-view>
+        </v-flex>  
     </div>
 </template>
 
@@ -74,6 +70,7 @@ export default {
                     to: {name: 'CourseAssignments'},
                     privilege: AccessPrivileges.PAGE_COURSE_ASSIGNMENTS,
                 },
+
                 {
                     text: 'Quiz - Testing',
                     to: {name: 'CourseTestQuiz'},
@@ -95,9 +92,9 @@ export default {
                     privilege: AccessPrivileges.PAGE_COURSE_CALENDAR,
                 },
                 {
-                    text: 'Students',
+                    text: 'Users',
                     to: {name: 'CourseStudents'},
-                    privilege: AccessPrivileges.PAGE_COURSE_STUDENTS,
+                    privilege: AccessPrivileges.PAGE_COURSE_USERS,
                 },
                 {
                     text: 'Settings',
@@ -109,12 +106,24 @@ export default {
         }
     },
     created(){
-        this.$router.push({name: 'CourseAnnouncements'});
+        this.$store.dispatch('getCourse', this.$route.params.id);
+        //this.$router.push({name: 'CourseAnnouncements'});
+        
     },
     computed: {
-        ...mapGetters(["authenticatedUser",]),
-    }
-
+        ...mapGetters(["authenticatedUser", 'course']),
+        displayedMenus(){
+            const menus = [];
+            for(var i in this.courseTabMenus){
+                const privilege = this.courseTabMenus[i].privilege;  
+                if(this.authenticatedUser.coursePrivileges.includes(privilege)){
+                    menus.push(this.courseTabMenus[i])
+                }
+            }
+            return menus;
+        }
+    },
+    
 }
 </script>
 
@@ -128,5 +137,9 @@ export default {
     
     .notification
         margin-left 10px
+
+        
+    .full-height
+        height calc(100%) !important    
 </style>
 

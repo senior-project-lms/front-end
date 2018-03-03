@@ -11,7 +11,10 @@ import CourseQA from '../../components/common-components/course/QA';
 import CourseResources from '../../components/common-components/course/Resources';
 import CourseAssignments from '../../components/common-components/course/Assignments';
 import CourseSettings from '../../components/common-components/course/Settings';
+import CourseUsers from '../../components/common-components/course/Users';
 import CourseStudents from '../../components/common-components/course/Students';
+import CourseEnrollmentRequests from '../../components/common-components/course/EnrollmentRequests';
+import CourseAuthenticatedUsers from '../../components/common-components/course/AuthenticatedUsers';
 
 
 var testQuiz = {
@@ -102,15 +105,48 @@ var settings = {
   
 }
 
-var students = {
-  path: 'students',
-  name: 'CourseStudents',
-  component: CourseStudents,
+var users = {
+  path: 'u',
+  name: 'CourseUsers',
+  component: CourseUsers,
   meta: {
-    privilege: AccessPrivileges.PAGE_COURSE_STUDENTS,
+    privilege: AccessPrivileges.PAGE_COURSE_USERS,
     requeiresAuthentication: true,
     base: 'Course',
   },
+  children:[
+    {
+      path: 'students',
+      name: 'CourseStudents',
+      component: CourseStudents,
+      meta: {
+        privilege: AccessPrivileges.PAGE_COURSE_ENROLLED_STUDENTS,
+        requeiresAuthentication: true,
+        base: 'Course',
+      },
+    },
+    {
+      path: 'enrollment-requests',
+      name: 'CourseEnrollmentRequests',
+      component: CourseEnrollmentRequests,
+      meta: {
+        privilege: AccessPrivileges.PAGE_COURSE_ENROLLMENT_REQUEST,
+        requeiresAuthentication: true,
+        base: 'Course',
+      },
+    },
+    {
+      path: 'authenticated-users',
+      name: 'CourseAuthenticatedUsers',
+      component: CourseAuthenticatedUsers,
+      meta: {
+        privilege: AccessPrivileges.PAGE_COURSE_AUTHENTICATED_USERS,
+        requeiresAuthentication: true,
+        base: 'Course',
+      },
+    },
+    
+  ]
 }
 
 
@@ -128,7 +164,7 @@ export default {
       testQuiz,
       assignments,
       settings,
-      students,
+      users,
   ],
   meta: {
     privilege: AccessPrivileges.PAGE_COURSE,
