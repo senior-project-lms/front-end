@@ -98,6 +98,18 @@ export default{
             })
             return response; 
         },
+        getAllAssistantUsers(context, data){
+            const publicKey = data.publicKey;
+            const param = data.param;
+            const type = data.type;
+            return userService.searchAssistantUser(type, publicKey, param)
+            .then( response => {
+                if(response.status){
+                    context.commit("setUsers", response.data)
+                }
+                return response;
+            })
+        },
 
 
     },

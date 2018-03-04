@@ -96,6 +96,9 @@ router.beforeEach((to, from, next) => {
     });
   }
   else{
+    if(to.name == 'Courses'){
+      store.state.authentication.authenticatedUser.coursePrivileges = [];
+    }
 
     if(to.name == 'Course'){
       //console.log('worked')

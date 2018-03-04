@@ -5,6 +5,7 @@ import AuthenticationService from './authentication';
 import Service from './common'
 import {AccessLevel} from '../properties/accessLevel'
 
+import {SearchType} from '../properties/searchType'
 
 var authenticationService = new AuthenticationService();
 var service = new Service();
@@ -103,6 +104,21 @@ export default class UserService{
 
     getAllUsernames(){
         return Axios.get('/usernames');
+    }
+
+    searchAssistantUser(type, publicKey, param){
+        
+        if(type == SearchType.User.NAME){
+            const path = `/api/course/${publicKey}/user/search-assistant/name/${param}`;
+            return service.getAll(path);
+        }
+        else if(type == SearchType.User.SURNAME){
+            const path = `/api/course/${publicKey}/user/search-assistant/surname/${param}`
+            return service.getAll(path);
+        }
+        else {
+            return [];
+        }
     }
 
 }

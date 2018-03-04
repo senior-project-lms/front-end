@@ -36,6 +36,7 @@ export default{
         setObserverStudents(state, list){
             state.observerStudents = list;
         },
+
         clearCourseStore(state){
             state.course = {}
             state.courses = [];
@@ -150,6 +151,17 @@ export default{
             })
         },
 
+        saveAssistant(context, data){
+            const publicKey = data.publicKey;
+            const params = data.params;
+            return courseService.saveAssistant(publicKey, params)
+            .then(response =>{
+                if(response.status){
+                }
+            });
+
+        }
+
     },
     getters: {
       
@@ -172,8 +184,7 @@ export default{
         },
         course(state){
             return state.course;
-        }
-
+        },
 
     }
 }

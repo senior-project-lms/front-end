@@ -10,8 +10,15 @@ export default class PrivilegeService{
     constructor(){}
 
 
-    getAll(){
+    getAllPrivilegeles(){
         return common.getAll('/api/privileges');
+    }
+
+    getAllCoursePrivileges(publicKey){
+        return common.getAll(`/api/course/${publicKey}/privileges/all`)
+    }
+    getDefaultCourseAssistantPrivileges(publicKey){
+        return common.getAll(`/api/course/${publicKey}/privileges/assistant`)
     }
 
 

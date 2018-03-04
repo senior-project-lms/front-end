@@ -45,7 +45,6 @@ export default {
                  return this.$store.dispatch('getMe')
                     .then(status => {
                         if(status){
-                            console.log("me")
                             return true;
                         }
                         return false;

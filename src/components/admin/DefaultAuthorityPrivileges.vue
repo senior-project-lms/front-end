@@ -2,7 +2,8 @@
     <div>
         <loader v-if="!isLoaded"/>
         <div v-if="isLoaded">
-            <v-layout row wrap class="def-auth-priv">
+            <v-container fluid  grid-list-md grid-list-sm grid-list-xs>
+            <v-layout row wrap class="">
                   <v-flex md2>
                     <v-card>
                         <v-list subheader>
@@ -42,6 +43,8 @@
                     </v-card>
                 </v-flex>
             </v-layout>
+
+            </v-container>
 
         </div>
     </div>

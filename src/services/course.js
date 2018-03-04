@@ -96,4 +96,8 @@ export default class CourseService{
     getCourseInfo(publicKey){
         return service.get(`/api/course/${publicKey}/info`);
     }
+
+    saveAssistant(publicKey, params){
+        return service.save(`/api/course/${publicKey}/assistant`, params);
+    }
 }

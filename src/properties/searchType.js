@@ -6,7 +6,11 @@ export const SearchType = Object.freeze({
         LECTURER: 2,
     },
     
-
+    User:{
+        NAME: 1,
+        SURNAME: 2,
+        
+    }
 
   });
   

@@ -119,7 +119,6 @@ export default {
         initialize(){
             this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.PAGE_COURSE_USERS)
             .then(resp => {
-                console.log(resp)
                 if(resp){
                     this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
                 }

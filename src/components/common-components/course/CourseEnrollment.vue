@@ -73,7 +73,7 @@
                                 <v-layout row wrap>
                                     <v-flex md12 xs12 sm12>
                                         <v-data-table
-                                        :headers="headers"
+                                        :headers="selectItems"
                                         :items="notEnrolledCourses"
                                         :rows-per-page-items="[10]"	
                                         class="elevation-1">
@@ -184,7 +184,7 @@ export default{
                 surname: null,
             },
             loading: null,
-            headers: [
+            selectItems: [
             { text: "Code", value: "code", align: "left" },
             { text: "Name", value: "name", align: "center" },
             { text: "Lecturer", value: "lecturer", align: "center" },
@@ -209,6 +209,7 @@ export default{
         }
     },
     created(){
+        this.searchType = this.selectItems[0];
     },
     methods:{
         enroll(publicKey){

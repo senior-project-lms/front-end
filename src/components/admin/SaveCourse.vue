@@ -12,7 +12,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Save Course</v-toolbar-title>
+                <v-toolbar-title>New Course</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="saveAll">Save</v-btn>
