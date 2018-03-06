@@ -6,7 +6,8 @@
             transition="dialog-bottom-transition"
             :overlay="false"
             scrollable
-            v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.ENROLL_COURSE}"
+            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.ENROLL_COURSE)"
+
         >
             <v-card tile>
                 <v-toolbar card dark color="primary">

@@ -12,6 +12,8 @@ import storeOptions from './stores/index'
 import Notifications from 'vue-notification'
 import Security from './directives/security'
 import course from './router/course/course';
+import security from './helpers/security';
+
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
@@ -23,7 +25,13 @@ const store = new Vuex.Store({
   modules: storeOptions,
 })
 
-
+const plugin = {
+  install () {
+      Vue.security = security;
+      Vue.prototype.$security = security;
+  }
+}
+Vue.use(plugin);
 
 
 Vue.config.productionTip = false

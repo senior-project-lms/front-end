@@ -119,7 +119,7 @@
                                                     <v-switch class="course-switch" 
                                                     v-model="props.item.visible" 
                                                     @change="updateVisibility(props.item.publicKey, props.item.visible)"
-                                                    v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.UPDATE_COURSE_VISIBILITY}">
+                                                    v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_COURSE_VISIBILITY)">
 
                                                     </v-switch>
                                                 </v-flex>
@@ -141,7 +141,7 @@
             <div>
                 <v-btn fixed dark fab bottom right color="pink"  
                 @click="dialog = !dialog" 
-                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_COURSE}"> 
+                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE)"> 
                     <v-icon>add</v-icon>
                     </v-btn>
             </div>

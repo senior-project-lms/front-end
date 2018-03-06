@@ -21,5 +21,9 @@ export default class PrivilegeService{
         return common.getAll(`/api/course/${publicKey}/privileges/assistant`)
     }
 
+    getAssistantPrivileges(publicKey, userPublicKey){
+        return common.getAll(`/api/course/${publicKey}/assistant/${userPublicKey}`)
+    }
+
 
 }

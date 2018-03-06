@@ -64,9 +64,9 @@ export default class Service{
         @return (boolean) returns boolean that represent deleted or not
         used in services, to delete data, requests with DELETE method
     */    
-    delete(path, publicKey){
+    delete(path){
         const accessToken = authService.getAccessToken();
-        return Axios.delete(`${path}/${publicKey}?access_token=${accessToken}`)
+        return Axios.delete(`${path}/?access_token=${accessToken}`)
         .then(response => {
             return this.___then(response);
 

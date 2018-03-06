@@ -3,7 +3,7 @@
         <v-card :color="unread" :class="{'border-color': announcement.borderColor}">
 
             <a
-                v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT}"
+                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
                 @click="dialog = true"
                 class="right dismiss">
                 delete

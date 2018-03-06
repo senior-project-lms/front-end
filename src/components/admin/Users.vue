@@ -112,7 +112,7 @@
                                                         class="user-switch" 
                                                         v-model="props.item.visible" 
                                                         @change="updateVisibility(props.item.publicKey, props.item.visible)"
-                                                        v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.UPDATE_USER_VISIBILITY}">
+                                                        v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_USER_VISIBILITY)">
                                                         </v-switch>
                                                     </v-flex>
                                                     <v-flex>
@@ -130,7 +130,8 @@
             </v-container>
             <div>
                 <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" 
-                 v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_USER}"> 
+                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_USER)"
+                 > 
                     <v-icon>add</v-icon>
                 </v-btn>
             </div>

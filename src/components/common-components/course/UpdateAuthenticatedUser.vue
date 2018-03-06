@@ -12,7 +12,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>New Assistant</v-toolbar-title>
+                <v-toolbar-title>Update Assistant</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="save" v-if="selectedAssistant">Save</v-btn>
@@ -21,6 +21,11 @@
                     <v-btn slot="activator" dark icon>
                         <v-icon>more_vert</v-icon>
                     </v-btn>
+                    <v-list>
+                        <v-list-tile @click="deleteAssistant">
+                        <v-list-tile-title>Delete</v-list-tile-title>
+                        </v-list-tile>
+                    </v-list>                    
                 </v-menu>
             </v-toolbar>
             <v-card-text>
@@ -30,72 +35,6 @@
                             <v-layout row wrap>
                                 <v-flex md12 xs12>
                                     <v-card>
-                                        <v-card-title class="title grey--text text--darken-2">User</v-card-title>
-                                        <v-divider></v-divider>
-                                        <v-card-text>
-                                            <v-layout row wrap>
-                                                    <v-flex md3 sm3 xs4>
-                                                        <v-select
-                                                        label="Search By"
-                                                        :items="selectItems"
-                                                        v-model="selectedSearchType">
-                                                        </v-select>
-                                                    </v-flex>  
-                                                    <v-flex md6 sm6 xs6>
-                                                        <v-text-field
-                                                            label="Search"
-                                                            v-model="searchParam"
-                                                            required>
-
-                                                        </v-text-field>
-                                                    </v-flex>
-                                                    <v-flex md2 sm2 xs2 v-if="$vuetify.breakpoint.width > 600">
-                                                        <v-btn class="primary"
-                                                        :loading="loading"
-                                                        @click="search">
-                                                        Search
-                                                        </v-btn>
-                                                    </v-flex>
-                                                    <v-flex md2 sm2 xs1 v-else>
-                                                        <v-btn icon class="primary"
-                                                        :loading="loading"
-                                                        @click="search">
-                                                        <v-icon>search</v-icon>
-                                                        </v-btn>
-                                                    </v-flex>                                            
-                                            </v-layout> 
-                                            <v-layout row wrap>
-                                                <v-flex md12 sm12 xs12>
-                                                    <v-data-table
-                                                        :headers="headers"
-                                                        :items="users"
-                                                        hide-actions
-                                                        class="elevation-1"                                            
-                                                    >
-                                                    <template slot="items" slot-scope="props">
-                                                        <tr :class="props.item.color">
-                                                            <td class="text-xs-center">
-                                                                {{props.item.name}}
-                                                            </td>        
-                                                            <td class="text-xs-center">
-                                                                {{props.item.surname}}
-                                                            </td>                                                                                                  
-                                                            <td class="text-xs-center">{{ props.item.authority.name }}</td>
-                                                            <td>
-                                                            <a @click="selectAssistant(props.item)">Select</a>
-                                                            </td>
-                                                        </tr>
-                                                    </template>                                                
-                                                    </v-data-table>
-                                                </v-flex>
-                                            </v-layout>                                        
-                                        </v-card-text>
-                                    </v-card>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout row wrap>
-                                <v-flex md12 xs12>
-                                    <v-card v-if="selectedAssistant">
                                         <v-card-title class="title grey--text text--darken-2">
                                             Available Privileges
                                         <v-spacer></v-spacer>
@@ -127,7 +66,7 @@
                         <v-flex md8 xs12>
                             <v-layout row wrap>
                                 <v-flex md12 xs12>
-                                    <v-card  v-if="selectedAssistant">
+                                    <v-card >
                                         <v-card-title class="title grey--text text--darken-2">
                                             Selected Assistant
                                         </v-card-title>
@@ -152,7 +91,7 @@
                             <v-layout row wrap>
                                 <v-flex md6 xs12>
                                     <v-flex md12 xs12>
-                                        <v-card v-if="selectedAssistant">
+                                        <v-card>
                                             <v-card-title class="title grey--text text--darken-2">
                                                 Default Privileges
                                             <v-spacer></v-spacer>
@@ -225,7 +164,7 @@ import {mapGetters} from 'vuex';
 import {SearchType} from '../../../properties/searchType'
 
 export default{
-    props:['dialog'],
+    props:['dialog', 'selectedAssistant'],
     components:{
     },
     data(){
@@ -237,18 +176,7 @@ export default{
             searchParam: '',
             step: 0,
             selectedSearchType: null,
-            selectedAssistant: null,
             newPrivileges: [],
-            selectItems: [
-                {
-                    text: 'Name',
-                    type: SearchType.User.NAME
-                },
-                {
-                    text: 'Lecturer',
-                    type: SearchType.User.Surname
-                },
-            ],
             headers: [
                 { text: "Name", value: "name", align: "center", sortable: false},
                 { text: "Surname", value: "email", align: "center" , sortable: false},
@@ -261,7 +189,16 @@ export default{
                 { text: "", value: "name", align: "center" , sortable: false},
 
             ],                
-
+            selectItems: [
+                {
+                    text: 'Name',
+                    type: SearchType.User.NAME
+                },
+                {
+                    text: 'Lecturer',
+                    type: SearchType.User.Surname
+                },
+            ],
         }
     },
     created(){
@@ -274,44 +211,14 @@ export default{
             this.$store.commit('setAllCoursePrivileges', []);
             this.$store.commit('setDefaultPrivileges', []);
             this.searchParam = '';
-            this.selectedAssistant = null;
             this.privilegeSearch = '';
             this.defaultAssistantPrivilegeSearch = '';
             this.newPrivilegeSearch = '';
+            this.$store.dispatch('getAllCoursePrivileges', this.$route.params.id)
+            this.$store.dispatch('getDefaultCourseAssistantPrivileges', this.$route.params.id)            
         },
         cancel(){
             this.$parent.closeDialog();
-        },
-        selectAssistant(assistant){
-            this.$store.commit('setUsers', []);
-            this.selectedAssistant = assistant; 
-        },
-        search(){
-            this.$store.commit('setAllCoursePrivileges', []);
-            this.selectedAssistant = null;
-            this.loading = true;
-            if(this.selectedSearchType == null){
-                this.$notify({type: "error", title: "Assistant Error", text: "Select a search type"})
-                this.loading = false;                
-                return;
-            }
-            else if (this.searchParam.length == 0){
-                this.$notify({type: "error", title: "Assistant Error", text: "Enter a search parameter"})
-                return;
-            }
-            else{
-                const data = {
-                    publicKey: this.$route.params.id,
-                    type: this.selectedSearchType.type,
-                    param: this.searchParam
-                };
-                this.$store.dispatch('getAllAssistantUsers', data)
-                .then(response => {
-                    this.loading = false;
-                    this.$store.dispatch('getAllCoursePrivileges', this.$route.params.id)
-                    this.$store.dispatch('getDefaultCourseAssistantPrivileges', this.$route.params.id)
-                });
-            }            
         },
         addNew(item){
             this.newPrivileges.push(item);
@@ -335,10 +242,6 @@ export default{
             })
         },
         save(){
-            if(this.selectAssistant == null){
-                this.$notify({type: "error", title: "Assistant Error", text: "Select a user"})
-            }
-
             var privileges = [];
 
             this.defaultPrivileges.map(item => {
@@ -365,6 +268,16 @@ export default{
             this.cancel();
 
         },
+        deleteAssistant(){
+
+            const data ={
+                publicKey: this.$route.params.id,
+                userPublicKey: this.selectedAssistant.publicKey,
+            }
+            this.$store.dispatch('deleteAssistant', data);
+            this.cancel();
+
+        }
     },
     computed: {
         ...mapGetters(["authenticatedUser", 'accessPrivileges', 'users', 'allCoursePrivileges', 'defaultPrivileges']),

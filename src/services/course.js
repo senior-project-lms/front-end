@@ -100,4 +100,14 @@ export default class CourseService{
     saveAssistant(publicKey, params){
         return service.save(`/api/course/${publicKey}/assistant`, params);
     }
+
+    getCourseAssistants(publicKey){
+        return service.getAll(`/api/course/${publicKey}/assistants`);
+    }
+
+
+
+    deleteAssistantCoursePrivilege(publicKey, userPublicKey){
+        return service.delete(`/api/course/${publicKey}/assistant/${userPublicKey}`)
+    }
 }

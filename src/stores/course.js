@@ -15,6 +15,7 @@ export default{
         notEnrolledCourses: [],
         students: [],
         observerStudents: [],
+        assistants: [],
 
     },
     mutations: {
@@ -33,6 +34,9 @@ export default{
         setStudents(state, list){
             state.students = list;
         },
+        setAssistants(state, list){
+            state.assistants = list;
+        },
         setObserverStudents(state, list){
             state.observerStudents = list;
         },
@@ -44,6 +48,7 @@ export default{
             state.notEnrolledCourses = [];
             state.students = [];
             state.observerStudents = [];
+            state.assistants = [];
         }
     },
     actions: {
@@ -157,9 +162,30 @@ export default{
             return courseService.saveAssistant(publicKey, params)
             .then(response =>{
                 if(response.status){
+                    context.dispatch('getAllAssistants', publicKey);
                 }
             });
+        },
 
+        deleteAssistant(context, data){
+            const publicKey = data.publicKey;
+            const userPublicKey = data.userPublicKey;
+            return courseService.deleteAssistantCoursePrivilege(publicKey, userPublicKey)
+            .then(response =>{
+                if(response.status){
+                    context.dispatch('getAllAssistants', publicKey);
+                }
+            });
+        },
+
+        getAllAssistants(context, publicKey){
+            return courseService.getCourseAssistants(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setAssistants", response.data)
+                }
+                return response;
+            })            
         }
 
     },
@@ -185,6 +211,8 @@ export default{
         course(state){
             return state.course;
         },
-
+        assistants(state){
+            return state.assistants;
+        }
     }
 }

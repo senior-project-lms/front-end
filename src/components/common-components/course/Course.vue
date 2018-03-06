@@ -26,7 +26,7 @@
                     :key="i"
                     ripple
                     :to="item.to"
-                    v-has-privilege="{user: authenticatedUser, privilege: item.privilege}">
+                    v-if="$security.hasPermission(authenticatedUser, item.privilege)">
                     {{ item.text }}
                     <v-badge class="notification" v-if="notifications[item.text] > 0">
                         <span slot="badge">{{ notifications[item.text] }}</span>

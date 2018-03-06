@@ -38,7 +38,7 @@
                 <v-layout row wrap >
                     <v-flex class="uploader" md12 sm12 xs12>
                       <input type="file" @change="processFiles($event)" multiple
-                      v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE}">
+                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
                     </v-flex>
                 </v-layout>
                 <v-layout row wrap>

@@ -8,6 +8,7 @@ export default {
         const privilege = binding.value.privilege;
         if(!userPrivileges.includes(privilege) && !userCoursePrivileges.includes(privilege)){
             el.style.visibility = "hidden"
+            el = null;
         }
     }
 

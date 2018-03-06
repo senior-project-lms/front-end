@@ -31,7 +31,7 @@ export default class SystemAnnouncementService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/system-announcement', publicKey);
+        return service.delete(`/api/system-announcement/${publicKey}`, );
     }
 
     /*
@@ -81,7 +81,7 @@ export default class SystemAnnouncementService{
     }
 
     deleteImage(publicKey){
-        return storageService.delete('/api/system-announcement/storage/image', publicKey);
+        return storageService.delete(`/api/system-announcement/storage/image/${publicKey}`);
     }
 
 

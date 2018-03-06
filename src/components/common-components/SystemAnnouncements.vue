@@ -21,14 +21,16 @@
     </v-container>
     <div>
             <v-btn fixed dark fab bottom right color="pink" 
-             v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT}"
+            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
+
              @click="dialog = !dialog" 
              > 
             <v-icon>add</v-icon>
           </v-btn>
     </div>
     <post-system-announcement :dialog="dialog"
-      v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT}"
+      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
+
     />
           
 

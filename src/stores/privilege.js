@@ -62,7 +62,17 @@ export default{
                 }
                 return response;
             });        
-        }
+        },
+        getCourseAssistantPrivileges(context, data){
+
+            return privilegeService.getAssistantPrivileges(data.publicKey, data.userPublicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit('setDefaultPrivileges', response.data);
+                }
+                return response;
+            });        
+        }        
     },
 
     getters: {

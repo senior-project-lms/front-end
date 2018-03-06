@@ -40,14 +40,15 @@
                         <td class="text-md-right text-xs-right" v-else>
                             
                             <a
-                            v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.APPROVE_ENROLLMENT_REQUEST}"
+                            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.APPROVE_ENROLLMENT_REQUEST)"
                                 @click="approve(props.item.publicKey)"
                             >
                             approve
                             </a> | 
                             <a 
                             class="red--text text--lighten-1"
-                            v-has-privilege="{user: authenticatedUser, privilege:  accessPrivileges.REJECT_ENROLLMENT_REQUEST}"
+                            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.REJECT_ENROLLMENT_REQUEST)"
+
                             @click="reject(props.item.publicKey)">
                                 reject
                                 </a>
