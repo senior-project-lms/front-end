@@ -1,98 +1,5 @@
 <template>
     <div>
-<<<<<<< HEAD
-        <v-layout class="top-info">   
-            <v-flex md4 class="outer-left-box">
-                <v-card color="green lighten-2" class="white--text">
-                    <v-container fluid grid-list-lg>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">{{ coursesStatuses.visibleCourses }}</div>
-                                </div>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">
-                                        <a class="white--text" @click="fetchActiveCourses">
-                                            Active Courses
-                                        </a>
-                                        
-                                    </div>
-                                </div>
-                            </v-flex>
-                        </v-layout>                            
-                    </v-container>
-                </v-card>
-            </v-flex>
-            <v-flex md4 class="inner-box">
-                <v-card color="blue lighten-2" class="white--text">
-                    <v-container fluid grid-list-lg>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">{{ coursesStatuses.invisibleCourses }}</div>
-                                </div>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">
-                                        <a class="white--text" @click="fetchInactiveCourses">
-                                            Deactivated Courses
-                                        </a>
-                                    </div>
-                                </div>
-                            </v-flex>
-                        </v-layout>                            
-                    </v-container>
-                </v-card>
-            </v-flex>   
-            <v-flex md4 class="outer-right-box">
-                <v-card color="red lighten-1" class="white--text">
-                    <v-container fluid grid-list-lg>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">99</div>
-                                </div>
-                            </v-flex>
-                        </v-layout>
-                        <v-layout row>
-                            <v-flex>
-                                <div>
-                                    <div class="headline text-md-center">Nothing Determined</div>
-                                </div>
-                            </v-flex>
-                        </v-layout>                            
-                    </v-container>
-                </v-card>
-            </v-flex>             
-        </v-layout>
-        <v-divider class="box-divider"></v-divider>
-            <h1 class="active-text grey--text darken-4">{{ activeText }}</h1>
-        <v-divider></v-divider>
-        <v-layout class="course-list">
-            <v-flex>
-                <v-data-table
-                :headers="headers"
-                :items="courses"
-                :rows-per-page-items="[50, 75]"	>
-                    <template slot="items" slot-scope="props">
-                        <tr :class="props.item.color">
-                            <td>{{ props.item.code }}</td>
-                            <td class="text-xs-center">
-                                <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
-                                    {{ props.item.name }}
-                                </router-link>
-                            </td>
-                            <td class="text-xs-center">{{ `${props.item.owner.name} ${props.item.owner.surname}` }}</td>
-                            <td>
-                                <v-layout  right>
-=======
         <loader v-if="!isLoaded"/>
         <div v-if="isLoaded">
             <v-container fluid grid-list-md>
@@ -101,7 +8,6 @@
                         <v-card color="green lighten-2" class="white--text">
                             <v-container fluid grid-list-lg>
                                 <v-layout row>
->>>>>>> development
                                     <v-flex>
                                         <div>
                                             <div class="headline text-md-center text-sm-center">{{ coursesStatuses.visibleCourses }}</div>
@@ -113,7 +19,7 @@
                                         <div>
                                             <div class="headline text-md-center text-sm-center">
                                                 <a class="white--text" @click="fetchActiveCourses">
-                                                    Actives
+                                                    Active
                                                 </a>
                                                 
                                             </div>
@@ -138,7 +44,7 @@
                                         <div>
                                             <div class="headline text-md-center text-sm-center">
                                                 <a class="white--text" @click="fetchInactiveCourses">
-                                                    Deactiveted
+                                                    Deactivated
                                                 </a>
                                             </div>
                                         </div>

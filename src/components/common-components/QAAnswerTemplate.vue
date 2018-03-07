@@ -1,138 +1,115 @@
 <template>
-    <div class="qa" v-if="!deleted">
-        <v-layout row wraped>
-        <v-flex md1 xs1>
-            <v-card dark color="primary">
-                <v-icon v-if="answer.isVerified">check_circle</v-icon>
-                <v-flex xs12 sm3>
-                    <v-btn flat icon color="blue">
-                        <v-icon>thumb_up</v-icon>
-                    </v-btn>
+    <div>
+        <v-container>
+            <v-layout row wrap>
+                <v-flex d-flex xs1 md1>
+                    <v-card>
+                    <div class="text-md-center">
+                        <a>
+                            <v-icon :style="votingStyle(answer.hasUpVoting)">fa-chevron-up</v-icon>
+                        </a>
+                    </div>
+                    <div class="text-md-center">
+                        <h3>{{ answer.votingCount }}</h3>
+                    </div>
+                    <div class="text-md-center">
+                        <a>
+                            <v-icon :style="votingStyle(answer.hasDownVoting)">fa-chevron-down</v-icon>
+                        </a>
+                    </div>
+                    <div class="text-md-center">
+                        <a>
+                            <v-icon v-html="star(answer.hasStared)" :style="startStyle(answer.hasStared)"></v-icon>
+                        </a>
+                    </div> 
+                    <div class="text-md-center">
+                        <h4>{{ answer.starCount }}</h4>
+                    </div>  
+                    </v-card>                       
                 </v-flex>
-                <v-flex xs12 sm3>
-                    <v-btn flat icon color="blue">
-                        <v-icon>thumb_down</v-icon>
-                    </v-btn>
-                </v-flex>
-            </v-card>
-            
-        </v-flex>
-
-        <v-flex md11>
-
-        <v-card :color="unread" :class="yellow">
-            
-
-
-            <!--<a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
-                @click="dialog = true"
-                class="right dismiss">
-                delete
-            </a>
-            <a v-else class="right dismiss" href="">dismiss</a> -->
-            
-            <v-divider class="divider"></v-divider>
-            <v-card-text>
-                <pre>
-                    <p class="text" v-html="answer.content"/>
-                </pre>
-            </v-card-text>
-            <v-card-actions>
+                <v-flex d-flex xs11 md11>
+                    <v-card>
+                    <v-layout row wrap>
+                        
+                        <v-flex>
+                            <h2>{{ answer.title }}</h2>
+                        </v-flex>
+                    </v-layout>
+                    <v-layout row wrap>
+                        <v-flex>
+                            {{ answer.content }}
+                        </v-flex>
+                        <!--<v-flex>
+                            {{ answer.instructorNote }}
+                        </v-flex>-->
+                    </v-layout>
+                     <v-card-actions>
                     <v-spacer></v-spacer>
-                    <div class="detail">
+                    <div>
                         <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
                         <br>
                         <span class="right grey--text ">{{answer.createdBy}}</span>
+                        <v-btn icon @click="answerDialog = !answerDialog">
+                            <v-icon>reply</v-icon>
+                        </v-btn>
+                            <post-qa-answer-comment :answerDialog="answerDialog"/>
+
                     </div>
             </v-card-actions>
-            
-        </v-card>
-        </v-flex>
-        <!-- DELETE DIALOG -->
-        <v-dialog v-model="dialog" max-width="400" persistent>
-            <v-card>
-                <v-card-title class="headline">Confim</v-card-title>
-                <v-card-text>Are you sure to delete system announcement?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">No</v-btn>
-                <v-btn color="green darken-1" flat="flat" @click.native="deleteAnnouncement">Yes</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+                   </v-card>             
+                </v-flex>
 
-    </v-layout>  
+                <v-flex>
+                    <v-card color="yellow">
+                        <v-card-text>
+                            <p>{{answer.instructorNote}}</p>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+                
+            </v-layout>
+        </v-container>
 
     </div>
+
+
+
 </template>
 <script>
+
 import * as moment from 'moment';
 import {mapGetters} from 'vuex';
+import PostQAAnswerComment from './PostQAAnswerComment';
+
 export default {
-    name: 'QAAnswerTemplate',
+ name: 'QAAnswerTemplate',
     props: ['answer'],
     data(){
         return{
             moment: moment,
             dialog: false,
-            deleted: false
+            deleted: false,
+            answerDialog: false
         }
     },
-    methods: {
-        deleteAnnouncement(){
-            try{
-                this.dialog = false;
-                if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-                    this.$parent.deleteAnnouncement(this.announcement.publicKey);
-                }
-            }
-            catch(e){
-
-            }
-        }
-    },
-    computed: {
-        ...mapGetters(['authenticatedUser', 'accessPrivileges']),
-        unread (){
-            // if(!this.announcement.isRead){
-            //     return "yellow lighten-4"
-            // }
-            // return "red lighten-3"
-           
+    methods:{
+        star(is){
+            return is ? 'fa-star' : 'far fa-star'
         },
-    
-        
+        startStyle(is){
+            return is ? { color: '#F9A825'} : {}
+        },
+        votingStyle(has){
+            return has ? { color: '#1E88E5'} : {}
+        },
+
+        cancelQAAnswerComment(){
+
+        }
+    },
+    computed:{
+
     }
 }
+    
 </script>
-
-
-<style lang="stylus"  scoped="scoped">
-    .divider
-        margin-top 2px
-        margin-bottom 2px
-    .qa
-        // margin-right 10px
-        // margin-left 10px
-        margin-top 10px
-        margin-bottom 15px
-
-    .detail
-        margin-top -100px
-        margin-bottom -70px
-        
-
-    .text 
-        margin-top -20px
-        padding-left 20px
-        margin-right 20px
-        word-wrap break-word    
-    .dismiss
-        margin-top 15px
-        margin-right 5px
-        
-    .file-list
-      margin-top 10px
-      margin-bottom 10px
-      list-style-type none
-</style>

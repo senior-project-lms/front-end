@@ -1,4 +1,5 @@
 <template>
+<v-container>
   <v-flex>
     <h1>Globally asked questions</h1>
     <br>
@@ -18,6 +19,7 @@
         <v-btn block class="load-more" light outline @click="loadGlobalQuestions(page)" v-if="loader">More</v-btn>
       </template>
   </v-flex>
+  </v-container>
 </template>
 
 <script>
@@ -64,7 +66,7 @@
                 },
 
                 {
-                    title: "What is this Fomorian thingy?.",
+                    title: "What is this Fomorian thingy?",
                     content: "Apparently there's this new alert archwing mission. How do we do it and is there any good loot?",
                     updatedAt: "20180205",
                     createdBy: "Rebecca Ford",

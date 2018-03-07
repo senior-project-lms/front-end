@@ -1,27 +1,26 @@
 <template>
-      
+      <v-dialog v-model="answerDialog" persistent max-width="1000">
         <v-card>
-          <v-card-title class="headline">Submit your answer:</v-card-title>
+          <v-card-title class="headline">Give your feedback to the answer</v-card-title>
           <v-flex class="post">      
+              <v-flex>
+                  <v-text-field label="Title" v-model="courseQuestion.title" required=""/>
+              </v-flex>
               <v-flex>
                 <vue-editor :editorToolbar="customToolbar" 
                 v-model="answer.content" required />
               </v-flex>
-              <v-flex class="uploader">
-                <v-flex>
-                    <v-divider></v-divider>                  
-                </v-flex>                  
-              </v-flex>                  
+                 
           </v-flex>
           <v-card-actions>
             <v-spacer></v-spacer>
-            
+            <v-btn color="red darken-2" flat @click.native="cancel(false)">Cancel</v-btn>
             <v-btn color="green darken-1" flat @click="save"
-            v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)">
+            v-if=true>
             Submit</v-btn>
           </v-card-actions>
         </v-card>
-        
+      </v-dialog>  
 </template>
 
 
@@ -45,7 +44,7 @@ var customToolbar = [
 ]
 
 export default {
-  
+  props: ['answerDialog'],
   components: {
       VueEditor,
 },
@@ -54,6 +53,7 @@ export default {
           customToolbar: customToolbar, 
           uploader: false,
           answer: {
+              
               content: '',
           }
       }
@@ -65,7 +65,7 @@ export default {
 
     save(){
         if(this.answer.content.length > 0){
-            this.$store.dispatch("saveGlobalQuestionAnswer", this.answer)
+            this.$store.dispatch("saveQAAnswer", this.answer)
             .then(response => {
               if(response){
                 this.cancel(true);
@@ -73,14 +73,18 @@ export default {
             });
         }
     },
-    
+
+    cancel(saved){
+      this.$parent.cancelAnswerPost();
+    },
+
     // not used because of responsive image problam.
     // handleImageAdded(file, Editor, cursorLocation){
 
-    //     this.$store.dispatch("uploadanswerImage", file)
+    //     this.$store.dispatch("uploadcourseQuestionImage", file)
     //     .then(data => {
     //         if(data != null && data != undefined){
-    //           this.answer.imagePublicKeys.push(data.publicKey);
+    //           this.courseQuestion.imagePublicKeys.push(data.publicKey);
     //           Editor.insertEmbed(cursorLocation, 'image', data.url)
     //         }
     //     });
@@ -93,9 +97,9 @@ export default {
   },
   watch:{
       dialog(){
-
         this.answer = {
-            content: ''            
+            
+            content: '',
           }
       }
   },

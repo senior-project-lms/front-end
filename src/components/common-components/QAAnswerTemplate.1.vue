@@ -1,17 +1,52 @@
 <template>
     <div class="qa" v-if="!deleted">
+        <v-container fluid grid-list-xs>
         <v-layout row wraped>
-        <v-flex d-flex md1 xs3>
+        <v-flex d-flex md2 xs2>
             <v-card dark color="primary">
-                <!--<v-card-text class="px-0">12</v-card-text>-->
-                
-                <v-card-text class = "text-xs-center">{{qa.numAnswers}} answers</v-card-text>
 
+                
+                <div>
+                
+                    
+                <v-flex xs12>
+                    <v-spacer></v-spacer>
+                    <v-flex xs6 offset-xs2>
+                    <v-btn flat large icon color="white">
+
+                        <v-icon>keyboard_arrow_up</v-icon>
+                    </v-btn>
+                    </v-flex>
+                    <!--<v-flex xs6>
+                    <v-card-text class="text-xs-center">{{answer.numUpvotes}}</v-card-text>
+                    </v-flex>-->
+                </v-flex>
+                    <!--<v-spacer></v-spacer>
+                </v-flex>-->
+                <v-flex xs12 sm3 offset-xs2>
+                    <v-btn v-if="answer.isVerified" flat large icon color="yellow">
+
+                        <v-icon>stars</v-icon>
+                    </v-btn>
+                    <v-btn v-else flat large icon color="white">
+
+                        <v-icon>stars</v-icon>
+                    </v-btn>
+                </v-flex>
+                
+                <v-flex xs12 sm3 offset-xs2>
+                    <v-btn flat large icon color="white">
+                        <v-icon>keyboard_arrow_down</v-icon>
+                        
+                    </v-btn>
+                </v-flex>
+                
+                </div>
             </v-card>
             
         </v-flex>
 
-        <v-flex xs9 md11>
+        <v-flex d-flex md11>
 
         <v-card :color="unread">
             
@@ -24,22 +59,18 @@
             </a>
             <a v-else class="right dismiss" href="">dismiss</a> -->
             
-            <v-card-title>
-                <h5 class="headline">{{ qa.title }}</h5>
-                <v-icon class="icon-xs-left" v-if="qa.isVerified">check_circle</v-icon>
-            </v-card-title>
-            <!--<v-divider class="divider"></v-divider>
+            <v-divider class="divider"></v-divider>
             <v-card-text>
                 <pre>
-                    <p class="text" v-html="qa.content"/>
+                    <p class="text" v-html="answer.content"/>
                 </pre>
-            </v-card-text>-->
+            </v-card-text>
             <v-card-actions>
                     <v-spacer></v-spacer>
-                    <div class="detail">
-                        <span class="right grey--text ">{{ moment(qa.updatedAt).fromNow() }}</span>
+                    <div>
+                        <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
                         <br>
-                        <span class="right grey--text ">{{qa.createdBy}}</span>
+                        <span class="right grey--text ">{{answer.createdBy}}</span>
                     </div>
             </v-card-actions>
             
@@ -59,15 +90,15 @@
         </v-dialog>
 
     </v-layout>  
-
+    </v-container>
     </div>
 </template>
 <script>
 import * as moment from 'moment';
 import {mapGetters} from 'vuex';
 export default {
-    name: 'QATemplate',
-    props: ['qa'],
+    name: 'QAAnswerTemplate',
+    props: ['answer'],
     data(){
         return{
             moment: moment,

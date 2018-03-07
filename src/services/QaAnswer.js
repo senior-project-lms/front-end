@@ -46,10 +46,6 @@ export default class GlobalQAService{
         
     }
 
-    getAnswers(questionPublicKey){
-        return service.getAnswers('api/global-answers/');
-    }
-
     
 
 }

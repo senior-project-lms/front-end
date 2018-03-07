@@ -1,4 +1,4 @@
-import GlobalQAService from "../services/globalQA";
+import GlobalQAService from "../services/QaAnswer";
 
 var globalQAService = new GlobalQAService();
 
@@ -12,11 +12,11 @@ getters:
 
 export default{
     state: {
-        globalQAs: []
+        answers: []
     },
 
     mutations:{
-        setGlobalQAs(state, qas){
+        setQaAnswers(state, qas){
              qas = state.globalQAs.concat(qas);
              state.globalQAs = qas;
         },

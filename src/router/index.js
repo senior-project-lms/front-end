@@ -31,7 +31,7 @@ import Page404 from '../components/404.vue'
 import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
 import Home from '../components/common-components/Home'
 
-import QASample from "../components/common-components/QAPage"
+import QAPage from "../components/common-components/QAPage"
 
 Vue.use(Router)
 
@@ -119,9 +119,9 @@ export default new Router({
                 component: qaGlobal,
               },
               {
-                path: "qa-sample",
-                name: 'QA-Sample',
-                component: QASample,
+                path: "QAPage",
+                name: 'QAPage',
+                component: QAPage,
               },                                   
           ]
         },

@@ -19,6 +19,12 @@ export default{
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
             {
+              icon: 'fa-bullhorn',
+              title: 'QAPage',
+              to: {name: 'QAPage'},
+              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+            },
+            {
               icon: 'fa-book',
               title: 'Courses',
               to: {name: 'Courses'},
@@ -61,34 +67,6 @@ export default{
               authenticated: null,
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
-<<<<<<< HEAD
-            /*{                                   Burayı tek bir sorunun QA sayfasını düzenlemek için kullandıydım
-              icon: 'fa-question-circle-o',
-              title: 'QA-Sample',
-              to: {name: 'QA-Sample'},
-              authenticated: null,
-              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
-            },*/
-            {
-              icon: 'fa-bullhorn',
-              title: 'System Announcement',
-              to: {name: 'SystemAnnouncements'},
-              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
-            },
-            {
-              icon: 'fa-book',
-              title: 'Courses',
-              to: {name: 'CoursesForAdmin'},
-              authenticated:  AccessPrivileges.READ_ALL_COURSES,
-            },
-            {
-              icon: 'fa-users',
-              title: 'Users',
-              to: {name: 'UsersForAdmin'},
-              authenticated: AccessPrivileges.READ_ALL_USERS,
-            },
-=======
->>>>>>> development
                       
         ],
         topMenuItems: [

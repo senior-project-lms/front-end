@@ -1,32 +1,4 @@
 <template>
-<<<<<<< HEAD
- <v-dialog v-model="dialog" persistent max-width="1000">
-        <v-card>
-          <v-card-title class="headline">Course</v-card-title>
-            <v-layout row wrap class="tab-btn">
-                <v-flex md6>
-                    <a color="" block @click="active = false" ><p class="text-md-center text-sm-center text-xs-center">Add Single Course</p></a>
-                    <v-divider v-if="!active" class="grey darken-4"></v-divider>
-                </v-flex>
-                <v-flex md6>
-                    <a color="" block @click="active = true"><p class="text-md-center text-sm-center text-xs-center">Add Multiple Courses</p></a>
-                    <v-divider v-if="active" class="grey darken-4"></v-divider>
-                </v-flex>
-            </v-layout>
-                
-
-            <v-flex xs10 sm10 md10 offset-md1 offset-sm1 offset-xs1 class="post"> 
-            <v-divider></v-divider>
-                <div v-if="!active">
-                    <v-layout row wrap>
-                        <v-flex md3 xs4 lg3 xs3 class="course-code">
-                            <v-text-field label="Code" v-model="course.code" required/>
-                        </v-flex>
-                        <v-flex >
-                            <v-text-field label="Name"  v-model="course.name" required/>
-                        </v-flex>
-                    </v-layout>   
-=======
   <div>
       <v-dialog
         v-model="dialog"
@@ -53,7 +25,6 @@
             </v-toolbar>
             <v-card-text>
                 <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
->>>>>>> development
                     <v-layout row wrap>
                         <v-flex md5 lg5 xs12 sm12>
                             <v-card>
