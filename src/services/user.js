@@ -37,11 +37,11 @@ export default class UserService{
     }
   
     save(params){
-        return service.save('/api/user', params);
+        return service.post('/api/user', params);
     } 
 
     saveAll(params){
-        return service.save('/api/users', params);
+        return service.post('/api/users', params);
     }
 
     getAll(visible){
@@ -121,6 +121,27 @@ export default class UserService{
         }
     }
 
+
+    forgetPassowrd(user){
+        return Axios.post(`/forgot-password`, user)
+        .then(response => {
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
+    }
+
+    resetPassword(token, passwordObject){
+        return Axios.post(`/reset-password/${token}`, passwordObject)
+        .then(response => {
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
+
+    }
 }
 
 

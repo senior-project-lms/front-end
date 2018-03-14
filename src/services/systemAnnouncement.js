@@ -19,7 +19,7 @@ export default class SystemAnnouncementService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/system-announcement', params);      
+        return service.post('/api/system-announcement', params);      
     }
 
 

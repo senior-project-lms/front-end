@@ -15,11 +15,11 @@ export default class CourseService{
     }
 
     save(params){
-        return service.save('/api/course', params);
+        return service.post('/api/course', params);
     }
 
     saveAll(params){
-        return service.save('/api/courses', params)
+        return service.post('/api/courses', params)
     }
 
     getAll(visible){
@@ -75,7 +75,7 @@ export default class CourseService{
         }
         else if(searchType == SearchType.Course.LECTURER){
             // not saving, but save method use post request
-            return service.save(`/api/courses/not-registered/lecturer`, searchParam);
+            return service.post(`/api/courses/not-registered/lecturer`, searchParam);
         }
         
     }
@@ -98,7 +98,7 @@ export default class CourseService{
     }
 
     saveAssistant(publicKey, params){
-        return service.save(`/api/course/${publicKey}/assistant`, params);
+        return service.post(`/api/course/${publicKey}/assistant`, params);
     }
 
     getCourseAssistants(publicKey){

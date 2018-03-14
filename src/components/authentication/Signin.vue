@@ -36,7 +36,7 @@
                                         </v-checkbox>                                
                                     </v-flex>
                                     <v-flex md6>
-                                        <router-link :to="{name: 'SignIn'}" class="right">
+                                        <router-link :to="{name: 'ForgotPassword'}" class="right">
                                             forgot your password
                                         </router-link>
                                     </v-flex>                                

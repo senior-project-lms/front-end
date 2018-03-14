@@ -17,6 +17,9 @@ import Courses from '../components/common-components/course/Courses'
 import Calendar from '../components/common-components/Calendar'
 import Settings from '../components/common-components/Settings'
 import Signout from '../components/authentication/Signout'
+import ForgotPassword from '../components/authentication/ForgotPassword'
+import UpdatePasswordWithToken from '../components/authentication/UpdatePasswordWithToken'
+
 import Profile from '../components/common-components/Profile'
 import PublicResources from '../components/common-components/PublicResources'
 import qaGlobal from '../components/common-components/QA-Global'
@@ -194,6 +197,26 @@ export default new Router({
       name: 'SignIn',
       component: SignIn,
       alias: ['/signin'],
+      meta: {
+        requeiresAuthentication: false,
+        base: '',
+
+      }
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: ForgotPassword,
+      meta: {
+        requeiresAuthentication: false,
+        base: '',
+
+      }
+    },
+    {
+      path: '/update-password/:token',
+      name: 'UpdatePasswordWithToken',
+      component: UpdatePasswordWithToken,
       meta: {
         requeiresAuthentication: false,
         base: '',

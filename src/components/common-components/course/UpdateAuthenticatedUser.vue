@@ -215,7 +215,12 @@ export default{
             this.defaultAssistantPrivilegeSearch = '';
             this.newPrivilegeSearch = '';
             this.$store.dispatch('getAllCoursePrivileges', this.$route.params.id)
-            this.$store.dispatch('getDefaultCourseAssistantPrivileges', this.$route.params.id)            
+
+            const data = {
+                publicKey: this.$route.params.id,
+                userPublicKey: this.selectedAssistant.publicKey
+            }
+            this.$store.dispatch('getCourseAssistantPrivileges', data)            
         },
         cancel(){
             this.$parent.closeDialog();

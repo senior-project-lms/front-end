@@ -46,7 +46,7 @@ export default class Service{
         @return (boolean) returns boolean that represent saved or not
         used in services, to save data, requests with POST method
     */
-    save(path, params){
+    post(path, params){
         const accessToken = authService.getAccessToken();
         return Axios.post(`${path}?access_token=${accessToken}`, params)
         .then(response => {
@@ -84,7 +84,7 @@ export default class Service{
         @return (boolean) returns boolean that represent updated or not
         used in services, to delete data, requests with PUT method
     */    
-    update(path, params){
+    put(path, params){
         const accessToken = authService.getAccessToken();
         return Axios.put(`${path}?access_token=${accessToken}`, params)
         .then(response => {
