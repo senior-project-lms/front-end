@@ -1,9 +1,17 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import 'vuetify/dist/vuetify.css'
+import 'fullcalendar/dist/fullcalendar.css';
+import 'element-ui/lib/theme-chalk/index.css';
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.css'
+
+import {DatePicker, Input, Button, Table, TableColumn} from 'element-ui'
+import lang from 'element-ui/lib/locale/lang/en'
+import locale from 'element-ui/lib/locale'
+
 
 import App from './App'
 import router from './router'
@@ -13,11 +21,25 @@ import Notifications from 'vue-notification'
 import Security from './directives/security'
 import course from './router/course/course';
 import security from './helpers/security';
+import FullCalendar from 'vue-full-calendar'
+
+// import components
+Vue.component(DatePicker.name, DatePicker)
+Vue.component(Input.name, Input)
+Vue.component(Button.name, Button)
+Vue.component(Table.name, Table)
+Vue.component(TableColumn.name, TableColumn)
+
+locale.use(lang)
+
 
 
 Vue.use(Vuetify)
 Vue.use(Vuex)
 Vue.use(Notifications)
+Vue.use(FullCalendar)
+locale.use(lang)
+
 
 Vue.directive('has-privilege', Security);
 

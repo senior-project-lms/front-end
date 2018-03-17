@@ -132,8 +132,8 @@ export default class UserService{
         })
     }
 
-    resetPassword(token, passwordObject){
-        return Axios.post(`/reset-password/${token}`, passwordObject)
+    resetPassword(token, passwords){
+        return Axios.post(`/reset-password/${token}`, passwords)
         .then(response => {
             return service.___then(response)
         })

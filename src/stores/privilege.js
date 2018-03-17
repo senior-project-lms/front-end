@@ -35,7 +35,7 @@ export default{
     },
     actions:{
         getAllPrivileges(context){
-            return privilegeService.getAll()
+            return privilegeService.getAllPrivilegeles()
             .then(response => {
                 if(response.status){
                     context.commit('setPrivileges', response.data);

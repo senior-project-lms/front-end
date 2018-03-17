@@ -13,7 +13,8 @@
                                 <v-text-field
                                         label="Enter your password"
                                         v-model="passwords.password"
-                                        text="password"
+                                        :text="text"
+                                        :min="8"
                                         required>
                                 </v-text-field>    
                             </v-flex>
@@ -23,7 +24,8 @@
                                 <v-text-field
                                         label="Enter your password"
                                         v-model="passwords.confirmPassword"
-                                        text="password"
+                                        :text="text"
+                                        :min="8"
                                         required>
                                 </v-text-field>    
                             </v-flex>
@@ -47,8 +49,9 @@ import {mapGetters} from 'vuex'
 export default {
     data(){
         return {
+            text: 'password',
             signInProcess: false,
-            passowrds: {
+            passwords: {
                 password:'',
                 confirmPassword:'',
             }
@@ -58,14 +61,26 @@ export default {
     },
     methods:{
         submit(){
-           
-            // this.$store.dispatch("login", this.authUser)
-            // .then(response => {
-            //     this.signInProcess = false;
-            //     if(response){
-            //         this.$router.push({name:"SystemAnnouncements"});
-            //     }
-            // });
+            if(this.passwords.password.length < 8){
+                this.$notify({type: "error", title: "Reset Password", text: "Password must be mininum 8 character"})
+
+            }
+            else if(this.passwords.password != this.passwords.confirmPassword){
+                this.$notify({type: "error", title: "Reset Password", text: "Passwords are not matched"})
+            }
+            else{
+                const data = {
+                    passwords: this.passwords,
+                    token: this.$route.params.token
+                }
+                this.$store.dispatch("resetPassword", data)
+                .then(response => {
+                    this.signInProcess = false;
+                    if(response){
+                        this.$router.push({name:"SignIn"});
+                    }
+                });
+            }
 
         }
     },

@@ -18,7 +18,7 @@ import Calendar from '../components/common-components/Calendar'
 import Settings from '../components/common-components/Settings'
 import Signout from '../components/authentication/Signout'
 import ForgotPassword from '../components/authentication/ForgotPassword'
-import UpdatePasswordWithToken from '../components/authentication/UpdatePasswordWithToken'
+import ResetPasswordWithToken from '../components/authentication/ResetPasswordWithToken'
 
 import Profile from '../components/common-components/Profile'
 import PublicResources from '../components/common-components/PublicResources'
@@ -214,9 +214,9 @@ export default new Router({
       }
     },
     {
-      path: '/update-password/:token',
-      name: 'UpdatePasswordWithToken',
-      component: UpdatePasswordWithToken,
+      path: '/reset-password/:token',
+      name: 'ResetPasswordWithToken',
+      component: ResetPasswordWithToken,
       meta: {
         requeiresAuthentication: false,
         base: '',

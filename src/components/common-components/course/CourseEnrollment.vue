@@ -302,7 +302,7 @@ export default{
     },
     watch: {
         dialog(nval, oval){
-            if(nval == true){
+            if(nval){
                 this.$store.dispatch("getAuthUserEnrollmentRequests");
                 
             }

@@ -105,9 +105,19 @@ export default class CourseService{
         return service.getAll(`/api/course/${publicKey}/assistants`);
     }
 
-
-
     deleteAssistantCoursePrivilege(publicKey, userPublicKey){
         return service.delete(`/api/course/${publicKey}/assistant/${userPublicKey}`)
     }
+
+    saveEvent(publicKey, params){
+        return service.post(`/api/course/${publicKey}/calendar`, params);
+    }
+    deleteEvent(publicKey, eventPublicKey){
+        return service.delete(`/api/course/${publicKey}/calendar/${eventPublicKey}`);
+    }
+
+    getAllEvents(publicKey){
+        return service.getAll(`/api/course/${publicKey}/calendar`);
+    }
+
 }

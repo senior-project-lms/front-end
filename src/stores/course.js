@@ -16,11 +16,15 @@ export default{
         students: [],
         observerStudents: [],
         assistants: [],
+        events: [],
 
     },
     mutations: {
         setCourse(state, object){
             state.course = object;
+        },
+        setEvents(state, object){
+            state.events = object;
         },
         setCourses(state, list){
             state.courses = list;
@@ -49,6 +53,8 @@ export default{
             state.students = [];
             state.observerStudents = [];
             state.assistants = [];
+            state.events = [];
+
         }
     },
     actions: {
@@ -186,7 +192,37 @@ export default{
                 }
                 return response;
             })            
-        }
+        },
+        getAllCourseEvents(context, publicKey){
+            return courseService.getAllEvents(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setEvents", response.data)
+                }
+                return response;
+            })            
+        },
+        deleteCourseEvent(context, data){
+            const publicKey = data.publicKey;
+            const eventPublicKey = data.eventPublicKey;
+            return courseService.deleteEvent(publicKey, eventPublicKey)
+            .then(response =>{
+                if(response.status){
+                    context.dispatch('getAllCourseEvents', publicKey);
+                }
+            });
+        },
+
+        saveCourseEvent(context, data){
+            const publicKey = data.publicKey;
+            const params = data.params;
+            return courseService.saveEvent(publicKey, params)
+            .then(response =>{
+                if(response.status){
+                    context.dispatch('getAllCourseEvents', publicKey);
+                }
+            });
+        },
 
     },
     getters: {
@@ -206,13 +242,15 @@ export default{
         },
         notEnrolledCourses(state){
             return state.notEnrolledCourses;
-
         },
         course(state){
             return state.course;
         },
         assistants(state){
             return state.assistants;
-        }
+        },
+        courseEvents(state){
+            return state.events;
+        },
     }
 }

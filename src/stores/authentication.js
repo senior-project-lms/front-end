@@ -71,7 +71,7 @@ export default{
             return userService.forgetPassowrd(user);
         },
         resetPassword(context, data){
-            return userService.resetPassword(data.token, data.passwordObject);
+            return userService.resetPassword(data.token, data.passwords);
         },
         getMe(context){
             return userService.getProfile()
