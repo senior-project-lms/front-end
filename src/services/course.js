@@ -120,4 +120,9 @@ export default class CourseService{
         return service.getAll(`/api/course/${publicKey}/calendar`);
     }
 
+    getAllEventsOfRegisteredCoursesOfAuthUser(){
+        return service.getAll(`/api/course/all/calendar`);
+
+    }
+
 }

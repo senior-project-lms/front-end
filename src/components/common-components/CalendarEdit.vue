@@ -65,7 +65,7 @@
                             </v-card-title>
                             <v-data-table
                             :headers="headers"
-                            :items="courseEvents"
+                            :items="systemEvents"
                             :search="search"
                             >
                             <template slot="items" slot-scope="props">
@@ -73,7 +73,7 @@
                                 <td>{{ moment(props.item.start).format('MMMM Do YYYY, h:mm:ss a')}}</td>
                                 <td>{{ moment(props.item.end).format('MMMM Do YYYY, h:mm:ss a')}}</td>
                                 <td class="text-xs-right"><a class="red--text" @click="deleteEvent(props.item.publicKey)"
-                                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_CALENDAR)"> 
+                                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_GLOBAL_CALENDAR)"
                                 >delete</a></td>
                             </template>
                             <v-alert slot="no-results" :value="true" color="error" icon="warning">
@@ -112,7 +112,7 @@ export default{
         }
     },
     created(){
-        this.$store.dispatch("getAllCourseEvents", this.$route.params.id);
+        this.$store.dispatch("getAllSystemEvents");
     },
     methods:{
         save(){
@@ -120,30 +120,29 @@ export default{
                 this.$notify({type: "error", title: "Course Event", text: "Date cannot be null"})
             }
             else{
-                const data =  {
-                    publicKey: this.$route.params.id,
-                    params: {
-                        title: this.event.title,
-                        start: this.event.date[0],
-                        end: this.event.date[1]
-                    }   
-                }
-                this.$store.dispatch("saveCourseEvent", data);
+                const data = {
+                    title: this.event.title,
+                    start: this.event.date[0],
+                    end: this.event.date[1]
+                }   
+            
+                this.$store.dispatch("saveSystemEvent", data);
             }
         },
-        deleteEvent(eventPublicKey){
-            const data = {
-                publicKey: this.$route.params.id,
-                eventPublicKey: publicKey
-            }
-            this.$store.dispatch("deleteCourseEvent", data);
+        deleteEvent(publicKey){
+            this.$store.dispatch("deleteSystemEvent", publicKey)
+            .then(response => {
+                if(response.status){
+                    this.$store.dispatch("getAllSystemEvents");
+                }
+            });
         },
         cancel(){
             this.$emit("cancel");
         }
     },
     computed:{
-        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseEvents']),
+        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'systemEvents']),
 
     },
     watch:{

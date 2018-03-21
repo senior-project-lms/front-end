@@ -202,6 +202,15 @@ export default{
                 return response;
             })            
         },
+        getAllCourseEventsOfRegisteredCourses(context){
+            return courseService.getAllEventsOfRegisteredCoursesOfAuthUser()
+            .then( response => {
+                if(response.status){
+                    context.commit("setEvents", response.data)
+                }
+                return response;
+            })            
+        },
         deleteCourseEvent(context, data){
             const publicKey = data.publicKey;
             const eventPublicKey = data.eventPublicKey;

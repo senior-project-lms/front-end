@@ -5,7 +5,7 @@
                 <v-flex md12>
                     <v-card>
                         <v-card-text>
-                            <full-calendar :events="courseEvents"/>                    
+                            <full-calendar id="calendar" :events="courseEvents" :defaultView="'month'" :editable="false"/>                    
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -42,6 +42,8 @@ export default {
         }
     },
     created(){
+        this.$store.dispatch("getAllCourseEvents", this.$route.params.id);
+    
 
     },
     methods: {
