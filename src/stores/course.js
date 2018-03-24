@@ -23,8 +23,8 @@ export default{
         setCourse(state, object){
             state.course = object;
         },
-        setEvents(state, object){
-            state.events = object;
+        setEvents(state, list){
+            state.events = list;
         },
         setCourses(state, list){
             state.courses = list;

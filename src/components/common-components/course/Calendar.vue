@@ -5,7 +5,7 @@
                 <v-flex md12>
                     <v-card>
                         <v-card-text>
-                            <full-calendar id="calendar" :events="courseEvents" :defaultView="'month'" :editable="false"/>                    
+                            <full-calendar id="calendar" :events="events" :defaultView="'month'" :editable="false"/>                    
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -51,8 +51,19 @@ export default {
             this.dialog = false;
         }
     },
+    beforeDestroy(){
+    },
     computed:{
-        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseEvents'])
+        ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseEvents']),
+
+        events(){
+            this.courseEvents.map(event => {
+                event.start = event.start + (3 * 60 * 60 * 1000)
+                event.end = event.end + (3 * 60 * 60 * 1000);
+            })
+            return this.courseEvents;
+            
+        }
     }
 }    
 </script>

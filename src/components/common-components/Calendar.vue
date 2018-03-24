@@ -28,6 +28,8 @@
 <script>
 import {mapGetters} from 'vuex'
 import CalendarEdit from './CalendarEdit'
+import * as moment from 'moment'
+
 
 export default {
     components: {
@@ -38,10 +40,14 @@ export default {
             menu: false,
             modal: false,            
             dialog: false,
+            colors: ['#E57373', '#7986CB', '#1E88E5', '#26A69A', '#43A047',
+             '#7CB342', '#B3E5FC', '#D4E157', '#FFEE58', '#FFA726', '#FF8A65',
+              '#8D6E63', '#78909C'],
 
         }
     },
     created(){
+        this.$store.commit('setEvents', []);
         this.$store.dispatch("getAllCourseEventsOfRegisteredCourses");
         this.$store.dispatch("getAllSystemEvents");
     },
@@ -55,11 +61,26 @@ export default {
         events(){
             var events = [];
 
-            for (const i in this.courseEvents) {
-                var event = this.courseEvents[i];
+            var courseCodes = [];
+            this.courseEvents.map(event => {
+                if(!courseCodes.includes(event.course.code)){
+                    courseCodes.push(event.course.code)
+                }
+            })
+
+            this.courseEvents.map(event => {
+                //var event = this.courseEvents[i];
                 event.title = event.course.code + ' |  ' + event.title
-                events.push(event);
-            }   
+                event.color = this.colors[courseCodes.indexOf(event.course.code)]
+                event.start = event.start + (3 * 60 * 60 * 1000)
+                event.end = event.end + (3 * 60 * 60 * 1000);
+            })
+            
+            this.systemEvents.map(event => {
+                event.start = event.start + (3 * 60 * 60 * 1000)
+                event.end = event.end + (3 * 60 * 60 * 1000);
+            })
+            events = events.concat(this.courseEvents)
             events = events.concat(this.systemEvents)
             return events;
         }
