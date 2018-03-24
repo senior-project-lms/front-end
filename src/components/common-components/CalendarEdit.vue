@@ -32,7 +32,7 @@
                                         placeholder="Title"
                                         ></el-input>
                                     </v-flex>                            
-                                    <v-flex md3 xs12>
+                                    <v-flex md4 xs12>
                                         <el-date-picker
                                         v-model="event.date"
                                         type="datetimerange"
@@ -41,8 +41,8 @@
                                         end-placeholder="End date">
                                         </el-date-picker>                                                                    
                                     </v-flex>
-                                    <v-flex md2 class="">
-                                        <el-button type="primary" @click="save">Add to Calendar</el-button>
+                                    <v-flex md1 class="">
+                                        <el-button type="primary" @click="save">Add Calendar</el-button>
                                     </v-flex>                                     
                                 </v-layout>
                             </v-card-text>
