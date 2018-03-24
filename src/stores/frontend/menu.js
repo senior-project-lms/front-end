@@ -19,6 +19,12 @@ export default{
               privilege: AccessPrivileges.PAGE_SYSTEM_ANNOUNCEMENT,
             },
             {
+              icon: 'announcement',
+              title: 'Course Announcement',
+              to: {name: 'CourseAnnouncements'},
+              privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
+            },
+            {
               icon: 'fa-book',
               title: 'Courses',
               to: {name: 'Courses'},
