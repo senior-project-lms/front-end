@@ -9,7 +9,7 @@
                                 <v-spacer></v-spacer>
                                 <v-btn flat class="white--text courses-btn"
                                 @click="coursesDialog = true"
-                                v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.ENROLL_COURSE)"
+                                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.ENROLL_COURSE)"
                                 >
                                 Courses
                                 </v-btn>
@@ -24,16 +24,21 @@
                 <v-flex md5 sm12 xs12>
                     <v-card class="courses-temp"> 
                         <v-list>            
-                            <v-subheader>My Courses</v-subheader>       
+                            <v-subheader>Courses</v-subheader>       
                             <v-divider></v-divider>   
                             <template v-for="(course, i) in courses">
-                                    <v-list-tile  :key="`course-${i}`" :to="{name: 'CourseAnnouncements', params: {id: course.publicId}}">                           
+                                    <v-list-tile  :key="`course-${i}`" :to="{name: 'CourseAnnouncements', params: {id: course.publicKey}}">                           
                                         <v-list-tile-content>
                                             <v-list-tile-title><p class="course">{{course.code}} - {{course.name}}</p></v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                     <v-divider :key="i" v-if="i + 1 < courses.length"></v-divider>                      
                             </template>
+                            <v-list-tile v-if="courses.length == 0">                           
+                                <v-list-tile-content>
+                                    <v-list-tile-title class="text-md-center text-sm-center text-xs-center"><p class="grey--text">No such a course is found</p></v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>                            
                             
                         </v-list>
                     </v-card>
@@ -41,7 +46,7 @@
             </v-layout>
         </v-container>
         <course-enrollment
-        v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.ENROLL_COURSE)"
+        v-if="$security.hasPermission(authenticatedUser, accessPrivileges.ENROLL_COURSE)"
         :dialog="coursesDialog"
         />
      
@@ -52,7 +57,7 @@
 <script>
 import { mapGetters } from "vuex";
 import Loader from "@/components/Loader";
-import CourseEnrollment from './CourseEnrolment'
+import CourseEnrollment from './CourseEnrollment'
 export default{
     components:{
         Loader,
@@ -61,30 +66,10 @@ export default{
     data(){
         return{
             coursesDialog: false,
-            courses: [
-                {
-                    publicId: '73982492n941798739127c987298377n123798213231c',
-                    code: 'CS204',
-                    name: 'Industry 4.0'
-                },
-                {
-                    publicId: '73982492n941798739127c987298377n12379821t235533',
-                    code: 'CS424',
-                    name: 'Introduction to Artificial Inteligence'
-                },
-                {
-                    publicId: '73982492n941798739127c98729hf3458377n123798213',
-                    code: 'CS464',
-                    name: 'Cloud Computing'
-                },
-                {
-                    publicId: '73982492n9417987391279jnckc987298377n123798213',
-                    code: 'CS404',
-                    name: 'Introduction To Cryptology'
-                }
-                                    
-            ]
         }
+    },
+    created(){
+        this.$store.dispatch('getAllCoursesOfAuthUser');
     },
     methods:{
         cancelCourseDialog(){
@@ -95,6 +80,7 @@ export default{
     ...mapGetters([
       "authenticatedUser",
       "accessPrivileges",
+      "courses"
     ])
   },
 }

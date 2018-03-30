@@ -7,16 +7,16 @@ export default{
         leftMenuItems: [
             
             {
-              icon: 'fa-tachometer',
-              title: 'Home',
+              icon: 'fa-home',
+              title: 'Dashboard',
               to: {name: 'Home'},
-              authenticated: AccessPrivileges.GLOBAL_ACCESS,
+              privilege: AccessPrivileges.PAGE_HOME,
             },
             {
               icon: 'fa-bullhorn',
               title: 'System Announcement',
               to: {name: 'SystemAnnouncements'},
-              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+              privilege: AccessPrivileges.PAGE_SYSTEM_ANNOUNCEMENT,
             },
             {
               icon: 'fa-bullhorn',
@@ -25,47 +25,52 @@ export default{
               authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
             },
             {
+              icon: 'announcement',
+              title: 'Course Announcement',
+              to: {name: 'CourseAnnouncements'},
+              privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
+            {
+            },
               icon: 'fa-book',
               title: 'Courses',
               to: {name: 'Courses'},
-              authenticated: AccessPrivileges.ACCESS_COURSES_PAGE,
+              privilege: AccessPrivileges.PAGE_COURSES,
             },
             {
               icon: 'fa-book',
               title: 'Courses',
               to: {name: 'CoursesForAdmin'},
-              authenticated:  AccessPrivileges.READ_ALL_COURSES,
+              privilege: AccessPrivileges.PAGE_COURSE_FOR_ADMIN,
             },
             {
               icon: 'fa-users',
               title: 'Users',
               to: {name: 'UsersForAdmin'},
-              authenticated: AccessPrivileges.READ_ALL_USERS,
+              privilege: AccessPrivileges.PAGE_USER_FOR_ADMIN,
             },
             {
-              icon: 'fa-shield',
+              icon: 'fa-lock',
               title: 'Authorities',
               to: {name: 'DefaultAuthorities'},
-              authenticated: AccessPrivileges.READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES,
+              privilege: AccessPrivileges.PAGE_AUTHORITIES,
             },
             {
-              icon: 'fa-calendar',
+              icon: 'fas fa-calendar-alt',
               title: 'Calendar',
               to: {name:'Calendar'},
-              authenticated: null,
+              privilege: AccessPrivileges.PAGE_GLOBAL_CALENDAR,
             },
             {
-              icon: 'fa-files-o',
+              icon: 'fas fa-copy',
               title: 'Public Resources',
               to: {name:'PublicResources'},
-              authenticated: null,
+              privilege: AccessPrivileges.PAGE_GLOBAL_RESOURCES,
             },
             {
-              icon: 'fa-question-circle-o',
+              icon: 'fas fa-question',
               title: 'QA-Global',
               to: {name: 'QA-Global'},
-              authenticated: null,
-              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+              privilege: AccessPrivileges.PAGE_GLOBAL_QA,
             },
                       
         ],
@@ -74,51 +79,22 @@ export default{
               icon: 'fa-user',
               title: 'Profile',
               to: {name:'Profile'},
-              authenticated: [],
+              privilege: AccessPrivileges.PAGE_OWN_PROFILE,
+
             },
             {
               icon: 'fa-cog',
               title: 'Settings',
               to: {name:'Settings'},
-              authenticated: [],
+              privilege: AccessPrivileges.PAGE_SETTINGS,
+
             },
             {
-              icon: 'fa-sign-out',
+              icon: 'fas fa-sign-out-alt',
               title: 'Sign Out',
               to: {name:'SignOut'},
-              authenticated: [],
             },
         ],
-        courseTabMenus: [
-          {
-              text: 'Announcements',
-              to: {name: 'CourseAnnouncements'},
-          },
-          {
-              text: 'Grades',
-              to: {name: 'CourseGrades'}
-          },
-          {
-              text: 'Assignments',
-              to: {name: 'CourseAssignments'}
-          },
-          {
-              text: 'Quiz - Testing',
-              to: {name: 'CourseTestQuiz'},
-          },
-          {
-              text: 'Resources',
-              to: {name: 'CourseResources'}
-          },
-          {
-              text: 'QA',
-              to: {name: 'CourseQA'}
-          },
-          {
-              text: 'Calendar',
-              to: {name: 'CourseCalendar'}
-          },
-      ],
     },
     mutations:{
         

@@ -5,6 +5,7 @@ import AuthenticationService from './authentication';
 import Service from './common'
 import {AccessLevel} from '../properties/accessLevel'
 
+import {SearchType} from '../properties/searchType'
 
 var authenticationService = new AuthenticationService();
 var service = new Service();
@@ -36,11 +37,11 @@ export default class UserService{
     }
   
     save(params){
-        return service.save('/api/user', params);
+        return service.post('/api/user', params);
     } 
 
     saveAll(params){
-        return service.save('/api/users', params);
+        return service.post('/api/users', params);
     }
 
     getAll(visible){
@@ -96,6 +97,51 @@ export default class UserService{
         return service.getAll(path);
     }
 
+
+    getCoursePrivilegesOfAuthUser(publicKey){
+        return service.getAll(`/api/course/${publicKey}/me/privileges`);
+    }
+
+    getAllUsernames(){
+        return Axios.get('/usernames');
+    }
+
+    searchAssistantUser(type, publicKey, param){
+        
+        if(type == SearchType.User.NAME){
+            const path = `/api/course/${publicKey}/user/search-assistant/name/${param}`;
+            return service.getAll(path);
+        }
+        else if(type == SearchType.User.SURNAME){
+            const path = `/api/course/${publicKey}/user/search-assistant/surname/${param}`
+            return service.getAll(path);
+        }
+        else {
+            return [];
+        }
+    }
+
+
+    forgetPassowrd(user){
+        return Axios.post(`/forgot-password`, user)
+        .then(response => {
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
+    }
+
+    resetPassword(token, passwords){
+        return Axios.post(`/reset-password/${token}`, passwords)
+        .then(response => {
+            return service.___then(response)
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
+
+    }
 }
 
 

@@ -4,7 +4,8 @@ var userService = new UserService();
 export default{
     state: {
         users: [],
-        usersStatus: {}
+        usersStatus: {},
+        usernames: [],
     },
     mutations: {
         setUsers(state, users){
@@ -12,6 +13,13 @@ export default{
         },
         setUsersStatus(state, status){
             state.usersStatus = status;
+        },
+        clearUserStore(state){
+            state.users = [];
+            usersStatus: {}
+        },
+        setUsernames(state, list){
+            state.usernames = list;
         },
         
     },
@@ -79,17 +87,42 @@ export default{
                 }
                 return response;
             })
-        }
+        },
+        getAllUsernames(context){
+            return userService.getAllUsernames()
+            .then(response => {
+                if(response.status){
+                    context.commit("setUsernames", response.data);
+
+                }
+            })
+            return response; 
+        },
+        getAllAssistantUsers(context, data){
+            const publicKey = data.publicKey;
+            const param = data.param;
+            const type = data.type;
+            return userService.searchAssistantUser(type, publicKey, param)
+            .then( response => {
+                if(response.status){
+                    context.commit("setUsers", response.data)
+                }
+                return response;
+            })
+        },
+
 
     },
     getters: {
         users(state){
             return state.users;
-      },
-      usersStatus(state){
-        return state.usersStatus;
-
-    }
+        },
+        usersStatus(state){
+            return state.usersStatus;
+        },
+        usernames(state){
+            return state.usernames;
+        },
     
     }
 }

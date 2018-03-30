@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <notifications />
-    <router-view></router-view>
+    <notifications :duration="2000" />
+     <router-view></router-view>
   </v-app>
 </template>
 
@@ -23,6 +23,7 @@
     word-wrap break-word       /* Internet Explorer 5.5+ */
 
   .notifications
-    margin-top 20px
+    margin-top 40px
     margin-left 5px
+
 </style>

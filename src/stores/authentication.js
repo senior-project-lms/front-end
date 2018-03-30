@@ -21,6 +21,7 @@ export default{
             surname: '',
             authority: {code: null},
             accessPrivileges: [],
+            coursePrivileges: [],
         }
     },
     mutations: {
@@ -30,15 +31,19 @@ export default{
             state.authenticatedUser.surname = object.surname
             state.authenticatedUser.authority = object.authority;
             state.authenticatedUser.accessPrivileges = object.accessPrivileges;
-            
+            //state.authenticatedUser.coursePrivileges = [];
         },
-        
+        setCoursePrivileges(state, list){
+            state.authenticatedUser.coursePrivileges = list;
+        },
         cleareAuthenticatedStore(state){
             state.authenticatedUser = {
                 username: '',
                 name: '',
                 surname: '',
                 authority: {code: null},
+                accessPrivileges: [],
+                coursePrivileges: [],
             }
         },
         
@@ -49,11 +54,25 @@ export default{
 
             return authenticationService.login(user)
             .then( isAuthendticated => {
+                if(isAuthendticated){
+                    return context.dispatch("getMe")
+                    .then(response => {
+                        return response.status;
+                    });
+                }
+                else{
                     return isAuthendticated;
+                }
+                    
             });
         
         },
-        
+        forgotPassword(context, user){
+            return userService.forgetPassowrd(user);
+        },
+        resetPassword(context, data){
+            return userService.resetPassword(data.token, data.passwords);
+        },
         getMe(context){
             return userService.getProfile()
             .then(response => {
@@ -67,8 +86,21 @@ export default{
             })
         },
         hasAccessPrivilege(context, privilege){
-            return context.state.authenticatedUser.accessPrivileges.includes(privilege);
+            return context.state.authenticatedUser.accessPrivileges.includes(privilege) ||  context.state.authenticatedUser.coursePrivileges.includes(privilege);
         },
+
+        getCoursePrivileges(context, publicKey){
+            return userService.getCoursePrivilegesOfAuthUser(publicKey)
+            .then(response => {
+                if(response.status){
+                    
+                    if(response.data != null){
+                        context.commit('setCoursePrivileges', response.data)
+                    }
+                }
+                return response;
+            })      
+          },
         cleareAuthenticatedUser(context){
             context.commit("cleareAuthenticatedUser");
         }

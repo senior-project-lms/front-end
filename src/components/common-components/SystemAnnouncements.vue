@@ -103,15 +103,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-    .Container
-        margin-left 10px
-        margin-right 10px
-
     .load-more
         opacity  0.7
         margin-left 10px
         margin-right 10px
 
     .no-content
-        margin-top 150px
+        padding-top 50%
 </style>

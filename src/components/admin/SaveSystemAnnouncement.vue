@@ -25,26 +25,24 @@
             <v-card-text>
               <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                 <v-layout row wrap>
-                        <v-flex>
+                        <v-flex md12 sm12 xs12>
                             <v-text-field label="Title" v-model="systemAnnouncement.title" required=""/>
-                        </v-flex>
-
-                      
+                        </v-flex>   
                 </v-layout>
                 <v-layout row wrap>
-                        <v-flex>
+                        <v-flex md12 sm12 xs12>
                           <vue-editor class="editor" :editorToolbar="customToolbar" 
                           v-model="systemAnnouncement.content" required/>
                         </v-flex>
                 </v-layout>
                 <v-layout row wrap >
-                    <v-flex class="uploader">
+                    <v-flex class="uploader" md12 sm12 xs12>
                       <input type="file" @change="processFiles($event)" multiple
-                      v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
+                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_SYSTEM_ANNOUNCEMENT_FILE)">
                     </v-flex>
                 </v-layout>
                 <v-layout row wrap>
-                    <v-flex>
+                    <v-flex md12 sm12>
                         <ul class="file-list">
                           <li v-for="(resource, i) in resources" :key="i">
                               <a class="red--text lighten-1" @click="removeFile(resource.publicKey)">
@@ -57,19 +55,16 @@
                         {{ resources.length }} file is uploaded                  
                     </v-flex>                    
                 </v-layout>
-                </v-container>
-            </v-card-text>
+            </v-container>
+        </v-card-text>
        </v-card>
-      </v-dialog>  
+    </v-dialog>  
 </template>
 
 
 <script>
 import {mapGetters} from 'vuex';
 import { VueEditor } from 'vue2-editor';
-
-
-const uuidv1 = require('uuid/v1');
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -202,5 +197,5 @@ export default {
       margin-right 10px
     
     .editor
-      height 500px
+      height 450px
 </style>

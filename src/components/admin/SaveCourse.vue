@@ -12,7 +12,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Save Course</v-toolbar-title>
+                <v-toolbar-title>New Course</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="saveAll">Save</v-btn>
@@ -30,12 +30,12 @@
                             <v-card>
                                 <v-card-text>
                                 <v-layout row wrap>
-                                        <v-flex md3 xs4 lg3 xs3 class="course-code">
-                                            <v-text-field label="Code" v-model="course.code" required/>
-                                        </v-flex>
-                                        <v-flex >
-                                            <v-text-field label="Name"  v-model="course.name" required/>
-                                        </v-flex>
+                                            <v-flex md3 sm12 xs12>
+                                                <v-text-field label="Code" v-model="course.code" required/>
+                                            </v-flex>
+                                            <v-flex md9 sm12 xs12>
+                                                <v-text-field label="Name"  v-model="course.name" required/>
+                                            </v-flex>
                                     </v-layout>   
                                     <v-layout row wrap>
                                         <v-flex>
@@ -49,7 +49,7 @@
                                             ></v-select>                                            
                                         </v-flex>
                                     </v-layout>                                                                      
-                                    <v-layout>
+                                    <v-layout row wrap>
                                         <v-flex md12>
                                               <div class="text-xs-right">
                                                     <v-btn block outline color="indigo" @click="addToList">Add</v-btn>
@@ -59,7 +59,7 @@
                                 </v-card-text>
                             </v-card>
                         </v-flex>
-                        <v-flex md7 lg7 xs12 sm12>
+                        <v-flex md7 xs12 sm12>
                             <v-card>
                                 <v-card-text>
                                     <v-layout>
@@ -74,10 +74,11 @@
                                         </v-flex>
                                     </v-layout>                                         
                                     <v-layout>
-                                        <v-flex>
+                                        <v-flex md12 sm12 xs12>
                                             <v-data-table
                                                 :headers="headers"
-                                                :items="courses">
+                                                :items="courses"
+                                                class="elevator-1">
                                                     <template slot="items" slot-scope="props">
                                                         <tr>
                                                             <td>{{ props.item.code }}</td>
@@ -208,7 +209,7 @@ export default{
         cancel(){
             this.$store.commit("clearExcelStore");
             this.cancelForm();
-            this.course = [];
+            this.courses = [];
             this.$parent.cancelDialog();
         
         },
@@ -226,7 +227,6 @@ export default{
     watch:{
         excelJson(nValue, oValue){
             if(nValue != null){
-                var courses = [];
                 nValue.forEach(item => {
                         const course = {
                             code: item.code,
@@ -235,9 +235,9 @@ export default{
                                 email: item.lecturer,
                             }
                     }
-                    courses.push(course);
+                    this.courses.push(course);
                 })
-                this.courses = courses;
+                
             }
         },
         dialog(nVal, oVal){
@@ -261,15 +261,6 @@ export default{
     
 </script>
 <style lang="stylus" scoped>
-    .post
-        margin-top 30px
-
-    .course-code
-        margin-right 20px
-    
-    .tab-btn
-        margin-left 5px
-        margin-right 5px
     
     .input-file
         background-color Transparent

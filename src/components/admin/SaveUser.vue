@@ -12,7 +12,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Save User</v-toolbar-title>
+                <v-toolbar-title>New User</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="saveAll">Save</v-btn>
@@ -78,15 +78,15 @@
                         <v-flex md7 lg7 xs12 sm12>
                             <v-card>
                                 <v-card-text>
-                                    <v-layout>
-                                        <v-flex md2 sm2>
+                                    <v-layout row wrap>
+                                        <v-flex md2 sm3 xs6>
                                             <v-btn block outline v-if="!uploadFile" disabled="">Upload File</v-btn>
                                             <div class="upload-btn-wrapper" v-if="uploadFile">
                                                 <v-btn block outline>Upload File</v-btn>
                                                 <input type="file" @change="processFile($event)"/>
                                             </div>
                                         </v-flex>
-                                        <v-flex md6>
+                                        <v-flex md6 sm6 xs6>
                                             <v-select
                                                 class="auth-select"
                                                 :items="accessLevels"
@@ -97,15 +97,16 @@
                                                 required>
                                             </v-select>
                                         </v-flex>
-                                        <v-flex md4 sm4>
+                                        <v-flex md4 sm12 xs12>
                                             <b>Columns must be in excel file:</b> <p class="red--text">username(unique), email(unique), name, surname</p>
                                         </v-flex>
                                     </v-layout>                                         
-                                    <v-layout>
-                                        <v-flex>
+                                    <v-layout row wrap> 
+                                        <v-flex sm12 xs12>
                                             <v-data-table
                                             :headers="headers"
-                                            :items="users">
+                                            :items="users"
+                                            class="elevation-1">
                                                 <template slot="items" slot-scope="props">
                                                     <tr>
                                                         <td class="text-xs-center">{{ props.item.username }}</td>
@@ -173,7 +174,6 @@ export default{
         }
     },
     created(){
-        this.$store.dispatch('getAllAccessLevels');
      
         
     },
@@ -295,6 +295,12 @@ export default{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'excelJson','accessLevels']),
     },
     watch:{
+        dialog(nval, oval){
+            if(nval){
+                this.$store.dispatch('getAllAccessLevels');
+            }
+            return nval;
+        },
         excelJson(nValue, oValue){
             if(this.multiUserAuthority == null){
                 return nValue;

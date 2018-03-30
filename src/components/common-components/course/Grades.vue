@@ -135,7 +135,7 @@
 
     }    
 </script>
-<style lang="stylus" scoped="scoped">
+<style lang="stylus" scoped>
     .grade-footer
         padding-left 25px
 

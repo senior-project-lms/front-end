@@ -2,12 +2,13 @@
     <div class="Announcement" v-if="!deleted">
         <v-card :color="unread" :class="{'border-color': announcement.borderColor}">
 
-            <a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
+            <a
+                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
                 @click="dialog = true"
                 class="right dismiss">
                 delete
             </a>
-            <a v-else class="right dismiss" href="">dismiss</a>
+            
             
             <v-card-title>
                 <h5 class="headline">{{ announcement.title }}</h5>

@@ -8,7 +8,7 @@
                                 <v-select
                                     label="Enter your username"
                                     v-model="authUser.username"
-                                    :items="items"
+                                    :items="usernames"
                                     :error-messages="usernameErrorMessage"
                                     :error="usernameError"
                                     required>
@@ -36,7 +36,7 @@
                                         </v-checkbox>                                
                                     </v-flex>
                                     <v-flex md6>
-                                        <router-link :to="{name: 'SignIn'}" class="right">
+                                        <router-link :to="{name: 'ForgotPassword'}" class="right">
                                             forgot your password
                                         </router-link>
                                     </v-flex>                                
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
     data(){
         return {
@@ -82,7 +83,7 @@ export default {
         }
     },
     created(){
-
+        this.$store.dispatch("getAllUsernames");
     },
     methods:{
         submit(){
@@ -108,6 +109,20 @@ export default {
             });
 
         }
+    },
+    computed: {
+        ...mapGetters(['usernames']),
+    },
+    watch:{
+        // usernames(nval,oval){
+        
+        //     console.log(nval)
+        //     unames: []
+        //     for(var i in nval){
+        //         unames.push({text: nval[i]})
+        //     }
+        //     return unames;
+        // }
     }
   
 }

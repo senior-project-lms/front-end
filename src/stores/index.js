@@ -8,6 +8,9 @@ import user from './user'
 import authority from './authority'
 import defaultAuthorityPrivileges from './defaultAuthorityPrivilege'
 import privilege from './privilege'
+import enrollmentRequest from './enrollmentRequest'
+import systemEvent from './systemEvent'
+import courseAnnouncement from './courseAnnouncement';
 
 export default{
 
@@ -22,4 +25,7 @@ export default{
     authority: authority,
     defaultAuthorityPrivileges: defaultAuthorityPrivileges,
     privilege: privilege,
+    enrollmentRequest: enrollmentRequest,
+    systemEvent: systemEvent,
+    courseAnnouncement: courseAnnouncement,
 }

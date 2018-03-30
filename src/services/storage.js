@@ -17,7 +17,7 @@ export default class StorageService{
             return service.___then(response)
         })
         .catch(() => {
-            return service.catchedResponse;
+            return service.___then(response)
         });
     }
 
@@ -29,7 +29,7 @@ export default class StorageService{
             return service.___then(response)
         })
         .catch(() => {
-            return service.catchedResponse;
+            return service.___then(response)
         });
     }
 

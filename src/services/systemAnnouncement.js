@@ -19,7 +19,7 @@ export default class SystemAnnouncementService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/system-announcement', params);      
+        return service.post('/api/system-announcement', params);      
     }
 
 
@@ -31,7 +31,7 @@ export default class SystemAnnouncementService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/system-announcement', publicKey);
+        return service.delete(`/api/system-announcement/${publicKey}`, );
     }
 
     /*
@@ -55,6 +55,9 @@ export default class SystemAnnouncementService{
             }
             
             return response;
+        })
+        .catch(error => {
+            return service.___then(error.response);
         });
     }
 
@@ -70,12 +73,15 @@ export default class SystemAnnouncementService{
             }
             return response;
             
+        })
+        .catch(error => {
+            return service.___then(error.response);
         });
     
     }
 
     deleteImage(publicKey){
-        return storageService.delete('/api/system-announcement/storage/image', publicKey);
+        return storageService.delete(`/api/system-announcement/storage/image/${publicKey}`);
     }
 
 
@@ -89,7 +95,10 @@ export default class SystemAnnouncementService{
             }
             return response;
             
-        });
+        })
+        .catch(error => {
+            return service.___then(error.response);
+        })
     
     }
 

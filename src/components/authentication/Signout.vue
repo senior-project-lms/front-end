@@ -20,6 +20,8 @@ export default {
         this.$store.commit("clearExcelStore");
         this.$store.commit("clearPrivilegeStore");
         this.$store.commit("clearSystemAnnouncementStore");
+        this.$store.commit("clearEnrollmentRequestStore");
+        this.$store.commit("clearUserStore");
 
         // this.$store.dispatch("cleareAuthenticatedUser");
         // this.$store.dispatch("cleareAuthenticatedUser");
