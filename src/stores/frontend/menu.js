@@ -19,6 +19,12 @@ export default{
               privilege: AccessPrivileges.PAGE_SYSTEM_ANNOUNCEMENT,
             },
             {
+              icon: 'fa-bullhorn',
+              title: 'QAPage',
+              to: {name: 'QAPage'},
+              authenticated: AccessPrivileges.READ_SYSTEM_ANNOUNCEMENT
+            },
+            {
               icon: 'announcement',
               title: 'Course Announcement',
               to: {name: 'CourseAnnouncements'},

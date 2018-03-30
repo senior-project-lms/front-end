@@ -40,6 +40,8 @@ import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPriv
 import Home from '../components/common-components/Home'
 import Page from '../components/mock/page'
 
+import QAPage from "../components/common-components/QAPage"
+
 Vue.use(Router)
 
 export default new Router({

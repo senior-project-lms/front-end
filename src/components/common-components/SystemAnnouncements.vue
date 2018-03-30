@@ -1,37 +1,23 @@
 <template>
   <div>
-    <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
-      <v-layout row wrap>
-          <v-flex md12 sm12>
-              <v-flex md2 offset-md5 v-if="systemAnnouncements.length == 0">
-                    <h3 class="text-md-center text-xs-center no-content">There is no announcement.</h3>
-              </v-flex>
-              <section>
-                  <announcement-template v-for="(announcement, i) in systemAnnouncements" :key="i" :announcement="announcement" :systemAnnouncement="true"/>
-              </section>
-          </v-flex> 
-      </v-layout>
-      <v-layout>
-        <v-flex>
-          <template>
-            <v-btn block class="load-more" light outline @click="loadSystemAnnouncements(page)" v-if="loader">More</v-btn>
-          </template>
-        </v-flex>
-      </v-layout>
-    </v-container>
-    <div>
-            <v-btn fixed dark fab bottom right color="pink" 
-            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
-
-             @click="dialog = !dialog" 
-             > 
-            <v-icon>add</v-icon>
-          </v-btn>
-    </div>
-    <post-system-announcement :dialog="dialog"
-      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
-
-    />
+      <v-flex md12 sm12>
+          <v-flex no-content md2 offset-md5 v-if="systemAnnouncements.length == 0">
+                <h3 class="text-md-center text-xs-center">There are no announcements.</h3>
+          </v-flex>
+   
+          <section class="Container">
+              <announcement-template v-for="(announcement, i) in systemAnnouncements" :key="i" :announcement="announcement" :systemAnnouncement="true"/>
+          </section>
+      </v-flex>     
+      <div>
+             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"> 
+              <v-icon>add</v-icon>
+            </v-btn>
+      </div>
+      <template>
+        <v-btn block class="load-more" light outline @click="loadSystemAnnouncements(page)" v-if="loader">More</v-btn>
+      </template>
+      <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
           
 
   </div>
