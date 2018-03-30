@@ -29,8 +29,8 @@ export default{
               title: 'Course Announcement',
               to: {name: 'CourseAnnouncements'},
               privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
-            {
             },
+            {
               icon: 'fa-book',
               title: 'Courses',
               to: {name: 'Courses'},
