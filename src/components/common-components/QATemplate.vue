@@ -1,37 +1,50 @@
 <template>
-    <div class="Announcement" v-if="!deleted">
-        <v-card :color="unread" :class="{'border-color': announcement.borderColor}">
+    <div class="qa" v-if="!deleted">
+        <v-layout row wraped>
+        <v-flex d-flex md1 xs3>
+            <v-card dark color="primary">
+                <!--<v-card-text class="px-0">12</v-card-text>-->
+                
+                <v-card-text class = "text-xs-center">{{qa.numAnswers}} answers</v-card-text>
 
-            <a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
+            </v-card>
+            
+        </v-flex>
+
+        <v-flex xs9 md11>
+
+        <v-card :color="unread">
+            
+
+
+            <!--<a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
                 @click="dialog = true"
                 class="right dismiss">
                 delete
             </a>
-            <a v-else class="right dismiss" href="">dismiss</a>
+            <a v-else class="right dismiss" href="">dismiss</a> -->
             
             <v-card-title>
-                <h5 class="headline">{{ announcement.title }}</h5>
+                <h5 class="headline">{{ qa.title }}</h5>
+                <v-icon class="icon-xs-left" v-if="qa.isVerified">check_circle</v-icon>
             </v-card-title>
-            <v-divider class="divider"></v-divider>
+            <!--<v-divider class="divider"></v-divider>
             <v-card-text>
                 <pre>
-                    <p class="text" v-html="announcement.content"/>
+                    <p class="text" v-html="qa.content"/>
                 </pre>
-                <ul class="file-list" v-for="(resource, i) in announcement.resources" :key="i">
-                    <li>
-                       <a  :href="resource.url" download> {{ resource.originalFileName}}</a>
-                    </li>
-                </ul>
-            </v-card-text>
+            </v-card-text>-->
             <v-card-actions>
                     <v-spacer></v-spacer>
                     <div class="detail">
-                        <span class="right grey--text ">{{ moment(announcement.updatedAt).fromNow() }}</span>
+                        <span class="right grey--text ">{{ moment(qa.updatedAt).fromNow() }}</span>
                         <br>
-                        <span class="right grey--text ">{{announcement.createdBy.username}}</span>
+                        <span class="right grey--text ">{{qa.createdBy}}</span>
                     </div>
             </v-card-actions>
+            
         </v-card>
+        </v-flex>
         <!-- DELETE DIALOG -->
         <v-dialog v-model="dialog" max-width="400" persistent>
             <v-card>
@@ -39,19 +52,22 @@
                 <v-card-text>Are you sure to delete system announcement?</v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-                <v-btn color="green darken-1" flat="flat" @click.native="deleteAnnouncement">Agree</v-btn>
+                <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">No</v-btn>
+                <v-btn color="green darken-1" flat="flat" @click.native="deleteAnnouncement">Yes</v-btn>
                 </v-card-actions>
             </v-card>
-        </v-dialog>  
+        </v-dialog>
+
+    </v-layout>  
+
     </div>
 </template>
 <script>
 import * as moment from 'moment';
 import {mapGetters} from 'vuex';
 export default {
-    name: 'AnnouncementTemplate',
-    props: ['announcement', 'systemAnnouncement'],
+    name: 'QATemplate',
+    props: ['qa'],
     data(){
         return{
             moment: moment,
@@ -92,7 +108,7 @@ export default {
     .divider
         margin-top 2px
         margin-bottom 2px
-    .Announcement
+    .qa
         // margin-right 10px
         // margin-left 10px
         margin-top 10px
