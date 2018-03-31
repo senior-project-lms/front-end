@@ -11,6 +11,7 @@ import privilege from './privilege'
 import enrollmentRequest from './enrollmentRequest'
 import systemEvent from './systemEvent'
 import courseAnnouncement from './courseAnnouncement';
+import globalQA from './globalQA';
 
 export default{
 
@@ -28,4 +29,5 @@ export default{
     enrollmentRequest: enrollmentRequest,
     systemEvent: systemEvent,
     courseAnnouncement: courseAnnouncement,
+    globalQA:globalQA,
 }

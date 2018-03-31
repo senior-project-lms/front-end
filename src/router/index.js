@@ -187,8 +187,17 @@ export default new Router({
                   requeiresAuthentication: true,
                   base: '',
                 },
-
-              },                         
+              },  
+              {
+                path: "qa-global/:qaId",
+                name: 'QAPage',
+                component: QAPage,
+                meta: {
+                  privilege: AccessPrivileges.PAGE_GLOBAL_QA,
+                  requeiresAuthentication: true,
+                  base: '',
+                },
+              },
           ]
         },
       ]

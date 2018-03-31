@@ -1,65 +1,70 @@
 <template>
     <div class="qa" v-if="!deleted">
-        <v-layout row wraped>
-        <v-flex d-flex md1 xs3>
-            <v-card dark color="primary">
-                <!--<v-card-text class="px-0">12</v-card-text>-->
-                
-                <v-card-text class = "text-xs-center">{{qa.numAnswers}} answers</v-card-text>
-
-            </v-card>
-            
-        </v-flex>
-
-        <v-flex xs9 md11>
-
-        <v-card :color="unread">
-            
-
-
-            <!--<a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
-                @click="dialog = true"
-                class="right dismiss">
-                delete
-            </a>
-            <a v-else class="right dismiss" href="">dismiss</a> -->
-            
-            <v-card-title>
-                <h5 class="headline">{{ qa.title }}</h5>
-                <v-icon class="icon-xs-left" v-if="qa.isVerified">check_circle</v-icon>
-            </v-card-title>
-            <!--<v-divider class="divider"></v-divider>
-            <v-card-text>
-                <pre>
-                    <p class="text" v-html="qa.content"/>
-                </pre>
-            </v-card-text>-->
-            <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <div class="detail">
-                        <span class="right grey--text ">{{ moment(qa.updatedAt).fromNow() }}</span>
-                        <br>
-                        <span class="right grey--text ">{{qa.createdBy}}</span>
-                    </div>
-            </v-card-actions>
-            
-        </v-card>
-        </v-flex>
-        <!-- DELETE DIALOG -->
-        <v-dialog v-model="dialog" max-width="400" persistent>
             <v-card>
-                <v-card-title class="headline">Confim</v-card-title>
-                <v-card-text>Are you sure to delete system announcement?</v-card-text>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">No</v-btn>
-                <v-btn color="green darken-1" flat="flat" @click.native="deleteAnnouncement">Yes</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+                    <v-layout>
+                        <v-flex md2 xs3 class="grey lighten-5">
+                            <v-layout flex wrap align-center justify-center>
+                                <v-flex class="text-md-center text-xs-center" md4 xs12>
+                                    <div>3</div>
+                                    <div>votes</div>
+                                </v-flex>
+                                <v-flex class="text-md-center text-xs-center" md4 xs12>
+                                    <div>3</div>
+                                    <div>answers</div>
+                                </v-flex>
+                                <v-flex class="text-md-center text-xs-center" md4 xs12>
+                                    <div>3</div>
+                                    <div>views</div>
+                                </v-flex>      
+                            </v-layout>                           
+                        </v-flex>
+                        <v-flex md10 xs19>
+                            <v-layout row wrap>
+                                <v-flex md12>
+                                    <v-card-title>
+                                            <h3 class="headline"><router-link :to="{name:'QAPage', params:{'qaId': qa.publicKey}}">{{ qa.title }}</router-link></h3>
+                                    </v-card-title>
+                                    <div>
+                                    <v-layout>
+                                        <v-flex md10 xs12>
+                                            <v-chip small v-for="(tag, i) in qa.tags" :key="`qa-tag-${i}`">{{tag}}</v-chip>                                                                                
+                                        </v-flex>
+                                        <v-flex md2 xs12>
+                                            <div class="">
+                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{ moment(qa.updatedAt).fromNow() }}</h4>
+                                            </div>
+                                            <div class="">
+                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{qa.createdBy.username}}</h4>
+                                            </div>                                       
+                                        </v-flex>
+                                    </v-layout>                                        
+                                    </div>
+                                </v-flex>
 
-    </v-layout>  
+                            </v-layout>
+                            <!--<a v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)"
+                                @click="dialog = true"
+                                class="right dismiss">
+                                delete
+                            </a>
+                            <a v-else class="right dismiss" href="">dismiss</a> -->
+                        </v-flex>                    
+                    </v-layout>
+            </v-card>          
+      
 
+            <!-- DELETE DIALOG -->
+            <v-dialog v-model="dialog" max-width="400" persistent>
+                <v-card>
+                    <v-card-title class="headline">Confim</v-card-title>
+                    <v-card-text>Are you sure to delete system announcement?</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">No</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteAnnouncement">Yes</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
     </div>
 </template>
 <script>
@@ -105,31 +110,13 @@ export default {
 
 
 <style lang="stylus"  scoped="scoped">
-    .divider
-        margin-top 2px
-        margin-bottom 2px
-    .qa
-        // margin-right 10px
-        // margin-left 10px
-        margin-top 10px
-        margin-bottom 15px
-
-    .detail
-        margin-top -100px
-        margin-bottom -70px
         
-
-    .text 
-        margin-top -20px
-        padding-left 20px
-        margin-right 20px
-        word-wrap break-word    
-    .dismiss
-        margin-top 15px
-        margin-right 5px
-        
-    .file-list
-      margin-top 10px
-      margin-bottom 10px
-      list-style-type none
+    .full-height
+        height calc(100%) !important
+    a 
+    text-decoration none
+    
+    .qa-info
+        margin-right 10px
+    
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <v-container   fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
       <v-flex md12 sm12>
           <v-flex no-content md2 offset-md5 v-if="systemAnnouncements.length == 0">
                 <h3 class="text-md-center text-xs-center">There are no announcements.</h3>
           </v-flex>
    
-          <section class="Container">
+          <section class="">
               <announcement-template v-for="(announcement, i) in systemAnnouncements" :key="i" :announcement="announcement" :systemAnnouncement="true"/>
           </section>
       </v-flex>     
@@ -19,8 +19,8 @@
       </template>
       <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
           
+  </v-container>
 
-  </div>
 </template>
 <script>
 import {mapGetters} from 'vuex';

@@ -1,12 +1,8 @@
 import {Axios} from './axios';
 import Service from './common'
 import StorageService from './storage'
-import AuthenticationService from './authentication';
 
 const service = new Service();
-const storageService = new StorageService();
-const authenticationService = new AuthenticationService();
-
 
 export default class GlobalQAService{
     constructor(){}
@@ -19,10 +15,8 @@ export default class GlobalQAService{
         used for to save system announcement
     */     
     save(params){
-        return service.save('/api/globalQaQuestion', params);      
+        return service.post('/api/global-qa-question', params);      
     }
-
-
 
     /*
         function: delete
@@ -31,7 +25,7 @@ export default class GlobalQAService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete('/api/admin/globalQaQuestion', publicKey);
+        return service.delete(`/api/global-qa-question/${publicKey}`);
     }
 
     /*
@@ -41,15 +35,18 @@ export default class GlobalQAService{
         used for the fetch system announcments page by page 
     */       
     getAll(page){
-        const accessToken = authenticationService.getAccessToken();
-        return service.getAll(`/api/globalQaQuestion/${page}`);
+        return service.getAll(`/api/global-qa-questions/${page}`);
         
     }
 
-    getAnswers(questionPublicKey){
-        return service.getAnswers('api/global-answers/');
+    get(publicKey){
+        return service.get(`/api/global-qa-question/${publicKey}`);
     }
 
-    
+
+    saveComment(publicKey, params){
+        return service.save(`/api/global-qa-question/${publicKey}/comment`, params);      
+
+    }
 
 }

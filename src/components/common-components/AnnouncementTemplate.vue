@@ -94,8 +94,6 @@ export default {
         margin-top 2px
         margin-bottom 2px
     .Announcement
-        // margin-right 10px
-        // margin-left 10px
         margin-top 10px
         margin-bottom 15px
 

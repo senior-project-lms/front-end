@@ -1,6 +1,6 @@
 import GlobalQAService from "../services/globalQA";
 
-var globalQAService = new GlobalQAService();
+const globalQAService = new GlobalQAService();
 
 /*
 
@@ -12,15 +12,32 @@ getters:
 
 export default{
     state: {
-        globalQAs: []
+        globalQAs: [],
+        globalQA: {
+            title: '',
+            content: '',
+            answers: [],
+            upCount: 0,
+            downCount: 0,
+            stared: false,
+            upped: false,
+            downed: false,  
+            createdBy: {
+                username: ''
+            }         
+
+        },
     },
 
     mutations:{
         setGlobalQAs(state, qas){
-             qas = state.globalQAs.concat(qas);
-             state.globalQAs = qas;
+            qas = state.globalQAs.concat(qas);
+            state.globalQAs = qas;
+       },        
+        setGlobalQA(state, qa){
+             state.globalQA = qa;
         },
-        clearSystemAnnouncements(state){
+        clearGlobalQAs(state){
             state.globalQAs = [];
         }
     },
@@ -29,62 +46,57 @@ export default{
         getGlobalQAs(context, page){
             return globalQAService.getAll(page)
             .then(response => {
-                if(page == 0){
+                if(page == 1){
                     context.commit("clearGlobalQAs");
 
                 }
-                if(response != null && response.length > 0){
-                    context.commit("setGlobalQAs", response);
-                    return true;
-                }
-                return false;
+                
+                context.commit("setGlobalQAs", response.data);
+                 
+                return response;
             });
         },
 
-        saveGlobalQuestion(context, publicKey, question){
-            return globalQAService.save(question)
-            /*.then(response => {
-                if(response){
-                   return context.dispatch("getGlobalQAs", 0) 
-                      .then(() => {
-                        return true;
-                    });
-                  
-                }
-                else{
-                    return false;
-                }
-            })*/
-        },
-
-        deleteGlobalQuestion(context, publicKey){
-            return globalQAService.delete(publicKey)
+        saveGlobalQA(context, qa){
+            return globalQAService.save(qa)
             .then(response => {
-                if(response){
-                    return context.dispatch("getGlobalQAs", 0) 
-                    .then(() => {
-                        return true;
-                     });
+                if(response.status){
+                   return context.dispatch("getGlobalQAs", 1) 
                 }
-                else{
-                    return false;
-                }
+                return response;
             })
         },
 
-        saveGlobalQuestionAnswer(context, publicKey, answer){
-
+        deleteGlobalQA(context, publicKey){
+            return globalQAService.delete(publicKey)
+            .then(response => {
+                if(response.status){
+                    return context.dispatch("getGlobalQAs", 1) 
+                 }
+                 return response;
+            })
         },
 
-        getAllGlobalQuestionAnswers(context, questionPublicKey){
-            return globalQAService.getAnswers(questionPublicKey);
+
+        getGlobalQA(context, publicKey){
+            return globalQAService.get(publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setGlobalQA", response.data);
+
+                }
+                return response;
+            })
         }
 
     },
     getters: {
         globalQAs(state){
             return state.globalQAs;
-        }        
+        },      
+        globalQA(state){
+            return state.globalQA;
+        } 
 
     }
 }

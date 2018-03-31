@@ -1,27 +1,21 @@
-<template>
+<template>    
+  <div 
+  v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)">
+      <v-layout row wrap>
+          <h2 class="headline"> Your answer</h2>
+          <v-flex>
+            <vue-editor :editorToolbar="customToolbar" 
+            v-model="answer.content" required />
+          </v-flex>                 
+      </v-layout>
+      <v-layout row wrap>
+            <v-btn color="info" @click="save"
+              v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)">
+              Post Your Answer
+            </v-btn>    
+      </v-layout>
       
-        <v-card>
-          <v-card-title class="headline">Submit your answer:</v-card-title>
-          <v-flex class="post">      
-              <v-flex>
-                <vue-editor :editorToolbar="customToolbar" 
-                v-model="answer.content" required />
-              </v-flex>
-              <v-flex class="uploader">
-                <v-flex>
-                    <v-divider></v-divider>                  
-                </v-flex>                  
-              </v-flex>                  
-          </v-flex>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            
-            <v-btn color="green darken-1" flat @click="save"
-            v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)">
-            Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-        
+    </div>
 </template>
 
 
@@ -103,17 +97,4 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-    .post
-      margin-right 20px
-      margin-left  20px
-
-    .uploader
-      margin-top 10px
-    
-    .file-list
-      margin-top 10px
-      list-style-type none
-    
-    .remove-file
-      margin-right 10px
 </style>

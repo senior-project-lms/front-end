@@ -1,74 +1,81 @@
 <template>
     <div>
-        <v-container>
             <v-layout row wrap>
-                <v-flex d-flex xs1 md1>
-                    <v-card>
-                    <div class="text-md-center">
-                        <a>
-                            <v-icon :style="votingStyle(answer.hasUpVoting)">fa-chevron-up</v-icon>
-                        </a>
-                    </div>
-                    <div class="text-md-center">
-                        <h3>{{ answer.votingCount }}</h3>
-                    </div>
-                    <div class="text-md-center">
-                        <a>
-                            <v-icon :style="votingStyle(answer.hasDownVoting)">fa-chevron-down</v-icon>
-                        </a>
-                    </div>
-                    <div class="text-md-center">
-                        <a>
-                            <v-icon v-html="star(answer.hasStared)" :style="startStyle(answer.hasStared)"></v-icon>
-                        </a>
-                    </div> 
-                    <div class="text-md-center">
-                        <h4>{{ answer.starCount }}</h4>
-                    </div>  
-                    </v-card>                       
-                </v-flex>
-                <v-flex d-flex xs11 md11>
-                    <v-card>
-                    <v-layout row wrap>
-                        
-                        <v-flex>
-                            <h2>{{ answer.title }}</h2>
-                        </v-flex>
-                    </v-layout>
-                    <v-layout row wrap>
-                        <v-flex>
-                            {{ answer.content }}
-                        </v-flex>
-                        <!--<v-flex>
-                            {{ answer.instructorNote }}
-                        </v-flex>-->
-                    </v-layout>
-                     <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <div>
-                        <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
-                        <br>
-                        <span class="right grey--text ">{{answer.createdBy}}</span>
-                        <v-btn icon @click="answerDialog = !answerDialog">
-                            <v-icon>reply</v-icon>
-                        </v-btn>
-                            <post-qa-answer-comment :answerDialog="answerDialog"/>
+                <v-flex d-flex xs12 md12>
+                        <v-layout row wrap>
+                            <v-flex md1 xs1>
+                                <v-layout row wrap>
+                                    <v-flex md12 xs12 class="text-xs-center">
+                                        <a>
+                                            <v-icon :style="votingStyle(answer.upped)" large>fa-chevron-up</v-icon>
+                                        </a>                                        
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row wrap >
+                                    <v-flex md12 xs12 class="text-xs-center">
+                                        <span class="title">{{ answer.upCount - answer.downCount }}</span>                                                                              
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout row wrap >
+                                    <v-flex md12 xs12 class="text-xs-center">
+                                        <a>
+                                            <v-icon :style="votingStyle(answer.downer)" large>fa-chevron-down</v-icon>
+                                        </a>                                     
+                                    </v-flex>
+                                </v-layout>   
+                                <v-layout row wrap >
+                                    <v-flex  md12 xs12 class="text-xs-center">
+                                        <a>
+                                            <v-icon v-html="star(answer.starred)" :style="startStyle(answer.hasStared)"></v-icon>
+                                        </a>                                          
+                                    </v-flex>
+                                </v-layout>                                                              
+                            </v-flex>
+                            <v-flex md11 xs11>
+                                <v-layout row wrap>
+                                    <v-flex md12>
+                                        <pre>
+                                            <p class="text" v-html="answer.content"/>
+                                        </pre>                                        
+                                    </v-flex>
 
-                    </div>
-            </v-card-actions>
-                   </v-card>             
+                                </v-layout>
+                                <v-layout >
+                                    <v-spacer></v-spacer>
+                                    <v-chip small v-for="(tag, i) in answer.tags" :key="`qa-tag-${i}`">{{tag}}</v-chip>                                                                        
+                                    <div class="qa-info">
+                                        <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
+                                        <br>
+                                        <span class="right grey--text ">{{answer.createdBy.username}}</span>
+                                    </div>                            
+                                </v-layout>  
+                                <v-layout>
+                                    <v-flex md12>
+                                        <a  class="grey--text " @click="comment = !comment">add a comment</a>
+                                        <v-layout row wrap  v-if="comment">
+                                            <v-flex md11 xs10>
+                                                <el-input
+                                                type="textarea"
+                                                :rows="1"
+                                                placeholder="Please input"
+                                                >
+                                                </el-input>                                        
+                                            </v-flex>  
+                                            <v-flex md1 xs2>
+                                                <el-button type="info" plain size="small">save</el-button>                                                
+                                            </v-flex>                                          
+                                        </v-layout>
+                                    </v-flex>
+                                </v-layout>                                                                 
+                            </v-flex>
+                         
+                        </v-layout>
                 </v-flex>
-
-                <v-flex>
-                    <v-card color="yellow">
-                        <v-card-text>
-                            <p>{{answer.instructorNote}}</p>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-                
             </v-layout>
-        </v-container>
+            <v-layout>
+                <v-flex md12>
+                </v-flex>
+            </v-layout>
 
     </div>
 
@@ -86,6 +93,7 @@ export default {
     props: ['answer'],
     data(){
         return{
+            comment: false,
             moment: moment,
             dialog: false,
             deleted: false,
@@ -113,3 +121,12 @@ export default {
 }
     
 </script>
+<style lang="stylus" scoped>
+    .text 
+        margin-top -20px
+        padding-left 20px
+        margin-right 20px
+        word-wrap break-word 
+    .qa-info
+        margin-right 10px
+</style>
