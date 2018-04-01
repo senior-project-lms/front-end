@@ -5,11 +5,11 @@
                         <v-flex md2 xs3 class="grey lighten-5">
                             <v-layout flex wrap align-center justify-center>
                                 <v-flex class="text-md-center text-xs-center" md4 xs12>
-                                    <div>3</div>
+                                    <div>{{qa.upCount}}</div>
                                     <div>votes</div>
                                 </v-flex>
                                 <v-flex class="text-md-center text-xs-center" md4 xs12>
-                                    <div>3</div>
+                                    <div>{{qa.answerCount}}</div>
                                     <div>answers</div>
                                 </v-flex>
                                 <v-flex class="text-md-center text-xs-center" md4 xs12>
@@ -22,20 +22,20 @@
                             <v-layout row wrap>
                                 <v-flex md12>
                                     <v-card-title>
-                                            <h3 class="headline"><router-link :to="{name:'QAPage', params:{'qaId': qa.publicKey}}">{{ qa.title }}</router-link></h3>
+                                            <h4 class="subheading"><router-link :to="{name:'QAPage', params:{'qaId': qa.publicKey}}">{{ qa.title }}</router-link></h4>
                                     </v-card-title>
                                     <div>
                                     <v-layout>
-                                        <v-flex md10 xs12>
+                                        <v-flex md7 xs12>
                                             <v-chip small v-for="(tag, i) in qa.tags" :key="`qa-tag-${i}`">{{tag}}</v-chip>                                                                                
                                         </v-flex>
-                                        <v-flex md2 xs12>
+                                        <v-flex md4 xs12 offset-md1>
                                             <div class="">
-                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{ moment(qa.updatedAt).fromNow() }}</h4>
+                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{ moment(qa.updatedAt).fromNow() }} by {{qa.createdBy.username}}</h4>
                                             </div>
-                                            <div class="">
+                                            <!-- <div class="">
                                                 <h4 class="grey--text text-md-right text-xs-right qa-info">{{qa.createdBy.username}}</h4>
-                                            </div>                                       
+                                            </div>                                        -->
                                         </v-flex>
                                     </v-layout>                                        
                                     </div>
@@ -118,5 +118,6 @@ export default {
     
     .qa-info
         margin-right 10px
+        margin-top -15px
     
 </style>

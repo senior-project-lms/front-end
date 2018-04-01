@@ -61,11 +61,31 @@ export default{
             return globalQAService.save(qa)
             .then(response => {
                 if(response.status){
-                   return context.dispatch("getGlobalQAs", 1) 
+                    if(qa.answer){
+                        context.dispatch("getGlobalQA", qa.publicKey) 
+                    }
+                    else{
+                        context.dispatch("getGlobalQAs", 1) 
+                    }
+                    
                 }
                 return response;
             })
         },
+
+        saveGlobalQAComment(context, qa){
+            
+            return globalQAService.saveComment(qa.publicKey, qa.params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", qa.parentPublicKey) 
+                    
+                }
+                return response;
+            })
+        },
+
+
 
         deleteGlobalQA(context, publicKey){
             return globalQAService.delete(publicKey)

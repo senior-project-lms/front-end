@@ -5,7 +5,7 @@
           <h2 class="headline"> Your answer</h2>
           <v-flex>
             <vue-editor :editorToolbar="customToolbar" 
-            v-model="answer.content" required />
+            v-model="content" required />
           </v-flex>                 
       </v-layout>
       <v-layout row wrap>
@@ -46,10 +46,8 @@ export default {
   data(){
       return{
           customToolbar: customToolbar, 
-          uploader: false,
-          answer: {
-              content: '',
-          }
+          content: '',
+          
       }
   },
   created(){
@@ -58,27 +56,19 @@ export default {
   methods:{
 
     save(){
-        if(this.answer.content.length > 0){
-            this.$store.dispatch("saveGlobalQuestionAnswer", this.answer)
-            .then(response => {
-              if(response){
-                this.cancel(true);
-              }
-            });
+        if(this.content.length > 0){
+          const data = {
+            publicKey: this.$route.params.qaId,
+            content: this.content,
+            answer: true,
+            anonymous: false,
+          }
+          console.log(this.$route.params.qaId)
+            this.$store.dispatch("saveGlobalQA", data);
         }
     },
     
-    // not used because of responsive image problam.
-    // handleImageAdded(file, Editor, cursorLocation){
 
-    //     this.$store.dispatch("uploadanswerImage", file)
-    //     .then(data => {
-    //         if(data != null && data != undefined){
-    //           this.answer.imagePublicKeys.push(data.publicKey);
-    //           Editor.insertEmbed(cursorLocation, 'image', data.url)
-    //         }
-    //     });
-    // }
   },
 
 
@@ -86,12 +76,6 @@ export default {
     ...mapGetters(['authenticatedUser', 'accessPrivileges']),
   },
   watch:{
-      dialog(){
-
-        this.answer = {
-            content: ''            
-          }
-      }
   },
   
 }

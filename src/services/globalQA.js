@@ -45,7 +45,7 @@ export default class GlobalQAService{
 
 
     saveComment(publicKey, params){
-        return service.save(`/api/global-qa-question/${publicKey}/comment`, params);      
+        return service.post(`/api/global-qa-question/${publicKey}/comment`, params);      
 
     }
 

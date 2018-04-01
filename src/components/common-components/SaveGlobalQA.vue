@@ -11,7 +11,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>System Global QA</v-toolbar-title>
+                <v-toolbar-title>Global QA</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="save">Save</v-btn>
@@ -101,7 +101,7 @@ export default {
         this.resources = [];
         this.qa = {
             title: '',
-            content: '',
+            params: {content: '', anonymous: false },
           }
     },
     cancel(){
@@ -118,11 +118,6 @@ export default {
   watch:{
   
   },
-  beforeDestroy(){
-    if(this.qa.imagePublicKeys.length > 0){
-      // remove the files
-    }
-  }
 }
 </script>
 <style lang="stylus" scoped>

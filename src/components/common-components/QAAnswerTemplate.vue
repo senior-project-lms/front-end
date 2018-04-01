@@ -51,18 +51,33 @@
                                 </v-layout>  
                                 <v-layout>
                                     <v-flex md12>
+                                            <div  v-for="(comment, i) in answer.comments" :key="`pre-${i}`">
+                                                <div>
+                                                    > {{comment.content}}
+                                                    <span v-if="comment.anonymous"> -anonymous</span>
+                                                    <span else class="blue--text"> -{{answer.createdBy.username}}</span>
+                                                </div>
+                                                <v-divider :key="`comment-divider-${i}`"></v-divider>
+
+                                            </div>                                                 
+                                     
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout>
+                                    <v-flex md12>
                                         <a  class="grey--text " @click="comment = !comment">add a comment</a>
                                         <v-layout row wrap  v-if="comment">
                                             <v-flex md11 xs10>
                                                 <el-input
                                                 type="textarea"
                                                 :rows="1"
+                                                v-model="commentContent"
                                                 placeholder="Please input"
                                                 >
                                                 </el-input>                                        
                                             </v-flex>  
                                             <v-flex md1 xs2>
-                                                <el-button type="info" plain size="small">save</el-button>                                                
+                                                <el-button type="info" plain size="small" @click="saveComment">save</el-button>                                                
                                             </v-flex>                                          
                                         </v-layout>
                                     </v-flex>
@@ -95,9 +110,8 @@ export default {
         return{
             comment: false,
             moment: moment,
-            dialog: false,
             deleted: false,
-            answerDialog: false
+            commentContent: ''
         }
     },
     methods:{
@@ -110,9 +124,21 @@ export default {
         votingStyle(has){
             return has ? { color: '#1E88E5'} : {}
         },
-
-        cancelQAAnswerComment(){
-
+        saveComment(){
+            const data = {
+                parentPublicKey: this.$route.params.qaId,
+                publicKey: this.answer.publicKey,
+                params: {
+                content: this.commentContent
+                }
+            }
+            this.$store.dispatch("saveGlobalQAComment", data)
+            .then(response => {
+                if(response.status){
+                    this.commentContent = '';
+                    this.comment = false;
+                }
+            });
         }
     },
     computed:{
@@ -123,9 +149,6 @@ export default {
 </script>
 <style lang="stylus" scoped>
     .text 
-        margin-top -20px
-        padding-left 20px
-        margin-right 20px
         word-wrap break-word 
     .qa-info
         margin-right 10px

@@ -170,12 +170,12 @@
             }
         },
         created(){
-            console.log(this.$route.params.qaId)
             this.$store.dispatch("getGlobalQA", this.$route.params.qaId);
         },
         computed: {
             ...mapGetters(['authenticatedUser', 'accessPrivileges', 'globalQA']),
-        },        
+        },     
+           
     }    
 </script>
 <style lang="stylus" scoped>

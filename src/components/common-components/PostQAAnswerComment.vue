@@ -8,7 +8,7 @@
               </v-flex>
               <v-flex>
                 <vue-editor :editorToolbar="customToolbar" 
-                v-model="answer.content" required />
+                v-model="content" required />
               </v-flex>
                  
           </v-flex>
@@ -28,8 +28,6 @@
 import {mapGetters} from 'vuex';
 import { VueEditor } from 'vue2-editor';
 
-
-const uuidv1 = require('uuid/v1');
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -52,10 +50,7 @@ export default {
       return{
           customToolbar: customToolbar, 
           uploader: false,
-          answer: {
-              
-              content: '',
-          }
+          content: '',
       }
   },
   created(){
@@ -64,46 +59,23 @@ export default {
   methods:{
 
     save(){
-        if(this.answer.content.length > 0){
-            this.$store.dispatch("saveQAAnswer", this.answer)
-            .then(response => {
-              if(response){
-                this.cancel(true);
-              }
-            });
+        if(this.content.length > 0){
+          const data = {
+            publicKey: this.$route.params.qaId,
+            content: this.content,
+            answer: true,
+            anonymous: false,
+          }
+            this.$store.dispatch("saveGlobal", data);
         }
     },
 
-    cancel(saved){
-      this.$parent.cancelAnswerPost();
-    },
-
-    // not used because of responsive image problam.
-    // handleImageAdded(file, Editor, cursorLocation){
-
-    //     this.$store.dispatch("uploadcourseQuestionImage", file)
-    //     .then(data => {
-    //         if(data != null && data != undefined){
-    //           this.courseQuestion.imagePublicKeys.push(data.publicKey);
-    //           Editor.insertEmbed(cursorLocation, 'image', data.url)
-    //         }
-    //     });
-    // }
   },
 
 
   computed: {
     ...mapGetters(['authenticatedUser', 'accessPrivileges']),
   },
-  watch:{
-      dialog(){
-        this.answer = {
-            
-            content: '',
-          }
-      }
-  },
-  
 }
 </script>
 <style lang="stylus" scoped>
