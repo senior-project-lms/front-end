@@ -49,12 +49,6 @@
                 this.page++;
             },
     
-            deleteQuestion(publicKey){
-                if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-                    this.$store.dispatch("deleteGlobalQuestion", publicKey);
-                }
-            },
-
             cancelDialog(){
                 this.dialog = false;
             },

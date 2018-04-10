@@ -24,12 +24,15 @@ export default{
             downed: false,  
             createdBy: {
                 username: ''
-            }         
-
+            },
         },
+        relateds: [],      
     },
 
     mutations:{
+        setGlobalQARelateds(state, relateds){
+            state.relateds = relateds;
+        },
         setGlobalQAs(state, qas){
             qas = state.globalQAs.concat(qas);
             state.globalQAs = qas;
@@ -99,12 +102,57 @@ export default{
 
 
         getGlobalQA(context, publicKey){
-            return globalQAService.get(publicKey)
+            globalQAService.getRelateds(publicKey)
+                    .then(response => {
+                        if(response.status){
+                            context.commit("setGlobalQARelateds", response.data);
+                        }
+                        return response;
+                    })
+            
+                    return globalQAService.get(publicKey)
             .then(response => {
                 if(response.status){
                     context.commit("setGlobalQA", response.data);
 
                 }
+                return response;
+            })
+        },
+
+        upVoteGlobalQA(context, data){
+            return globalQAService.upVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        downVoteGlobalQA(context, data){
+            return globalQAService.downVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        starVoteGlobalQA(context, data){
+            return globalQAService.starVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        searchGlobalQATag(context, name){
+            return globalQAService.searchTagByName(name)
+            .then(response => {
                 return response;
             })
         }
@@ -116,7 +164,12 @@ export default{
         },      
         globalQA(state){
             return state.globalQA;
-        } 
+        },
+        globalQARelateds(state){
+            return state.relateds;
+        }
+
+
 
     }
 }

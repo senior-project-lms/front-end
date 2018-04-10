@@ -15,7 +15,7 @@ export default class GlobalQAService{
         used for to save system announcement
     */     
     save(params){
-        return service.post('/api/global-qa-question', params);      
+        return service.post('/api/global-qa', params);      
     }
 
     /*
@@ -25,7 +25,7 @@ export default class GlobalQAService{
         used for to delete system announcement
     */       
     delete(publicKey){
-        return service.delete(`/api/global-qa-question/${publicKey}`);
+        return service.delete(`/api/global-qa/${publicKey}`);
     }
 
     /*
@@ -35,18 +35,40 @@ export default class GlobalQAService{
         used for the fetch system announcments page by page 
     */       
     getAll(page){
-        return service.getAll(`/api/global-qa-questions/${page}`);
+        return service.getAll(`/api/global-qas/${page}`);
         
     }
 
     get(publicKey){
-        return service.get(`/api/global-qa-question/${publicKey}`);
+        return service.get(`/api/global-qa/${publicKey}`);
     }
 
 
     saveComment(publicKey, params){
-        return service.post(`/api/global-qa-question/${publicKey}/comment`, params);      
+        return service.post(`/api/global-qa/${publicKey}/comment`, params);      
 
     }
 
+
+    upVote(publicKey){
+        return service.post(`/api/global-qa/${publicKey}/up-vote`);
+    }
+
+
+    downVote(publicKey){
+        return service.post(`/api/global-qa/${publicKey}/down-vote`);
+    }
+
+
+    starVote(publicKey){
+        return service.post(`/api/global-qa/${publicKey}/star-vote`);
+    }
+
+    searchTagByName(name){
+        return service.get(`/api/global-qa/tag/${name}`);
+    }
+
+    getRelateds(publicKey){
+        return service.get(`/api/global-qa/${publicKey}/relateds`);
+    }
 }

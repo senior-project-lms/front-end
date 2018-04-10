@@ -3,29 +3,28 @@
         <v-container  fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm >
             <v-layout>
             <v-flex md12 xs12>
-                    <div><h1 class="headline">{{globalQA.title}}</h1></div>
+                    <div><h1 class="headline">{{courseQA.title}}</h1></div>
                     <v-divider class="divider-space-title"></v-divider>                   
             </v-flex>
             </v-layout>            
             <v-layout row wrap>
              
                 <v-flex md9 xs12 >
-                    <QAAnswer-template v-if="update" :answer="globalQA" :key="`qa-answer-${globalQA.publicKey}`" />
+                    <QAAnswer-template v-if="update" :answer="courseQA" :key="`qa-answer-${courseQA.publicKey}`" />
                     <div class="qa-bottom"></div>
                     <div>
-                        <h1 class="headline" v-if="globalQA.answers.length > 1">{{globalQA.answers.length}} Answers</h1>
-                        <h1 class="headline" v-else>{{globalQA.answers.length}} Answer</h1>
+                        <h1 class="headline" v-if="courseQA.answers.length > 1">{{courseQA.answers.length}} Answers</h1>
+                        <h1 class="headline" v-else>{{courseQA.answers.length}} Answer</h1>
                     </div>
                     
                     <v-divider class="divider-space"></v-divider>                    
-                    <template v-for="(answer, i) in globalQA.answers">
+                    <template v-for="(answer, i) in courseQA.answers">
                         <QAAnswer-template v-if="update"  :answer="answer"  :key="`qa-answer-${answer.publicKey}`"/>
                         <v-divider class="divider-space" :key="`qa-divider-${i}`"></v-divider>
                     </template>
                     <v-layout row wrap>
                         <v-flex md12>
                             <submit-QA-answer
-                                v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)"
                             />
                             
                         </v-flex>
@@ -37,7 +36,7 @@
                             <span class="grey--text ">asked</span>
                         </v-flex>
                         <v-flex md10 xs8>
-                            <span class="">{{ moment(globalQA.createdAt).fromNow() }}</span>
+                            <span class="">{{ moment(courseQA.createdAt).fromNow() }}</span>
                         </v-flex>
                     </v-layout>
                     <v-layout row wrap>
@@ -53,9 +52,9 @@
                             <div><h1 class="headline">Related</h1></div>
                             <v-divider class="divider-space-title"></v-divider>
 
-                            <v-layout row wrap v-for="(item,i) in globalQARelateds" :key="`rel-${i}`" >
+                            <v-layout row wrap v-for="(item,i) in relatedQAs" :key="`rel-${i}`" class="align-center justify-center">
                                 <v-flex md3 xs2>
-                                    <el-button type="primary" plain size="mini">{{ item.upCount - item.downCount }}</el-button>
+                                    <el-button type="primary" plain size="mini">{{item.votes}}</el-button>
                                 </v-flex>
                                 <v-flex md9 xs10>
                                     <router-link class="" :to="{name:'QAPage', params:{'qaId': item.publicKey}}">{{ item.title }}</router-link>
@@ -79,8 +78,8 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import QAAnswerTemplate from "@/components/common-components/QAAnswerTemplate";
-    import SubmitQAAnswer from "@/components/common-components/SubmitQAAnswer";
+    import QAAnswerTemplate from "@/components/common-components/course/QAAnswerTemplate";
+    import SubmitQAAnswer from "@/components/common-components/course/SubmitCourseQAAnswer";
     import * as moment from 'moment';
 
 
@@ -95,7 +94,6 @@
                 dialog: false,
                 moment: moment,
                 update: true,
-                lastPath: '',
                relatedQAs: [
                    {
                        publicKey: '1231231231',
@@ -132,28 +130,26 @@
             }
         },
         created(){
-                this.$store.dispatch("getGlobalQA", this.$route.params.qaId);
+            this.loadData();
         },
         computed: {
-            ...mapGetters(['authenticatedUser', 'accessPrivileges', 'globalQA', 'globalQARelateds']),
+            ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQA']),
         },    
         methods: {
-
+            loadData(){
+                const data = {
+                    coursePublicKey: this.$route.params.id,
+                    publicKey: this.$route.params.qaId,
+                }
+                this.$store.dispatch("getCourseQA", data);
+            },
             updatePage(){
                 this.update = false;
                 //Object.assign(this.$data,this.$options.data.call(this));
                 this.update = true;
             }
         },
-        watch: {
-            '$route' (to, from) {
-                if(to.params.qaId != from.params.qaId){
-                    this.$store.dispatch("getGlobalQA", to.params.qaId);
-
-                }
-                return to;
-            }
-        } 
+           
     }    
 </script>
 <style lang="stylus" scoped>

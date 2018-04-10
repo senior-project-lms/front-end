@@ -31,24 +31,9 @@
                 </v-layout>
                 <v-layout row wrap>
                         <v-flex md12 sm12 xs12>
-                          <vue-editor  :editorToolbar="customToolbar" 
+                          <vue-editor class="editor" :editorToolbar="customToolbar" 
                           v-model="qa.content" required/>
                         </v-flex>
-                </v-layout>
-                <v-layout>
-                    <v-flex md3 sm3 xs12>
-                        <el-autocomplete
-                        v-model="tagSearch"
-                        :fetch-suggestions="querySearchAsync"
-                        @select="handleSelectedTag"
-                        placeholder="Search Tag"
-                        ></el-autocomplete>    
-                        <el-button v-if="addBtn" @click="newTag" type="info" size="mini" plain>add</el-button>
-                                          
-                    </v-flex>
-                    <v-flex md9 sm9 xs12>
-                            <v-chip v-for="(tag, i) in qa.tags" :key="`tag-${i}`" @input="deleteTag(i)" close >{{tag.name}}</v-chip>
-                    </v-flex>
                 </v-layout>
                 <v-layout row wrap >
                     <v-flex class="uploader" md12 sm12 xs12>
@@ -84,13 +69,12 @@ export default {
 },
   data(){
       return{
-          addBtn: false,
-          tagSearch: '',
           customToolbar: customToolbar, 
+          uploader: false,
+          resources: [],
           qa: {
               title: '',
               content: '',
-              tags: [],
           }
       }
   },
@@ -101,7 +85,14 @@ export default {
 
     save(){
         if(this.qa.title.length > 0 && this.qa.content.length > 0){
-            this.$store.dispatch("saveGlobalQA", this.qa)
+            const data = {
+                coursePublicKey: this.$route.params.id,
+                params: {
+                    title: this.qa.title,
+                    content: this.qa.content,
+                }
+            }
+            this.$store.dispatch("saveCourseQA", data)
             .then(response => {
               if(response.status){
                 this.$notify({type: "success", title: "Global QA", text: "Successfuly published"})
@@ -118,61 +109,13 @@ export default {
         this.qa = {
             title: '',
             params: {content: '', anonymous: false },
-            tags: [],
           }
     },
     cancel(){
       this.clearForm();
       this.$parent.cancelDialog();
     },
-    querySearchAsync(queryString, cb) {
-        this.addBtn = false;
-        
-        if(queryString.length == 0){
-            return
-        }
-
-        this.$store.dispatch("searchGlobalQATag", queryString)
-        .then(response =>{
-            if(response.status){
-                var data = response.data;
-                data = response.data.map(item => {
-                    item.value = item.name
-                    return item;
-                })
-                if(data.length == 0){
-                    this.addBtn = true;
-                    cb([])
-                    return;
-                }
-                console.log(data)
-                //console.log(data)
-                cb(data);
-            }
-            else{
-                this.addBtn;
-                cb([])
-            }
-        });
-    },
-    handleSelectedTag(item) {
-        this.addTag(item);
-    }, 
-    deleteTag(index){
-        this.qa.tags.splice(index,1)
-    },
-    newTag(){
-        this.addTag({name: this.tagSearch});
-        this.tagSearch = "";
-    },
-    addTag(item){
-        
-        if(!this.qa.tags.some(e => e.publicKey == item.publicKey)){
-            this.qa.tags.push(item);
-        }
-        
-    }, 
-    
+ 
   },
 
 

@@ -8,7 +8,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 
-import {DatePicker, Input, Button, Table, TableColumn} from 'element-ui'
+import {DatePicker, Input, Button, Table, TableColumn, Upload, Icon, Autocomplete} from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 
@@ -23,12 +23,16 @@ import course from './router/course/course';
 import security from './helpers/security';
 import FullCalendar from 'vue-full-calendar'
 
+
 // import components
 Vue.component(DatePicker.name, DatePicker)
 Vue.component(Input.name, Input)
 Vue.component(Button.name, Button)
 Vue.component(Table.name, Table)
 Vue.component(TableColumn.name, TableColumn)
+Vue.component(Upload.name, Upload)
+Vue.component(Icon.name, Icon)
+Vue.component(Autocomplete.name, Autocomplete)
 
 locale.use(lang)
 
@@ -154,7 +158,15 @@ router.beforeEach((to, from, next) => {
   
 });
 
-
+Vue.use(Vuetify, { theme: {
+  primary: '#1976D2',
+  secondary: '#424242',
+  accent: '#82B1FF',
+  error: '#FF5252',
+  info: '#2196F3',
+  success: '#4CAF50',
+  warning: '#FFC107'
+}})
 
 
 new Vue({
