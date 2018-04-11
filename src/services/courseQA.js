@@ -62,4 +62,13 @@ export default class QAService{
     starVote(coursePublicKey, publicKey){
         return service.post(`/api/course/${coursePublicKey}/qa/${publicKey}/star-vote`);
     }
+
+
+    searchTagByName(coursePublicKey, name){
+        return service.get(`/api/course/${coursePublicKey}/qa/tag/${name}`);
+    }
+
+    getRelateds(coursePublicKey, publicKey){
+        return service.get(`/api/course/${coursePublicKey}/qa/${publicKey}/relateds`);
+    }
 }

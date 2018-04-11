@@ -52,14 +52,15 @@
                             <div><h1 class="headline">Related</h1></div>
                             <v-divider class="divider-space-title"></v-divider>
 
-                            <v-layout row wrap v-for="(item,i) in relatedQAs" :key="`rel-${i}`" class="align-center justify-center">
+
+                                <v-layout row wrap v-for="(item,i) in courseQARelateds" :key="`rel-${i}`" >
                                 <v-flex md3 xs2>
-                                    <el-button type="primary" plain size="mini">{{item.votes}}</el-button>
+                                    <el-button type="primary" plain size="mini">{{ item.upCount - item.downCount }}</el-button>
                                 </v-flex>
                                 <v-flex md9 xs10>
-                                    <router-link class="" :to="{name:'QAPage', params:{'qaId': item.publicKey}}">{{ item.title }}</router-link>
+                                    <router-link class="" :to="{name:'CourseQAPage', params:{'qaId': item.publicKey}}">{{ item.title }}</router-link>
                                 </v-flex>                                
-                            </v-layout>                 
+                            </v-layout>               
                         </v-flex>
                     </v-layout>                                   
                 </v-flex>
@@ -94,46 +95,14 @@
                 dialog: false,
                 moment: moment,
                 update: true,
-               relatedQAs: [
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic mock related topic mock related topic ',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },                                      
-                
-               ]
+            
             }
         },
         created(){
             this.loadData();
         },
         computed: {
-            ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQA']),
+            ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQA',  'courseQARelateds']),
         },    
         methods: {
             loadData(){
@@ -149,6 +118,15 @@
                 this.update = true;
             }
         },
+        watch: {
+            '$route' (to, from) {
+                if(to.params.qaId != from.params.qaId){
+                   this.loadData();
+
+                }
+                return to;
+            }
+        }        
            
     }    
 </script>

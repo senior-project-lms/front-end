@@ -95,6 +95,7 @@ export default {
       }
   },
   created(){
+      this.tagSearch = '';
 
   },
   methods:{
@@ -145,7 +146,6 @@ export default {
                     cb([])
                     return;
                 }
-                console.log(data)
                 //console.log(data)
                 cb(data);
             }

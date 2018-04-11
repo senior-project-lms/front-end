@@ -48,8 +48,8 @@
 
                                 </v-layout>
                                 <v-layout >
-                                    <v-spacer></v-spacer>
-                                    <v-chip small v-for="(tag, i) in answer.tags" :key="`qa-tag-${i}`">{{tag}}</v-chip>                                                                        
+                                    <v-chip small v-for="(tag, i) in answer.tags" :key="`qa-tag-${i}`">{{tag.name}}</v-chip>     
+                                    <v-spacer></v-spacer>                                                                   
                                     <div class="qa-info">
                                         <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
                                         <br>

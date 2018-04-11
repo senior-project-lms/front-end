@@ -103,14 +103,14 @@ export default{
 
         getGlobalQA(context, publicKey){
             globalQAService.getRelateds(publicKey)
-                    .then(response => {
-                        if(response.status){
-                            context.commit("setGlobalQARelateds", response.data);
-                        }
-                        return response;
-                    })
+            .then(response => {
+                if(response.status){
+                    context.commit("setGlobalQARelateds", response.data);
+                }
+                return response;
+            })
             
-                    return globalQAService.get(publicKey)
+            return globalQAService.get(publicKey)
             .then(response => {
                 if(response.status){
                     context.commit("setGlobalQA", response.data);

@@ -95,40 +95,6 @@
                 dialog: false,
                 moment: moment,
                 update: true,
-                lastPath: '',
-               relatedQAs: [
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic mock related topic mock related topic ',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },
-                   {
-                       publicKey: '1231231231',
-                       title: 'mock related topic',
-                       votes: 231
-                   },                                      
-                
-               ]
             }
         },
         created(){

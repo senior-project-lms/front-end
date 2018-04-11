@@ -27,7 +27,7 @@
                                     <div>
                                     <v-layout>
                                         <v-flex md7 xs12>
-                                            <v-chip small v-for="(tag, i) in qa.tags" :key="`qa-tag-${i}`">{{tag}}</v-chip>                                                                                
+                                            <v-chip small v-for="(tag, i) in qa.tags" :key="`qa-tag-${i}`">{{tag.name}}</v-chip>                                                                                
                                         </v-flex>
                                         <v-flex md4 xs12 offset-md1>
                                             <div class="">

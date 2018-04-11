@@ -25,11 +25,15 @@ export default{
             createdBy: {
                 username: ''
             }         
-
         },
+        relateds: [],      
+
     },
 
     mutations:{
+        setCourseQARelateds(state, relateds){
+            state.relateds = relateds;
+        },
         setCourseQAs(state, qas){
             qas = state.courseQAs.concat(qas);
             state.courseQAs = qas;
@@ -98,6 +102,14 @@ export default{
 
 
         getCourseQA(context, data){
+            qaService.getRelateds(data.coursePublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setCourseQARelateds", response.data);
+                }
+                return response;
+            })
+            
             return qaService.get(data.coursePublicKey, data.publicKey)
             .then(response => {
                 if(response.status){
@@ -138,6 +150,14 @@ export default{
             })
         },
 
+
+        searchCourseQATag(context, data){
+            return qaService.searchTagByName(data.coursePublicKey, data.name)
+            .then(response => {
+                return response;
+            })
+        }
+
     },
     getters: {
         courseQAs(state){
@@ -145,7 +165,12 @@ export default{
         },      
         courseQA(state){
             return state.courseQA;
-        } 
+        },
+        courseQARelateds(state){
+            return state.relateds;
+        }
+
+
 
     }
 }
