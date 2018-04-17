@@ -1,6 +1,6 @@
 <template>
     <div>
-        Resources
+        Test - QUIZ
     </div>
 </template>
 

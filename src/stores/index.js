@@ -13,6 +13,7 @@ import systemEvent from './systemEvent'
 import courseAnnouncement from './courseAnnouncement';
 import globalQA from './globalQA';
 import courseQA from './courseQA';
+import quizTest from './quizTest';
 
 export default{
 
@@ -31,6 +32,6 @@ export default{
     systemEvent: systemEvent,
     courseAnnouncement: courseAnnouncement,
     globalQA:globalQA,
-    courseQA:courseQA
-    
+    courseQA:courseQA,
+    quizTest: quizTest,
 }

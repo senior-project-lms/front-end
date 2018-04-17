@@ -8,7 +8,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 
-import {DatePicker, Input, Button, Table, TableColumn, Upload, Icon, Autocomplete} from 'element-ui'
+import {DatePicker, Input, Button, Table, TableColumn, Upload, Icon, Autocomplete, Steps, Switch, Select, Option, Radio, Checkbox} from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 
@@ -33,6 +33,12 @@ Vue.component(TableColumn.name, TableColumn)
 Vue.component(Upload.name, Upload)
 Vue.component(Icon.name, Icon)
 Vue.component(Autocomplete.name, Autocomplete)
+Vue.component(Steps.name, Steps)
+Vue.component(Switch.name, Switch)
+Vue.component(Checkbox.name, Checkbox)
+Vue.component(Select.name, Select)
+Vue.component(Option.name, Option)
+Vue.component(Radio.name, Radio)
 
 locale.use(lang)
 
