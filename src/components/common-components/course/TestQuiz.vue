@@ -20,10 +20,10 @@
                                 <v-btn outline color="indigo" slot="activator" small>Preferences</v-btn>
                                 <v-list :key="`menu-${props.item.publicKey}`" >
                                     <v-list-tile  >
-                                        <v-list-tile-title>Edit</v-list-tile-title>
+                                        <v-list-tile-title @click="dialog = true; edit = true; selectedPublicKey = props.item.publicKey" >Edit</v-list-tile-title>
                                     </v-list-tile>
                                     <v-list-tile  >
-                                        <v-list-tile-title>Delete</v-list-tile-title>
+                                        <v-list-tile-title @click="deleteQT(props.item)">Delete</v-list-tile-title>
                                     </v-list-tile>
                                     <v-list-tile  >
                                         <v-list-tile-title>Disable</v-list-tile-title>
@@ -44,25 +44,33 @@
         <div>
             <v-btn fixed dark fab bottom right color="pink" 
                 v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_ANNOUNCEMENT)"
-                @click="dialog = !dialog" > 
+                @click="dialog = true; edit = false;"
+                > 
                 <v-icon>add</v-icon>
             </v-btn>
         </div> 
-        <post-quiz-test v-if="dialog" :dialog="dialog"></post-quiz-test>       
+        <post-quiz-test v-if="dialog" :dialog="dialog" :edit="edit" :publicKey="selectedPublicKey"></post-quiz-test>       
     </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
 import PostQuizTest from './PostTestQuiz';
+import QuestionView from './QuestionView'
+
+
+
 
 export default {
     components:{
         PostQuizTest,
+        QuestionView,
     },
     data(){
         return{
+            selectedPublicKey: null,
             dialog: false,
+            edit: false,
             headers: [
             {
                 text: 'Exam Date',
@@ -87,14 +95,28 @@ export default {
     created(){
         this.$store.dispatch("getAllCourseQuizTest", this.$route.params.id);
     },
+
     methods:{
-        cancelDialog(){
+
+        deleteQT(obj){
+            const data = {
+                coursePublicKey: this.$route.params.id,
+                publicKey: obj.publicKey,
+            }
+            this.$store.dispatch("deleteCourseQuizTest", data);
+        },
+        cancelDialog(){        
+            this.$store.dispatch("getAllCourseQuizTest", this.$route.params.id);
             this.dialog = false;
+        
+        
         }
     },
     computed:{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQuizTests']),
-    }    
+    },
+    watch: {
+    }
 }    
 </script>
 <style scoped>

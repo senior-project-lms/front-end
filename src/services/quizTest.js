@@ -29,6 +29,11 @@ export default class QuizTestService{
         return service.delete(`/api/course/${publicKey}/quiz-test/${publicKey}`);
     }
 
+    saveQuestion(coursePublicKey, publicKey, params){
+        return service.post(`/api/course/${coursePublicKey}/quiz-test/${publicKey}/question`, params);
+    }
 
-
+    getQuestion(coursePublicKey, qtPublicKey, publicKey){
+        return service.get(`/api/course/${coursePublicKey}/quiz-test/${qtPublicKey}/question/${publicKey}`);
+    }
 }

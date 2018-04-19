@@ -22,6 +22,20 @@ export default{
         },
         setCourseQuizTest(state, obj){
             state.courseQuizTest = obj;
+        },
+        setCourseQTQuestion(state, obj){
+            state.questions.push(obj);
+        },
+        clearQuizTest(state){
+            state.courseQuizTest = {
+                publicKey: '',
+                name: '',
+                detail: '',
+                gradable: false,
+                limitedDuration: false,
+                dueDated: false,
+                questions: [],
+            }            
         }
         
     },
@@ -59,8 +73,38 @@ export default{
             })
         },      
         deleteCourseQuizTest(context, data){
-            return quizTestService.delete(data.coursePublicKey, data.publicKey);
-        },  
+            return quizTestService.delete(data.coursePublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    
+                    context.dispatch("getAllCourseQuizTest",data.coursePublicKey) 
+                }
+                return response;
+            });
+        },
+        saveCourseQTQuestion(context, data){
+            return quizTestService.saveQuestion(data.coursePublicKey, data.qtPublicKey, data.params)
+            .then(response => {
+                if(response.status){
+                    data = {
+                        coursePublicKey: data.coursePublicKey,
+                        qtPublicKey: data.qtPublicKey,
+                        publicKey: response.data.publicKey,
+                    }
+                    context.dispatch("getCourseQTQuestion", data) 
+                }
+                return response;
+            })
+        },
+        getCourseQTQuestion(context, data){
+            return quizTestService.getQuestion(data.coursePublicKey, data.qtPublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setCourseQTQuestion", response.data);
+                }
+                return response;
+            });
+        },
     },
     getters: {
         courseQuizTests(state){

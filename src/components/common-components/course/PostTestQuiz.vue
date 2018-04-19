@@ -14,7 +14,7 @@
                 <v-toolbar-title>Quiz-Test</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                <v-btn dark flat @click.native="save">Publish</v-btn>
+                <!-- <v-btn dark flat @click.native="save">Publish</v-btn> -->
                 </v-toolbar-items>
                 <v-menu bottom right offset-y>
                     <v-btn slot="activator" dark icon>
@@ -30,8 +30,18 @@
                             <v-divider></v-divider>
                             <v-alert class="warn" outline color="error" icon="warning" :value="true" v-if="!isSaved">
                                 Please Save Quiz-Test details before add the questions
-                            </v-alert>                            
-                            <v-btn @click="newQuestion=true" v-if="!newQuestion && isSaved">Add Question</v-btn>
+                            </v-alert>
+
+                            <question-view v-for="answer in courseQuizTest.answers" :key="answer.publicKey"></question-view>
+
+                            <v-btn 
+                            class="add-new-btn"
+                            @click="newQuestion=true"
+                            v-if="!newQuestion && isSaved"
+                            block
+                            outline color="indigo"
+                            >
+                            Add Question</v-btn>
                             <new-qt-object  v-if="newQuestion && isSaved" @cancel="cancelNewQuestion"></new-qt-object>
                                     
                         </v-flex>
@@ -134,7 +144,7 @@ import NewQtObject from './NewQTObject';
 
 
 export default {
-  props: ['dialog'],
+  props: ['dialog', 'edit', 'publicKey'],
   components: {
       NewQtObject,
 },
@@ -145,9 +155,18 @@ export default {
       }
   },
   created(){
-
+    if(this.edit){
+        this.fetchQT();
+    }
   },
   methods:{
+    fetchQT(){
+        const data = {
+                coursePublicKey: this.$route.params.id,
+                publicKey: this.publicKey,
+        }
+        this.$store.dispatch("getCourseQuizTest", data);
+    },
     save(){
         if(this.courseQuizTest.name.length == 0){
             this.$notify({type: "info", title: "Quiz-Test", text: "Fill at least name of quiz-test"})
@@ -171,7 +190,7 @@ export default {
                 params: this.courseQuizTest,
                 coursePublicKey: this.$route.params.id,
             }
-            this.$store.dispatch("saveCourseQuizTest", data);
+            //this.$store.dispatch("saveCourseQuizTest", data);
         }
 
 
@@ -180,7 +199,7 @@ export default {
 
     },
     cancel(saved){
-      
+      this.$store.commit("clearQuizTest");
       this.clearForm();
       this.$parent.cancelDialog();
     },
@@ -197,8 +216,7 @@ export default {
         return this.courseQuizTest.publicKey.length != 0;
     }
   },
-  watch:{
-  
+  watch:{  
   },
   beforeDestroy(){
     
@@ -213,4 +231,6 @@ export default {
         height calc(100%) !important    
     .el-switch
         float: right
+    .add-new-btn
+        margin-top 25px
 </style>
