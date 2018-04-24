@@ -1,5 +1,6 @@
 <template>
     <div class="Announcement" v-if="!deleted">
+
         <v-card :color="unread" :class="{'border-color': announcement.borderColor}">
 
             <a
@@ -45,6 +46,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>  
+
     </div>
 </template>
 <script>
@@ -52,7 +54,7 @@ import * as moment from 'moment';
 import {mapGetters} from 'vuex';
 export default {
     name: 'AnnouncementTemplate',
-    props: ['announcement', 'systemAnnouncement'],
+    props: ['announcement', 'systemAnnouncement','courseAssignment'],
     data(){
         return{
             moment: moment,
