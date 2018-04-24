@@ -66,7 +66,7 @@ export default class Service{
     */    
     delete(path){
         const accessToken = authService.getAccessToken();
-        return Axios.delete(`${path}/?access_token=${accessToken}`)
+        return Axios.delete(`${path}?access_token=${accessToken}`)
         .then(response => {
             return this.___then(response);
 

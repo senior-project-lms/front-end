@@ -23,7 +23,7 @@
                                         <v-list-tile-title @click="dialog = true; edit = true; selectedPublicKey = props.item.publicKey" >Edit</v-list-tile-title>
                                     </v-list-tile>
                                     <v-list-tile  >
-                                        <v-list-tile-title @click="deleteQT(props.item)">Delete</v-list-tile-title>
+                                        <v-list-tile-title @click="deleteDialog = true; selectedDeleteItem = props.item;">Delete</v-list-tile-title>
                                     </v-list-tile>
                                     <v-list-tile  >
                                         <v-list-tile-title>Disable</v-list-tile-title>
@@ -49,8 +49,23 @@
                 <v-icon>add</v-icon>
             </v-btn>
         </div> 
-        <post-quiz-test v-if="dialog" :dialog="dialog" :edit="edit" :publicKey="selectedPublicKey"></post-quiz-test>       
+        <post-quiz-test v-if="dialog" :dialog="dialog" :edit="edit" :publicKey="selectedPublicKey"></post-quiz-test>      
+        <div>
+            <v-dialog v-model="deleteDialog" max-width="290">
+                <v-card>
+                    <v-card-title class="headline">Delete</v-card-title>
+                    <v-card-text>Are you sure to delete</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Candel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteQT">Delete</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>        
+        </div>         
     </div>
+
+
 </template>
 
 <script>
@@ -68,6 +83,8 @@ export default {
     },
     data(){
         return{
+            selectedDeleteItem: null,
+            deleteDialog: false,
             selectedPublicKey: null,
             dialog: false,
             edit: false,
@@ -98,12 +115,13 @@ export default {
 
     methods:{
 
-        deleteQT(obj){
+        deleteQT(){
             const data = {
                 coursePublicKey: this.$route.params.id,
-                publicKey: obj.publicKey,
+                publicKey: this.selectedDeleteItem.publicKey,
             }
             this.$store.dispatch("deleteCourseQuizTest", data);
+            this.deleteDialog = false;
         },
         cancelDialog(){        
             this.$store.dispatch("getAllCourseQuizTest", this.$route.params.id);

@@ -31,8 +31,7 @@
                             <v-alert class="warn" outline color="error" icon="warning" :value="true" v-if="!isSaved">
                                 Please Save Quiz-Test details before add the questions
                             </v-alert>
-
-                            <question-view v-for="answer in courseQuizTest.answers" :key="answer.publicKey"></question-view>
+                            <question-view class="question-view" v-for="question in courseQuizTest.questions" :key="question.publicKey" :qt="question"></question-view>
 
                             <v-btn 
                             class="add-new-btn"
@@ -141,12 +140,13 @@
 <script>
 import {mapGetters} from 'vuex';
 import NewQtObject from './NewQTObject';
-
+import QuestionView from './QuestionView';
 
 export default {
   props: ['dialog', 'edit', 'publicKey'],
   components: {
       NewQtObject,
+      QuestionView,
 },
   data(){
       return{
@@ -233,4 +233,6 @@ export default {
         float: right
     .add-new-btn
         margin-top 25px
+    .question-view
+        margin-bottom 10px
 </style>

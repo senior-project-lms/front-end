@@ -1,6 +1,8 @@
 <template>
     <div>
         <v-card>
+            <v-card-title class="title red--text text--darken-4">New Question</v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
                 <v-layout row wrap>
                     <v-flex md12>
@@ -42,8 +44,7 @@
                         <v-layout row wrap>
                             <v-flex md12>
                                 <template v-for="i in answerCount" v-if="value != null">
-                                    {{i}}
-                                    <v-layout v-if="value.code == 1" :key="`layout-${i}`">
+                                    <v-layout v-if="value.type == 1" :key="`layout-${i}`">
                                         <v-flex md12>
                                             <el-input
                                             :key="`item-form-${i}`"
@@ -55,7 +56,7 @@
                                             </el-input>  
                                         </v-flex>
                                     </v-layout>
-                                    <v-layout v-if="value.code == 2" :key="`layout-${i}`">
+                                    <v-layout v-if="value.type == 2" :key="`layout-${i}`">
                                         <v-flex md1 class="">
                                             <el-checkbox> option-{{i}}</el-checkbox>
                                         </v-flex>
@@ -63,12 +64,12 @@
                                             <el-input v-model="qt.answers[i-1].text" placeholder="Please input" size="mini"></el-input>
                                         </v-flex>
                                     </v-layout>                                      
-                                    <v-layout v-if="value.code == 3" :key="`layout-${i}`">
+                                    <v-layout v-if="value.type == 3" :key="`layout-${i}`">
                                         <v-flex md1 class="">
                                             <el-radio   :label="i" >option-{{i}}</el-radio>
                                         </v-flex>
                                         <v-flex md11>
-                                            <el-input   placeholder="Please input" size="mini"></el-input>
+                                            <el-input v-model="qt.answers[i-1].text" placeholder="Please input" size="mini"></el-input>
                                         </v-flex>
                                     </v-layout>                                    
                                 </template>
@@ -79,14 +80,14 @@
                                 <v-layout row wrap v-if="value != null">
                                     <v-flex md12>
                                         <template v-for="i in answerCount">
-                                            <el-radio v-model="qt.answers[i].correct" v-if="value.code == 3"  :key="`item-form-${i}`" :label="i" > option-{{i}}</el-radio>
+                                            <el-radio  v-model="qt.correctIndex" v-if="value.type == 3" :value="true" :key="`item-form-${i}`" :label="i" > option-{{i}}</el-radio>
                                         </template>                                        
                                     </v-flex>
                                 </v-layout>          
                                 <v-layout row wrap v-if="value != null">
                                     <v-flex md12>
                                         <template v-for="i in answerCount">
-                                            <el-checkbox v-model="qt.answers[i].correct" v-if="value.code == 2" :key="`item-form-${i}`"> option-{{i}}</el-checkbox>
+                                            <el-checkbox v-model="qt.answers[i-1].correct" v-if="value.type == 2" :key="`item-form-${i}`"> option-{{i}}</el-checkbox>
                                         </template>                                        
                                     </v-flex>
                                 </v-layout>                                                           
@@ -122,23 +123,24 @@ export default {
             options: [
                 {
                 text: 'Text',
-                code: 1,
+                type: 1,
                 max: 1,
                 },
                 {
                 text: 'Select Multi',
-                code: 2,
+                type: 2,
                 max: 5,
                 },
                 {
                 text: 'Select Single',
-                code: 3,
+                type: 3,
                 max: 5,
                 }                    
                                     
             ],  
             answerCount: 0,
             qt: {
+                correctIndex: null,
                 content: '',
                 answers: []
             }
@@ -149,11 +151,13 @@ export default {
         cancel(){
             this.answerCount = 0;
             this.qt.question = '';
-            this.qt.answers = []
+            this.qt.answers = [];
+            this.qt.correctIndex = null;
             this.$emit("cancel");
         },
         counter(i){                
             if(this.value == null){
+
                 return;
             }
             if( this.answerCount + i  > this.value.max){
@@ -163,30 +167,45 @@ export default {
                 this.answerCount = 0;
             }
             else{
-                this.answerCount += i;
+
                 if(i > 0){
-                    this.qt.answers.push({text: '', type: this.value.code,  correct: false})
+                        this.qt.answers.push({text: '', type: this.value.type,  correct: false})
                 }
                 else{
-                    this.qt.answers.splice(i, 1); 
-                }
+                        this.qt.answers.splice(i, 1); 
+                }                
+                this.answerCount += i;
+       
             }
 
-            console.log(this.qt.answers)
         },
         save(){
+            if(this.value.type == 3){
+                const index = this.qt.correctIndex - 1;
+                this.qt.answers[index].correct = true;
+            }
+            
             const data = {
                 coursePublicKey: this.$route.params.id,
                 qtPublicKey: this.courseQuizTest.publicKey,
                 params: this.qt,
             }
+
             this.$store.dispatch("saveCourseQTQuestion", data)
             .then(response => {
                 if(response.status){
                     this.cancel();
                 }
             });
-        }
+        },
+        falseOthers(index){
+            index = index - 1;
+            this.qt.answers.forEach((ans, i) => {
+                if(i != index){
+                    ans.correct = false;
+                }
+            })
+        },
     },
     computed: {
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQuizTest']),
@@ -197,8 +216,14 @@ export default {
     watch: {
         value(to, from){
             this.answerCount = 0;
+            this.qt.answers = [];
+            this.qt.correctIndex = null;            
             return to;
         }
+    },
+    created(){
+    },
+    beforeDestroy(){
     }
 }    
 </script>

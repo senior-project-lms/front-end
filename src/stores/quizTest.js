@@ -24,7 +24,8 @@ export default{
             state.courseQuizTest = obj;
         },
         setCourseQTQuestion(state, obj){
-            state.questions.push(obj);
+            console.log(state.courseQuizTest.questions)
+            state.courseQuizTest.questions.push(obj);
         },
         clearQuizTest(state){
             state.courseQuizTest = {
@@ -104,6 +105,20 @@ export default{
                 }
                 return response;
             });
+        },
+        deleteCourseQTQuestion(context, data){
+            return quizTestService.deleteQuestion(data.coursePublicKey, data.qtPublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    const dt = {
+                        coursePublicKey: data.coursePublicKey,
+                        publicKey: data.qtPublicKey,
+                    }
+                    context.dispatch("getCourseQuizTest", dt);
+                }
+                return response;
+            });
+
         },
     },
     getters: {

@@ -36,4 +36,8 @@ export default class QuizTestService{
     getQuestion(coursePublicKey, qtPublicKey, publicKey){
         return service.get(`/api/course/${coursePublicKey}/quiz-test/${qtPublicKey}/question/${publicKey}`);
     }
+
+    deleteQuestion(coursePublicKey, qtPublicKey, publicKey){
+        return service.delete(`/api/course/${coursePublicKey}/quiz-test/${qtPublicKey}/question/${publicKey}`);
+    }
 }
