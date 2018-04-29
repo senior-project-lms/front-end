@@ -25,7 +25,7 @@
                     <v-layout row wrap>
                         <v-flex md12>
                             <submit-QA-answer
-                                v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)"
+                              v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)"
                             />
                             
                         </v-flex>

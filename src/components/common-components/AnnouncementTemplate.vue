@@ -64,8 +64,10 @@ export default {
         deleteAnnouncement(){
             try{
                 this.dialog = false;
-                if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-                    this.$parent.deleteAnnouncement(this.announcement.publicKey);
+                this.$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)
+                //if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
+                if(this.$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)){
+                  this.$parent.deleteAnnouncement(this.announcement.publicKey);
                 }
             }
             catch(e){

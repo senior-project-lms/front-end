@@ -1,6 +1,7 @@
 <template>    
   <div 
-  v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)">
+  v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)"
+  >
       <v-layout row wrap>
           <h2 class="headline"> Your answer</h2>
           <v-flex md12>
@@ -10,7 +11,7 @@
       </v-layout>
       <v-layout row wrap>
             <v-btn color="info" @click="save"
-              v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_GLOBAL_QA)">
+             v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)">
               Post Your Answer
             </v-btn>    
       </v-layout>

@@ -64,7 +64,7 @@
                                     <v-layout row wrap>
                                         <v-flex md12>
                                             <el-input type="textarea" placeholder="Quiz-Test Description"
-                                            v-model="courseQuizTest.description"
+                                            v-model="courseQuizTest.detail"
                                             ></el-input>    
                                         </v-flex>
                                     </v-layout>
@@ -81,7 +81,7 @@
                                     </v-layout>                                                                        
                                     <v-layout row wrap v-if="courseQuizTest.limitedDuration">
                                         <v-flex md5>
-                                            <el-input placeholder="Duration min" size="small"></el-input>                                                                         
+                                            <el-input v-model="courseQuizTest.duration" placeholder="Duration min" size="small"></el-input>                                                                         
                                         </v-flex>
                                     </v-layout>
                                     <v-divider></v-divider>                                    
@@ -90,17 +90,18 @@
                                             <div>
                                                 Has Due Date
                                                 <el-switch
-                                                v-model="courseQuizTest.dueDated"
+                                                v-model="courseQuizTest.hasDueDate"
                                                 active-color="#13ce66"
                                                 inactive-color="#E0E0E0">
                                                 </el-switch>                                               
                                             </div>
                                         </v-flex>
                                     </v-layout>                                       
-                                    <v-layout row wrap v-if="courseQuizTest.dueDated">
+                                    <v-layout row wrap v-if="courseQuizTest.hasDueDate">
                                         <v-flex md12>
                                                 <el-date-picker
-                                                type="datetime"                                                
+                                                type="datetime" 
+                                                v-model="courseQuizTest.endAt"                                               
                                                 placeholder="Due Date"
                                                 size="small">
                                                 </el-date-picker>
@@ -121,7 +122,7 @@
                                         </v-layout>                                    
                                         <v-layout row wrap v-if="courseQuizTest.gradable">
                                             <v-flex md8>
-                                                    <el-input placeholder="Score Weight" size="small"></el-input>
+                                                    <el-input placeholder="Score Weight" size="small" disabled></el-input>
                                             </v-flex>
                                         </v-layout>
                                 </v-card-text>
@@ -189,8 +190,9 @@ export default {
             const data = {
                 params: this.courseQuizTest,
                 coursePublicKey: this.$route.params.id,
+                qtPublicKey: this.courseQuizTest.publicKey,
             }
-            //this.$store.dispatch("saveCourseQuizTest", data);
+            this.$store.dispatch("updateCourseQuizTest", data);
         }
 
 

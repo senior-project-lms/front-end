@@ -197,7 +197,7 @@ export default new Router({
                   requeiresAuthentication: true,
                   base: '',
                 },
-              },
+              },            
           ]
         },
       ]

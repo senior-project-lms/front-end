@@ -5,7 +5,10 @@
                 <v-layout row wrap>
                     <v-flex md12>
                         <p class="text-md-right">
-                            <a class="red--text text-darken-4" @click="dialog = true">delete</a>
+                            <a class="red--text text-darken-4" @click="dialog = true"
+                            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_QT)"
+
+                            >delete</a>
                         </p>                        
                         <p v-html="qt.content"></p>                
                     </v-flex>

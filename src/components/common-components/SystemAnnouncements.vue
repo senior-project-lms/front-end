@@ -10,14 +10,17 @@
           </section>
       </v-flex>     
       <div>
-             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"> 
+             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog"
+              v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
+             > 
               <v-icon>add</v-icon>
             </v-btn>
       </div>
       <template>
         <v-btn block class="load-more" light outline @click="loadSystemAnnouncements(page)" v-if="loader">More</v-btn>
       </template>
-      <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
+      <post-system-announcement :dialog="dialog" 
+      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
           
   </v-container>
 

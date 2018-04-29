@@ -130,4 +130,9 @@ export default class Service{
     }
 
 
+    getCurrentServerTime(){
+        return this.get("/api/current-time");
+    }
+
+
 }
