@@ -30,6 +30,8 @@ export default{
             timeUp: true,
         },
 
+        courseQTUsers: [],
+
     },
     mutations: {
         setCourseQuizTests(state, list){
@@ -43,6 +45,9 @@ export default{
         },
         setCourseQTUser(state, obj){
             state.courseQTUser = obj;
+        },
+        setCourseQTUsers(state, list){
+            state.courseQTUsers = list;
         },
 
         clearQuizTest(state){
@@ -229,6 +234,15 @@ export default{
                 return response;
             });
         },
+        getCourseQTUsers(context, data){
+            return quizTestService.getQTUsers(data.coursePublicKey, data.qtPublicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setCourseQTUsers", response.data);              
+                }
+                return response;
+            });
+        },        
         startCourseQT(context, data){
             return quizTestService.startQT(data.coursePublicKey, data.qtPublicKey)
             .then(response => {
@@ -272,6 +286,9 @@ export default{
         courseQTUser(state){
             return state.courseQTUser;
         },
+        courseQTUsers(state){
+            return state.courseQTUsers;
+        }
   
     }
     

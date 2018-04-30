@@ -73,4 +73,9 @@ export default class QuizTestService{
         return service.get(`/api/course/${coursePublicKey}/quiz-test/${qtPublicKey}/qt-user`);
     }
 
+
+    getQTUsers(coursePublicKey, qtPublicKey){
+        return service.get(`/api/course/${coursePublicKey}/quiz-test/${qtPublicKey}/qt-users`);
+    }
+
 }

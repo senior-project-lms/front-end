@@ -40,7 +40,10 @@
                             v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_QT)"
                             >
                                 <v-btn outline color="indigo" slot="activator" small>Preferences</v-btn>
+                            
                                 <v-list :key="`menu-${props.item.publicKey}`" >
+
+  
                                     <v-list-tile
                                     v-if="!props.item.published && $security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_COURSE_QT)"
                                      @click="dialog = true; edit = true; selectedPublicKey = props.item.publicKey">
@@ -58,7 +61,11 @@
                                     <v-list-tile v-if="props.item.published && $security.hasPermission(authenticatedUser, accessPrivileges.PUBLISH_COURSE_QT)"
                                     @click="disableDialog = true; selectedPublishItem = props.item;" >
                                         <v-list-tile-title>Disable</v-list-tile-title>
-                                    </v-list-tile>                                                                                                                          
+                                    </v-list-tile>        
+                                    <v-list-tile v-if="props.item.published && $security.hasPermission(authenticatedUser, accessPrivileges.VIEW_USER_ANSWERS_COURSE_QT)"
+                                    @click="usersAnswersView = true; selectedPublicKey = props.item.publicKey;" >
+                                        <v-list-tile-title>View Answers</v-list-tile-title>
+                                    </v-list-tile>                                                                                                                                                        
                                 </v-list>
                             </v-menu>
                         </td>
@@ -81,11 +88,21 @@
             </v-btn>
         </div> 
         <post-quiz-test v-if="dialog && $security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_QT)" 
-        :dialog="dialog" :edit="edit" :publicKey="selectedPublicKey"></post-quiz-test>      
+        :dialog="dialog" :edit="edit" :publicKey="selectedPublicKey">
+        </post-quiz-test>      
+
         <qt-student-view
         v-if="studentViewDialog && $security.hasPermission(authenticatedUser, accessPrivileges.JOIN_COURSE_QT)"
         :dialog="studentViewDialog" :publicKey="selectedPublicKey">
         </qt-student-view>
+
+        <qt-student-list
+        v-if="usersAnswersView && $security.hasPermission(authenticatedUser, accessPrivileges.VIEW_USER_ANSWERS_COURSE_QT)"
+        :dialog="usersAnswersView" :publicKey="selectedPublicKey"
+        @cancel="cancelDialog">
+        </qt-student-list>        
+
+
         <div>
             <v-dialog v-model="deleteDialog" max-width="290">
                 <v-card>
@@ -137,6 +154,8 @@ import {mapGetters} from 'vuex';
 import PostQuizTest from './PostTestQuiz';
 import QuestionView from './QuestionView'
 import QtStudentView from './QTStudentView'
+import QtStudentList from './QTStudentList'
+
 
 import * as moment from 'moment';
 
@@ -147,10 +166,12 @@ export default {
         PostQuizTest,
         QuestionView,
         QtStudentView,
+        QtStudentList,
     },
     data(){
         return{
             moment: moment,
+            usersAnswersView: false,
             studentViewDialog: false,
             selectedDeleteItem: null,
             publishDialog: false,
@@ -216,6 +237,7 @@ export default {
             this.$store.dispatch("getAllCourseQuizTest", this.$route.params.id);
             this.dialog = false;    
             this.studentViewDialog = false;
+            this.usersAnswersView = false;
         },
         isPublished(published){
             return published ? 'green lighten-5' : 'red lighten-5';
