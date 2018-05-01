@@ -1,28 +1,34 @@
 <template>
-    <div class="">
-        <v-flex>
-            <v-data-table :headers="tableHeaders" :items="grades"  hide-actions>
+            <v-data-table :headers="tableHeaders" :items="grades" item-key="text"  hide-actions>
                 <template slot="items" slot-scope="props">
-                    <td>{{ props.item.text }}</td>
-                    <td class="" >{{ props.item.score }}/{{ props.item.maxScore }}</td>
-                    <td class="" >{{ props.item.average }}</td>
-                    <td v-show="!props.item.visible" class="" >%{{ props.item.affect }}</td>
-                    <td v-show="!props.item.visible" class="text-xs-right">
-                        <a href="">view details</a>
-                    </td>
+                    <tr @click="props.expanded = !props.expanded">
+                        <td>{{ props.item.text }}</td>
+                        <td class="" >{{ props.item.score }}/{{ props.item.maxScore }}</td>
+                        <td class="" >{{ props.item.average }}</td>
+                        <td v-show="!props.item.visible" class="" >%{{ props.item.affect }}</td>
+                        <td v-show="!props.item.visible" class="text-xs-right">
+                            <a href="">view details</a>
+                        </td>
+                    </tr>
+                </template>
+                <template slot="expand" slot-scope="props">
+                    <section>
+                        <grade-input-template v-for="(student, i) in studentList" :key="i" :student="student"/>
+                    </section>    
                 </template>                
             </v-data-table>
-        </v-flex>
-        <v-divider></v-divider>
-        <v-flex>
-        </v-flex>
-    </div>
 </template>
 
 <script>
+import GradeInputTemplate from './GradeInputTemplate'
     export default {
+        components:{
+            GradeInputTemplate
+        },
         data(){
             return{
+                
+                page: 0,
                 tableHeaders: [
                     {
                         text: 'Name',
@@ -89,7 +95,12 @@
                         average: 34,
                         affect: 30,
                     }                                                            
-                ]
+                ],
+                studentList:[
+                    {name: "Atalay Samet Ergen"},
+                    {name: "Emsal Aynaci"},
+                    {name: "Umit Kas"}
+                ],
             }
         },
         computed: {
@@ -127,6 +138,11 @@
                     visible: true
                 }
                 this.grades.push(obj)
+            },
+
+            loadGrades(){
+                this.$store.dispatch("getGrades", page)
+                this.page++
             }
         },
         created(){
