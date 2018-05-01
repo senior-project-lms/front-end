@@ -22,15 +22,20 @@
                             <v-layout row wrap>
                                 <v-flex md12>
                                     <v-card-title>
-                                            <h4 class="subheading"><router-link :to="{name:'QAPage', params:{'qaId': qa.publicKey}}">{{ qa.title }}</router-link></h4>
+                                            <h4 class="subheading"><router-link :to="{name:'CourseQAPage', params:{'qaId': qa.publicKey}}">{{ qa.title }}</router-link></h4>
                                     </v-card-title>
                                     <div>
-                                    <v-layout row wrap >
-                                        <v-flex md12 xs12 v-if="qa.tags.length > 0">
+                                    <v-layout>
+                                        <v-flex md7 xs12>
                                             <v-chip small v-for="(tag, i) in qa.tags" :key="`qa-tag-${i}`">{{tag.name}}</v-chip>                                                                                
                                         </v-flex>
-                                        <v-flex md12 xs12 offset-md1>
-                                            <h4 class="grey--text text-md-right text-xs-right qa-info">{{ moment(qa.updatedAt).fromNow() }} by {{qa.createdBy.username}}</h4>
+                                        <v-flex md4 xs12 offset-md1>
+                                            <div class="">
+                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{ moment(qa.updatedAt).fromNow() }} by {{qa.createdBy.username}}</h4>
+                                            </div>
+                                            <!-- <div class="">
+                                                <h4 class="grey--text text-md-right text-xs-right qa-info">{{qa.createdBy.username}}</h4>
+                                            </div>                                        -->
                                         </v-flex>
                                     </v-layout>                                        
                                     </div>

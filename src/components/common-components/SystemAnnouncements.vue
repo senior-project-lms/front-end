@@ -1,26 +1,29 @@
 <template>
-  <div>
+  <v-container   fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
       <v-flex md12 sm12>
-          <v-flex no-content md2 offset-md5 v-if="systemAnnouncements.length == 0">
-                <h3 class="text-md-center text-xs-center">There are no announcements.</h3>
+          <v-flex no-content md4 offset-md4 v-if="systemAnnouncements.length == 0">
+                <h3 class="text-md-center text-xs-center">There is no announcement.</h3>
           </v-flex>
    
-          <section class="Container">
+          <section class="">
               <announcement-template v-for="(announcement, i) in systemAnnouncements" :key="i" :announcement="announcement" :systemAnnouncement="true"/>
           </section>
       </v-flex>     
       <div>
-             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"> 
+             <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog"
+              v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"
+             > 
               <v-icon>add</v-icon>
             </v-btn>
       </div>
       <template>
         <v-btn block class="load-more" light outline @click="loadSystemAnnouncements(page)" v-if="loader">More</v-btn>
       </template>
-      <post-system-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
+      <post-system-announcement :dialog="dialog" 
+      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_SYSTEM_ANNOUNCEMENT)"/>
           
+  </v-container>
 
-  </div>
 </template>
 <script>
 import {mapGetters} from 'vuex';
@@ -109,5 +112,5 @@ export default {
         margin-right 10px
 
     .no-content
-        padding-top 50%
+        padding-top 20%
 </style>

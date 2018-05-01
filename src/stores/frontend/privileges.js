@@ -132,6 +132,9 @@ export default{
             VERIFY_COURSE_QT : 1110010010,
             JOIN_COURSE_QT : 1111000101,
             READ_COURSE_QT: 1101000011,
+            PUBLISH_COURSE_QT: 1000100100,
+            READ_NOT_PUBLISHED_COURSE_QT: 1000111000,            
+            VIEW_USER_ANSWERS_COURSE_QT: 1100100001,
 
             // COURSE RESOURCE
             SAVE_COURSE_RESOURCE : 1110011010,
@@ -187,6 +190,15 @@ export default{
             SAVE_GLOBAL_CALENDAR: 1001111011,
         
 
+            SAVE_GLOBAL_QA: 1100011001,
+            DELETE_GLOBAL_QA: 1100111110,
+            DELETE_OWN_GLOBAL_QA: 1011011001,
+            UPDATE_OWN_GLOBAL_QA: 1000000101,
+        
+            UPDATE_GLOBAL_QA: 1010000100,
+            VERIFY_GLOBAL_QA: 1010111111,
+            VOTE_GLOBAL_QA: 1101110101,
+            STAR_COURSE_QA: 1010101100,
         }
 
     },

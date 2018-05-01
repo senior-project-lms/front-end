@@ -1,6 +1,6 @@
 import GlobalQAService from "../services/globalQA";
 
-var globalQAService = new GlobalQAService();
+const globalQAService = new GlobalQAService();
 
 /*
 
@@ -12,15 +12,35 @@ getters:
 
 export default{
     state: {
-        globalQAs: []
+        globalQAs: [],
+        globalQA: {
+            title: '',
+            content: '',
+            answers: [],
+            upCount: 0,
+            downCount: 0,
+            stared: false,
+            upped: false,
+            downed: false,  
+            createdBy: {
+                username: ''
+            },
+        },
+        relateds: [],      
     },
 
     mutations:{
-        setGlobalQAs(state, qas){
-             qas = state.globalQAs.concat(qas);
-             state.globalQAs = qas;
+        setGlobalQARelateds(state, relateds){
+            state.relateds = relateds;
         },
-        clearSystemAnnouncements(state){
+        setGlobalQAs(state, qas){
+            qas = state.globalQAs.concat(qas);
+            state.globalQAs = qas;
+       },        
+        setGlobalQA(state, qa){
+             state.globalQA = qa;
+        },
+        clearGlobalQAs(state){
             state.globalQAs = [];
         }
     },
@@ -29,62 +49,127 @@ export default{
         getGlobalQAs(context, page){
             return globalQAService.getAll(page)
             .then(response => {
-                if(page == 0){
+                if(page == 1){
                     context.commit("clearGlobalQAs");
 
                 }
-                if(response != null && response.length > 0){
-                    context.commit("setGlobalQAs", response);
-                    return true;
-                }
-                return false;
+                
+                context.commit("setGlobalQAs", response.data);
+                 
+                return response;
             });
         },
 
-        saveGlobalQuestion(context, publicKey, question){
-            return globalQAService.save(question)
-            /*.then(response => {
-                if(response){
-                   return context.dispatch("getGlobalQAs", 0) 
-                      .then(() => {
-                        return true;
-                    });
-                  
-                }
-                else{
-                    return false;
-                }
-            })*/
-        },
-
-        deleteGlobalQuestion(context, publicKey){
-            return globalQAService.delete(publicKey)
+        saveGlobalQA(context, qa){
+            return globalQAService.save(qa)
             .then(response => {
-                if(response){
-                    return context.dispatch("getGlobalQAs", 0) 
-                    .then(() => {
-                        return true;
-                     });
+                if(response.status){
+                    if(qa.answer){
+                        context.dispatch("getGlobalQA", qa.publicKey) 
+                    }
+                    else{
+                        context.dispatch("getGlobalQAs", 1) 
+                    }
+                    
                 }
-                else{
-                    return false;
-                }
+                return response;
             })
         },
 
-        saveGlobalQuestionAnswer(context, publicKey, answer){
-
+        saveGlobalQAComment(context, qa){
+            
+            return globalQAService.saveComment(qa.publicKey, qa.params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", qa.parentPublicKey) 
+                    
+                }
+                return response;
+            })
         },
 
-        getAllGlobalQuestionAnswers(context, questionPublicKey){
-            return globalQAService.getAnswers(questionPublicKey);
+
+
+        deleteGlobalQA(context, publicKey){
+            return globalQAService.delete(publicKey)
+            .then(response => {
+                if(response.status){
+                    return context.dispatch("getGlobalQAs", 1) 
+                 }
+                 return response;
+            })
+        },
+
+
+        getGlobalQA(context, publicKey){
+            globalQAService.getRelateds(publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setGlobalQARelateds", response.data);
+                }
+                return response;
+            })
+            
+            return globalQAService.get(publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setGlobalQA", response.data);
+
+                }
+                return response;
+            })
+        },
+
+        upVoteGlobalQA(context, data){
+            return globalQAService.upVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        downVoteGlobalQA(context, data){
+            return globalQAService.downVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        starVoteGlobalQA(context, data){
+            return globalQAService.starVote(data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getGlobalQA", data.parentPublicKey) 
+                 }
+                 return response;
+            })
+        },
+
+        searchGlobalQATag(context, name){
+            return globalQAService.searchTagByName(name)
+            .then(response => {
+                return response;
+            })
         }
 
     },
     getters: {
         globalQAs(state){
             return state.globalQAs;
-        }        
+        },      
+        globalQA(state){
+            return state.globalQA;
+        },
+        globalQARelateds(state){
+            return state.relateds;
+        }
+
+
 
     }
 }

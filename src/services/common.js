@@ -66,7 +66,7 @@ export default class Service{
     */    
     delete(path){
         const accessToken = authService.getAccessToken();
-        return Axios.delete(`${path}/?access_token=${accessToken}`)
+        return Axios.delete(`${path}?access_token=${accessToken}`)
         .then(response => {
             return this.___then(response);
 
@@ -127,6 +127,11 @@ export default class Service{
         .catch(error => {
             return this.___then(error.response);
         })
+    }
+
+
+    getCurrentServerTime(){
+        return this.get("/api/current-time");
     }
 
 

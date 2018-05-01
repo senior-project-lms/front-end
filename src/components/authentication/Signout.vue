@@ -22,6 +22,7 @@ export default {
         this.$store.commit("clearSystemAnnouncementStore");
         this.$store.commit("clearEnrollmentRequestStore");
         this.$store.commit("clearUserStore");
+        this.$store.commit("clearQuizTestAllStates");
 
         // this.$store.dispatch("cleareAuthenticatedUser");
         // this.$store.dispatch("cleareAuthenticatedUser");

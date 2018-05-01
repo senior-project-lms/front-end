@@ -64,8 +64,10 @@ export default {
         deleteAnnouncement(){
             try{
                 this.dialog = false;
-                if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
-                    this.$parent.deleteAnnouncement(this.announcement.publicKey);
+                this.$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)
+                //if(this.authenticatedUser.accessPrivileges.includes(this.accessPrivileges.DELETE_SYSTEM_ANNOUNCEMENT)){
+                if(this.$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_GLOBAL_QA)){
+                  this.$parent.deleteAnnouncement(this.announcement.publicKey);
                 }
             }
             catch(e){
@@ -94,8 +96,6 @@ export default {
         margin-top 2px
         margin-bottom 2px
     .Announcement
-        // margin-right 10px
-        // margin-left 10px
         margin-top 10px
         margin-bottom 15px
 
