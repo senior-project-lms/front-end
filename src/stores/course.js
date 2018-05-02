@@ -17,6 +17,7 @@ export default{
         observerStudents: [],
         assistants: [],
         events: [],
+        allRegisteredStudets: []
 
     },
     mutations: {
@@ -44,7 +45,9 @@ export default{
         setObserverStudents(state, list){
             state.observerStudents = list;
         },
-
+        setAllRegisteredStudents(state, list){
+            state.allRegisteredStudets = list;
+        },
         clearCourseStore(state){
             state.course = {}
             state.courses = [];
@@ -139,6 +142,15 @@ export default{
             .then( response => {
                 if(response.status){
                     context.commit("setStudents", response.data)
+                }
+                return response;
+            })
+        },
+        getAllRegisteredStudents(context, publicKey){
+            return courseService.getAllRegisteredUsers(publicKey)
+            .then( response => {
+                if(response.status){
+                    context.commit("setAllRegisteredStudents", response.data)
                 }
                 return response;
             })
@@ -261,5 +273,8 @@ export default{
         courseEvents(state){
             return state.events;
         },
+        allRegisteredStudets(state){
+            return state.allRegisteredStudets
+        }
     }
 }
