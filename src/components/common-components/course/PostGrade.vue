@@ -26,15 +26,24 @@
               <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                   <v-layout row wrap>
                         <v-flex md9>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="search"
+                                label="Search"
+                                single-line
+                                hide-details
+                            ></v-text-field>                            
                             <v-data-table
                                 :headers="headers"
                                 :items="allRegisteredStudets"
                                 hide-actions
+                                :search="search"
                             >
                                 <template slot="items" slot-scope="props">
                                     <td>{{props.item.name}} {{props.item.surname}}</td>
                                     <td>
-                                        <student-score class="student-score" v-if="!isSaved" :user="props.item"></student-score>
+                                        <student-score class="student-score" v-if="isSaved" :user="props.item"></student-score>
                                         <div v-else>-</div>
                                     </td>
                                     <td class="red--text text--lighten-2" v-if="props.item.observer">Observer</td>    
@@ -49,7 +58,8 @@
                                 <v-card-text>
                                     <v-layout row wrap>
                                         <v-flex md9>
-                                            <el-input placeholder="Quiz-Test Name" size="small"
+                                            <el-input placeholder="Quiz-Test Name" size="small" 
+                                            v-model="grade.name"
                                             ></el-input>                                                                         
                                         </v-flex>
                                         <v-flex md2>
@@ -61,10 +71,13 @@
                                     <v-divider></v-divider>                                                                         
                                         <v-layout>
                                             <v-flex md4>
-                                                <el-input placeholder="Max Score" size="small" min="0"></el-input>                                                
+                                                <el-input placeholder="Max Score" size="small" min="0"
+                                                v-model="grade.maxScore"
+                                                ></el-input>                                                
                                             </v-flex>
                                             <v-flex md4>
-                                                    <el-input placeholder="Grade Weight" size="small" min="0"></el-input>                                            
+                                                    <el-input placeholder="Grade Weight" size="small" min="0"
+                                                    v-model="grade.weight"></el-input>                                            
                                             </v-flex>                                            
                                         </v-layout>                                                                          
                                 </v-card-text>
@@ -85,14 +98,20 @@ import StudentScore from './StudentScore'
 
 
 export default {
-  props: ['dialog', 'edit'],
+  props: ['dialog', 'edit', 'item'],
   components: {
       StudentScore,
 },
   data(){
       return{
-          newQuestion: false,
-          studentList: [],
+
+          search: '',
+          exam: {
+              name: '',
+              maxScore: null,
+              gradeWeight: null,
+
+          },
           headers: [
             {
                 text: 'Name Surname',
@@ -115,15 +134,43 @@ export default {
   },
   created(){
       this.fetchStudents();
+      if(this.edit){
+          this.fetchGrade();
+      }
   },
   methods:{
     fetchStudents(){
         if(this.$route.params.id != null){
             this.$store.dispatch("getAllRegisteredStudents", this.$route.params.id)
-        }        
+        }
+
+    },
+    fetchGrade(){
+        const data = {
+            coursePublicKey: this.$route.params.id,
+            publicKey: this.item.publicKey,
+        }
+        this.$store.dispatch("getCourseGrade", data)
+    
+        
     },
     save(){
-
+        if(this.grade.name.size == '' || this.grade.name == null){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade name cannot be empty"})
+        }
+        else if(this.grade.maxScore <= 0){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade max score cannot be less than or equeal to 0"})
+        }        
+        else if(this.grade.weight <= 0){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade weight cannot be less than or equeal to 0"})
+        }           
+        else {
+            const data = {
+                coursePublicKey: this.$route.params.id,
+                params: this.grade,
+            }
+            this.$store.dispatch("saveCourseGrade", data);
+        }
     },
     update(){
 
@@ -132,7 +179,7 @@ export default {
 
     },
     cancel(saved){
-      this.$store.commit("clearQuizTest");
+      this.$store.commit("clearAllGrades");
       this.clearForm();
       this.$parent.cancelDialog();
     },
@@ -144,9 +191,9 @@ export default {
 
 
   computed: {
-    ...mapGetters(['authenticatedUser', 'accessPrivileges', 'allRegisteredStudets', ]),
+    ...mapGetters(['authenticatedUser', 'accessPrivileges', 'allRegisteredStudets', 'grade']),
     isSaved(){
-        return false;
+        return this.grade.publicKey != '';
     }
   },
   watch:{  

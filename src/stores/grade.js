@@ -7,6 +7,7 @@ export default{
 
     state:{
         grades: [],
+        studentGrades: [],
         grade:{
             publicKey: '',
             name: '',
@@ -19,6 +20,9 @@ export default{
         setGrades(state, list){
             state.grades = list;
         },
+        setStudentGrades(state, list){
+            state.studentGrades = list;
+        },        
         setGrade(state, obj){
             state.grade = obj;
         },
@@ -26,9 +30,10 @@ export default{
             state.scores = list;  
         },
         clearAllGrades(state){
-            this.grades = [];
-            this.scores = [];
-            this.grade = {
+            state.grades = [];
+            state.scores = [];
+            studentGrades: [],            
+            state.grade = {
                 publicKey: '',
                 name: '',
                 maxScore: 0,
@@ -58,7 +63,7 @@ export default{
         },   
 
         getCourseGrades(context, coursePublicKey){
-            return gradeService.get(coursePublicKey)
+            return gradeService.getAll(coursePublicKey)
             .then(response => {
                 if(response.status){
                     context.commit("setGrades", response.data);
@@ -67,13 +72,22 @@ export default{
             });
         },  
 
+        getCourseGradeForStudent(context, coursePublicKey){
+            return gradeService.getAllForStudent(coursePublicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setStudentGrades", response.data);
+                }
+                return response;
+            });
+        },  
         saveCourseGrade(context, data){
             return gradeService.save(data.coursePublicKey, data.params)
             .then(response => {
                 if(response.status){
                     const dt = {
                         coursePublicKey: data.coursePublicKey,
-                        publicKey: response.data.publicKey,
+                        publicKey: response.data.publigradescKey,
                     }
                     context.dispatch("getCourseGradeForView", dt);
                 } 
@@ -105,16 +119,16 @@ export default{
             return gradeService.publish(data.coursePublicKey, data.publicKey)
             .then(response => {
                 if(response.status){
-                    context.commit("getCourseGrades", data.coursePublicKey);
+                    context.dispatch("getCourseGrades", data.coursePublicKey);
                 } 
                 return response;  
             })
         },
         disableCourseGrade(context, data){
-            return gradeService.publish(data.coursePublicKey, data.publicKey)
+            return gradeService.disable(data.coursePublicKey, data.publicKey)
             .then(response => {
                 if(response.status){
-                    context.commit("getCourseGrades", data.coursePublicKey);
+                    context.dispatch("getCourseGrades", data.coursePublicKey);
                 } 
                 return response;  
             })
@@ -126,6 +140,17 @@ export default{
 
     },
     getters:{
-
+        grades(state){
+            return state.grades;
+        },
+        grade(state){
+            return state.grade;
+        },
+        scores(state){
+            return state.scores;
+        },
+        studentGrades(state){
+            return  state.studentGrades;
+        },
     }
 }

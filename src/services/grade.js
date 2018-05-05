@@ -22,6 +22,10 @@ export default class GradeService{
     getAll(coursePublicKey){
         return service.getAll(`/api/course/${coursePublicKey}/grades`);
     }   
+    
+    getAllForStudent(coursePublicKey){
+        return service.getAll(`/api/course/${coursePublicKey}/student-grades`);
+    }
 
     get(coursePublicKey, publicKey){
         return service.get(`/api/course/${coursePublicKey}/grade/${publicKey}`);

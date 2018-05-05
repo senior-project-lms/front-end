@@ -68,7 +68,7 @@
       </v-menu>
     </v-toolbar>
       <v-content>
-        <v-card class="full-height grey lighten-3">  
+        <v-card class="full-height grey lighten-4">  
             <router-view></router-view>
         </v-card>
         

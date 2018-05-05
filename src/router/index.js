@@ -38,7 +38,6 @@ import Page401 from '../components/401.vue'
 
 import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPrivileges'
 import Home from '../components/common-components/Home'
-import Page from '../components/mock/page'
 
 import QAPage from "../components/common-components/QAPage"
 
@@ -258,16 +257,6 @@ export default new Router({
       path: '/401',
       name: 'Page401',
       component: Page401,
-      meta: {
-        privilege: null,
-        requeiresAuthentication: false,
-        base: '',
-      }
-    },
-    {
-      path: '/page',
-      name: 'Page',
-      component: Page,
       meta: {
         privilege: null,
         requeiresAuthentication: false,
