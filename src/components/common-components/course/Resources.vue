@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div>
     <loader v-if="!isLoaded"/>
     <div v-if="isLoaded">
@@ -44,6 +45,10 @@
       </div>
         
       <save-resource :dialog="dialog"/>
+=======
+    <div>
+        Test - QUIZ
+>>>>>>> development
     </div>
     
     <v-dialog v-model="dialogg" max-width="400" persistent>
@@ -163,7 +168,11 @@ export default {
   opacity: 0;
 }
 
+<<<<<<< HEAD
 .no-content {
   padding-top: 50%;
 }
 </style>
+=======
+</style>
+>>>>>>> development

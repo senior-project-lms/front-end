@@ -7,7 +7,9 @@ import CourseTestQuiz from '../../components/common-components/course/TestQuiz';
 import CourseCalendar from '../../components/common-components/course/Calendar';
 import CourseAnnouncements from '../../components/common-components/course/Announcements';
 import CourseGrades from '../../components/common-components/course/Grades';
-import CourseQA from '../../components/common-components/course/QA';
+import CourseQA from '../../components/common-components/course/QA-Course';
+import CourseQAPage from '../../components/common-components/course/CourseQAPage';
+
 import CourseResources from '../../components/common-components/course/Resources';
 import CourseAssignments from '../../components/common-components/course/Assignments';
 import CourseSettings from '../../components/common-components/course/Settings';
@@ -82,7 +84,7 @@ var resources = {
   }
 
 var qa = {
-    path: 'QA',
+    path: 'qa',
     name: 'CourseQA',
     component: CourseQA,
     meta: {
@@ -91,6 +93,19 @@ var qa = {
       base: 'Course',
     },
   }
+  var qaPage = {
+    path: "qa/:qaId",
+    name: 'CourseQAPage',
+    component: CourseQAPage,
+    meta: {
+      privilege: AccessPrivileges.PAGE_COURSE_QA,
+      requeiresAuthentication: true,
+      base: 'Course',
+    },
+  
+  }
+
+
 
 
 var settings = {
@@ -160,6 +175,7 @@ export default {
       grades,
       resources,
       qa,
+      qaPage,
       calendar,
       testQuiz,
       assignments,

@@ -48,8 +48,8 @@
 
                                 </v-layout>
                                 <v-layout >
-                                    <v-chip small v-for="(tag, i) in answer.tags" :key="`qa-tag-${i}`">{{tag.name}}</v-chip>                                                                        
-                                    <v-spacer></v-spacer>
+                                    <v-chip small v-for="(tag, i) in answer.tags" :key="`qa-tag-${i}`">{{tag.name}}</v-chip>     
+                                    <v-spacer></v-spacer>                                                                   
                                     <div class="qa-info">
                                         <span class="right grey--text ">{{ moment(answer.updatedAt).fromNow() }}</span>
                                         <br>
@@ -136,16 +136,18 @@ export default {
         
         voteColor(status){
             return status ? {color: '#448AFF'} : {color: '#757575'}
+            //return status ? 'primary' : 'secondary'
         },
 
         voteStar(){
 
             const data = {
+                coursePublicKey: this.$route.params.id,
                 parentPublicKey: this.$route.params.qaId,
                 publicKey: this.answer.publicKey,
             }
             
-            this.$store.dispatch("starVoteGlobalQA", data)
+            this.$store.dispatch("starVoteCourseQA", data)
             .then(resp => {
                 this.updatePage();
             })
@@ -153,32 +155,36 @@ export default {
         },
         voteUp(){
           const data = {
+                coursePublicKey: this.$route.params.id,
                 parentPublicKey: this.$route.params.qaId,
                 publicKey: this.answer.publicKey,
             }            
-            this.$store.dispatch("upVoteGlobalQA", data)
+            this.$store.dispatch("upVoteCourseQA", data)
             .then(resp => {
                 this.updatePage();
             })        },
         voteDown(){
           const data = {
+                coursePublicKey: this.$route.params.id,              
                 parentPublicKey: this.$route.params.qaId,
                 publicKey: this.answer.publicKey,
             }            
-            this.$store.dispatch("downVoteGlobalQA", data)
+            this.$store.dispatch("downVoteCourseQA", data)
             .then(resp => {
                 this.updatePage();
-            })        },                
+            })        
+        },                
 
         saveComment(){
             const data = {
+                coursePublicKey: this.$route.params.id,                
                 parentPublicKey: this.$route.params.qaId,
                 publicKey: this.answer.publicKey,
                 params: {
-                content: this.commentContent
+                    content: this.commentContent
                 }
             }
-            this.$store.dispatch("saveGlobalQAComment", data)
+            this.$store.dispatch("saveCourseQAComment", data)
             .then(response => {
                 if(response.status){
                     this.commentContent = '';
