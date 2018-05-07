@@ -1,12 +1,13 @@
 <template>
     <div>
-        <el-input class="score" placeholder="Grade" size="small" maxlength="4" v-model="score"></el-input>                                            
+        <el-input v-show="!view" class="score" placeholder="Grade" size="small" maxlength="4" v-model="score"></el-input> 
+        <b class="score-num" v-show="view">{{ score }}</b>                                         
     </div>
 </template>
 <script>
 import {mapGetters} from 'vuex';
 export default{
-    props: ['user',],
+    props: ['user', 'view'],
     data(){
         return {
             score: 0,
@@ -52,4 +53,6 @@ export default{
 <style lang="stylus" scoped>
     .score
         width  80px
+    .score-num
+        margin-left 20px
 </style>

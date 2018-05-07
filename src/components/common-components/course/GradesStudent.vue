@@ -7,8 +7,8 @@
                         {{ props.item.name }}
                     </b>
                 </td>
-                <td class="" >{{ props.item.score }}/{{ props.item.maxScore }}</td>
-                <td class="" >{{ props.item.average }}</td>
+                <td class="" >{{ floarNumber(props.item.score) }}/{{ floarNumber(props.item.maxScore) }}</td>
+                <td class="" >{{ floarNumber(props.item.average) }} / {{ floarNumber(props.item.maxScore) }}</td>
                 <td class="" >{{ props.item.weight }}%</td>
                 <td class="text-xs-right">
                     <v-btn v-if="props.item.menu" outline color="indigo" slot="activator" small>View Detail</v-btn>                               
@@ -64,7 +64,16 @@ export default {
     methods: {
         fetchGrades(){
             this.$store.dispatch("getCourseGradeForStudent", this.$route.params.id);
-        },        
+        },
+        floarNumber(number){
+            try{
+                
+                return number.toFixed(2);
+            }
+            catch(e){
+                return '-';
+            }
+        }                   
     },
     computed:{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQuizTests', 'studentGrades']),

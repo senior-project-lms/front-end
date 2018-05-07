@@ -11,8 +11,8 @@ export default{
         grade:{
             publicKey: '',
             name: '',
-            maxScore: 0,
-            weight: 0,
+            maxScore: null,
+            weight: null,
         },
         scores: [],
     },
@@ -36,8 +36,8 @@ export default{
             state.grade = {
                 publicKey: '',
                 name: '',
-                maxScore: 0,
-                weight: 0,
+                maxScore: null,
+                weight: null,
             };
         }
     },

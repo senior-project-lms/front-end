@@ -43,7 +43,7 @@
                                 <template slot="items" slot-scope="props">
                                     <td>{{props.item.name}} {{props.item.surname}}</td>
                                     <td>
-                                        <student-score class="student-score" v-if="isSaved" :user="props.item"></student-score>
+                                        <student-score class="student-score" v-if="isSaved" :user="props.item" :view="view"></student-score>
                                         <div v-else>-</div>
                                     </td>
                                     <td class="red--text text--lighten-2" v-if="props.item.observer">Observer</td>    
@@ -56,30 +56,49 @@
                             <v-card class="">
                                 <v-card-title class="headline grey--text text--darken-3">Details</v-card-title>
                                 <v-card-text>
-                                    <v-layout row wrap>
+                                    <v-layout row wrap v-show="!view">
                                         <v-flex md9>
-                                            <el-input placeholder="Quiz-Test Name" size="small" 
+                                            <el-input
+                                            v-show="!view"
+                                            placeholder="Quiz-Test Name" size="small" 
                                             v-model="grade.name"
-                                            ></el-input>                                                                         
+                                            ></el-input>
                                         </v-flex>
                                         <v-flex md2>
-                                                <el-button plain size="small" @click="save" v-if="!isSaved">Save</el-button>
-                                                <el-button plain size="small" @click="update" v-else>Updated</el-button>
+                                                <el-button v-show="!view" plain size="small" @click="save" v-if="!isSaved">Save</el-button>
+                                                <el-button v-show="!view" plain size="small" @click="update" v-else>Updated</el-button>
                                                 
                                         </v-flex>
                                     </v-layout>
+                                    <v-layout  v-show="view">
+                                        <v-flex md12>
+                                            <b v-show="view" class="header grey--text text--darken-3">Exam Name: <span class="detail">{{ grade.name }}</span></b>                                                                                                                                                                
+                                        </v-flex>
+                                    </v-layout>
                                     <v-divider></v-divider>                                                                         
-                                        <v-layout>
-                                            <v-flex md4>
-                                                <el-input placeholder="Max Score" size="small" min="0"
-                                                v-model="grade.maxScore"
-                                                ></el-input>                                                
-                                            </v-flex>
-                                            <v-flex md4>
-                                                    <el-input placeholder="Grade Weight" size="small" min="0"
-                                                    v-model="grade.weight"></el-input>                                            
-                                            </v-flex>                                            
-                                        </v-layout>                                                                          
+                                    <v-layout v-show="!view">
+                                        <v-flex md4>
+                                            <el-input v-show="!view" placeholder="Max Score" size="small" min="0"
+                                            v-model="grade.maxScore"
+                                            ></el-input>                          
+                                                                            
+                                        </v-flex>
+                                        <v-flex md4>
+                                                <el-input
+                                                v-show="!view"
+                                                placeholder="Grade Weight" size="small" min="0"
+                                                v-model="grade.weight">
+                                                </el-input>
+                                        </v-flex>                                            
+                                    </v-layout>                                                                               
+                                    <v-layout v-show="view">
+                                        <v-flex md6>
+                                            <b v-show="view" class="header grey--text text--darken-3">Max Score: <span class="detail">{{ grade.maxScore }}</span></b>                                                                                                                    
+                                        </v-flex>
+                                        <v-flex md6>
+                                                <b v-show="view" class="header grey--text text--darken-3">Weight: <span class="detail">{{ grade.weight }}%</span></b>                                                                                                                                                                                                                 
+                                        </v-flex>                                            
+                                    </v-layout>                                                                 
                                 </v-card-text>
                             </v-card>
                             
@@ -98,7 +117,7 @@ import StudentScore from './StudentScore'
 
 
 export default {
-  props: ['dialog', 'edit', 'item'],
+  props: ['dialog', 'edit', 'item', 'view'],
   components: {
       StudentScore,
 },
@@ -173,7 +192,23 @@ export default {
         }
     },
     update(){
-
+        if(this.grade.name.size == '' || this.grade.name == null){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade name cannot be empty"})
+        }
+        else if(this.grade.maxScore <= 0){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade max score cannot be less than or equeal to 0"})
+        }        
+        else if(this.grade.weight <= 0){
+            this.$notify({type: "error", title: "Course Grade", text: "Grade weight cannot be less than or equeal to 0"})
+        }           
+        else {
+            const data = {
+                coursePublicKey: this.$route.params.id,
+                publicKey: this.grade.publicKey,
+                params: this.grade,
+            }
+            this.$store.dispatch("updateCourseGrade", data);
+        }
     },    
     clearForm(){
 
@@ -182,9 +217,6 @@ export default {
       this.$store.commit("clearAllGrades");
       this.clearForm();
       this.$parent.cancelDialog();
-    },
-    cancelNewQuestion(){
-        this.newQuestion = false;
     },
  
   },
@@ -211,4 +243,6 @@ export default {
         height calc(100%) !important    
     .student-score
         margin-left -20px
+    .detail
+        margin-left 10px
 </style>

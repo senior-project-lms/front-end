@@ -9,9 +9,9 @@
                         <span>Not Published</span>
                     </v-tooltip>                  
                 </td>
-                <td class="" >{{ props.item.average }}/{{ props.item.maxScore }}</td>
-                <td v-show="!props.item.visible" class="" >{{ props.item.weight }}%</td>
-                <td v-show="!props.item.visible" class="text-xs-right">
+                <td class="" >{{ floarNumber( props.item.average) }}/{{ floarNumber(props.item.maxScore) }}</td>
+                <td  class="" >{{ props.item.weight }}%</td>
+                <td class="text-xs-right">
                     <v-menu open-on-hover top offset-y 
                     v-if="
                     props.item.menu
@@ -32,7 +32,7 @@
                                 <v-list-tile-title>Publish</v-list-tile-title>
                             </v-list-tile>                                              
                             <v-list-tile 
-                            @click="selectedItem = props.item;" >
+                            @click="selectedItem = props.item; edit=true; viewDialog=true; dialog=true;" >
                                 <v-list-tile-title>View</v-list-tile-title>
                             </v-list-tile>  
                             <v-list-tile 
@@ -46,12 +46,48 @@
             </template>                
         </v-data-table>  
         <div>
-            <v-btn fixed dark fab bottom right color="pink" 
+
+            <v-speed-dial
+            dark 
+            fab 
+            bottom
+            fixed
+            right 
+            color="pink"
+            transition="slide-y-reverse-transition"
+            >
+            <v-btn 
+                slot="activator"
+                fixed
+                dark 
+                fab  
+                hover
+                color="pink" 
                 v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_GRADE)"
-                @click="dialog = true; edit = false;"
-                > 
+          
+            > 
                 <v-icon>add</v-icon>
-            </v-btn>        
+                <v-icon>close</v-icon>                
+            </v-btn>             
+            <v-btn
+                fab
+                dark
+                small               
+                color="green"
+                @click="dialog = true; edit = false;"
+            >
+                <v-icon>edit</v-icon>
+            </v-btn>
+            <v-btn
+                fab
+                dark
+                small
+                color="indigo"
+                @click="multipleDialog = true;"
+            >
+                <v-icon>add</v-icon>
+            </v-btn>
+            </v-speed-dial>                   
         </div>
         <div>
             <post-grade 
@@ -62,8 +98,19 @@
             ||
             $security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_COURSE_GRADE))"
             
-            :dialog="dialog" :edit="edit" :item="selectedItem" ></post-grade>
+            :dialog="dialog" :edit="edit" :item="selectedItem" :view="viewDialog" ></post-grade>
+            <post-multiple-grade
+            v-if="
+            multipleDialog 
+            &&
+            ($security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_GRADE)
+            ||
+            $security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_COURSE_GRADE))"
+             :dialog="multipleDialog"
+            >
+            </post-multiple-grade>
         </div>
+
         <div>
             <v-dialog v-model="deleteDialog" max-width="290">
                 <v-card>
@@ -122,16 +169,20 @@
 <script>
 import {mapGetters} from 'vuex';
 import PostGrade from './PostGrade'
+import PostMultipleGrade from './PostMultipleGrade'
 
 export default {
     props: [],
     components: {
         PostGrade,
+        PostMultipleGrade,
     },
     data(){
         return {
+            multipleDialog: false,
             dialog: false,
             edit: false,
+            viewDialog: false,
             selectedItem: null,
             editDialog: false,
             disableDialog: false,
@@ -201,20 +252,35 @@ export default {
             this.classListDialog = false;
             this.deleteDialog = false;      
             this.editDialog = false;  
-            
+            this.viewDialog = false;
+            this.multipleDialog = false;
             this.fetchGrades(); 
             this.fetchGradesForStudent();
-        },             
+        },
+        floarNumber(number){
+            try{
+                return number.toFixed(2);
+            }
+            catch(e){
+                return '-';
+            }
+        }             
     },
     computed:{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseQuizTests', 'grades']),
-
     }
+
     
 
 }
 </script>
 
 <style lang="stylus" scoped>
+  .speed-dial 
+    position absolute
+  
 
+  .btn--floating 
+    position relative
+  
 </style>
