@@ -11,6 +11,10 @@ export default class GradeService{
         return service.post(`/api/course/${coursePublicKey}/grade`, params);
     }
 
+    saveAll(coursePublicKey, params){
+        return service.post(`/api/course/${coursePublicKey}/grade/save-all`, params);
+    }
+
     update(coursePublicKey, publicKey, params){
         return service.put(`/api/course/${coursePublicKey}/grade/${publicKey}`, params);
     }   

@@ -38,7 +38,11 @@
                             <v-list-tile 
                             @click="selectedItem = props.item; editDialog = true;" >
                                 <v-list-tile-title>Edit</v-list-tile-title>
-                            </v-list-tile>                                                                                                                                                                                                  
+                            </v-list-tile>
+                            <v-list-tile 
+                            @click="selectedItem = props.item; deleteDialog = true;" >
+                                <v-list-tile-title>Delete</v-list-tile-title>
+                            </v-list-tile>                                                                                                                                                                                                                              
                         </v-list>
                     </v-menu>                                
                 </td>
@@ -119,7 +123,7 @@
                     <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Cancel</v-btn>
-                    <v-btn color="green darken-1" flat="flat" @click.native="null">Delete</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteExam">Delete</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>        
@@ -242,7 +246,16 @@ export default {
             }
             this.$store.dispatch("disableCourseGrade", data);
             this.disableDialog = false;
-        },   
+        },
+        deleteExam(){
+
+            const data = {
+                coursePublicKey: this.$route.params.id,
+                publicKey: this.selectedItem.publicKey
+            }
+            this.$store.dispatch("deleteCourseGrade", data);
+            this.deleteDialog = false;
+        },
         cancelDialog(){
             this.dialog = false;
             this.edit = false;

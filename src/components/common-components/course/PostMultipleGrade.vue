@@ -39,15 +39,63 @@
                                 
                                 <template slot="items" slot-scope="props">
                                     <td>{{props.item.student.name}} {{props.item.student.surname}}</td>
-                                    <td v-for="(name, i) in examNames" :key="`col-${i}`" class="blue--text text--lighten-1">
+                                    <td v-for="(name, i) in gradeNames" :key="`col-${i}`" class="blue--text text--lighten-1">
                                         {{ props.item.grades[name] }}
                                     </td>                                       
                                 </template>
 
                             </v-data-table>                        
                         </v-flex>  
-                        <v-flex md3></v-flex>                                  
-                  </v-layout>
+                        <v-flex md3>
+                            <v-card  v-if="grades.length > 0">
+                                <v-card-title class="headline grey--text text--darken-3">
+                                    Details
+                                    <v-spacer></v-spacer>                                
+                                <el-button v-if="grades.length > 0" plain size="small"  @click="removeAll">Remove All</el-button>
+                                    
+                                </v-card-title>
+                                <v-divider></v-divider>
+                                <v-card-text>
+                                    
+                                    <template v-for="(grade, i) in grades">
+                                        <v-layout row wrap :key="`name-lay-${i}`">
+                                            <v-flex md9>
+                                                <el-input
+                                                placeholder="Quiz-Test Name" size="small" 
+                                                v-model="grade.name"
+                                                disabled
+                                                ></el-input>
+                                            </v-flex>
+                                            <v-flex md2>
+                                                    <el-button plain size="small" @click="removeItem(i)">Remove</el-button>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-divider :key="`divider-${i}`"></v-divider>                                                                         
+                                        <v-layout :key="`score-lay-${i}`">
+                                            <v-flex md4>
+                                                <el-input placeholder="Max Score" size="small" min="0"
+                                                v-model="grade.maxScore"
+                                                ></el-input>                          
+                                                                                
+                                            </v-flex>
+                                            <v-flex md4>
+                                                    <el-input
+                                                    placeholder="Grade Weight" size="small" min="0"
+                                                    v-model="grade.weight">
+                                                    </el-input>
+                                            </v-flex>                                            
+                                        </v-layout>                                      
+                                    </template>
+                                    <v-layout row wrap>
+                                        <v-flex md12>
+                                            <v-btn v-if="grades.length > 0" block outline color="indigo" @click="save">Save</v-btn>                                                                                                                                                                                                        
+                                        </v-flex>
+                                    </v-layout> 
+                                </v-card-text>
+                            </v-card>
+                            
+                        </v-flex>                  
+                    </v-layout>
             </v-container>
         </v-card-text>
       </v-card>
@@ -68,12 +116,6 @@ export default {
       return{
           fileList: [],
           search: '',
-          exam: {
-              name: '',
-              maxScore: null,
-              gradeWeight: null,
-
-          },
           headers: [
             {
                 text: 'Name Surname',
@@ -82,8 +124,9 @@ export default {
                 value: 'name'
             },            
         ],
-        examNames: [],
+        gradeNames: [],
         examList: [],
+        grades: []
       }
   },
   created(){
@@ -98,15 +141,72 @@ export default {
         }
 
     },      
+    removeAll(){
+        this.headers = [];
+        this.examList = []; 
+        this.gradeNames = [];
+        this.grades = [];
+        this.$store.commit('clearExcelStore');
+        this.reInitialize();
+    },
+    removeItem(index){
+        this.headers.splice(index + 1, 1);
+        this.gradeNames.splice(index, 1);
+        this.grades.splice(index, 1);
+    },
     processFile(event){
         var file = event.target.files[0];
         if(file != undefined || file != null){
 
             this.$store.dispatch('excelToJson', file);
         }
-    },      
-    save(){
+        event.target.value = ''
+    },
+    reInitialize(){
+        
+        this.headers.push({
+                text: 'Name Surname',
+                align: 'left',
+                sortable: true,
+                value: 'name'
+        })               
+        this.allRegisteredStudets.map(item => {
+            this.examList.push({student: item})
+        });
 
+    },   
+    save(){
+        
+        var list = []
+
+        for(var i in this.grades){
+            var grade = this.grades[i]
+            var scores = [];
+        
+            for(var j in this.examList){
+             
+                var exam = this.examList[j]
+            
+
+                scores.push(
+                    {
+                        userPublicKey: exam.student.publicKey,
+                        score: exam.grades[grade.name]
+                    }
+                )
+        
+            }
+            grade.userScores = scores;
+            
+            list.push(grade)
+        }
+
+
+        const data = {
+            coursePublicKey: this.$route.params.id,
+            params: list
+        }
+        this.$store.dispatch('saveAllCourseGrade', data);
     },
     update(){
 
@@ -151,14 +251,20 @@ export default {
                 align: 'left',
                 sortable: true,
                 value: name
-            })
-            this.examNames.push(name)
+                })
+                this.gradeNames.push(name)
+                this.grades.push(
+                    {
+                        name: name,
+                        maxScore: null,
+                        weight: null,
+                    }
+                )
             }
-            console.log(nval)
+
             nval.forEach(item => {
                 for(var name in item) {
                     this.examList.some(itm => {
-                        console.log(item.username)
                         if(itm.student.username == item.username){
                             delete item.username;
                             itm.grades = item
@@ -191,6 +297,9 @@ export default {
         overflow: hidden;
         
     }
+
+    .remove-all
+        float: right
 
 
     .upload-btn-wrapper input[type=file] 

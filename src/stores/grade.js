@@ -87,14 +87,23 @@ export default{
                 if(response.status){
                     const dt = {
                         coursePublicKey: data.coursePublicKey,
-                        publicKey: response.data.publigradescKey,
+                        publicKey: response.data.publicKey,
                     }
                     context.dispatch("getCourseGradeForView", dt);
                 } 
                 return response;  
             })
         },
+        saveAllCourseGrade(context, data){
+            return gradeService.saveAll(data.coursePublicKey, data.params)
+            .then(response => {
+                if(response.status){
 
+                    context.dispatch("getCourseGradeForView", data.coursePublicKey);
+                } 
+                return response;  
+            })
+        },
         updateCourseGrade(context, data){
             return gradeService.update(data.coursePublicKey, data.publicKey, data.params)
             .then(response => {
@@ -109,7 +118,7 @@ export default{
             return gradeService.delete(data.coursePublicKey, data.publicKey)
             .then(response => {
                 if(response.status){
-                    context.commit("getCourseGrades", data.coursePublicKey);
+                    context.dispatch("getCourseGrades", data.coursePublicKey);
                 } 
                 return response;  
             })
