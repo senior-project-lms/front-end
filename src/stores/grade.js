@@ -99,7 +99,7 @@ export default{
             .then(response => {
                 if(response.status){
 
-                    context.dispatch("getCourseGradeForView", data.coursePublicKey);
+                    context.dispatch("getCourseGrades", data.coursePublicKey);
                 } 
                 return response;  
             })
