@@ -268,14 +268,16 @@ export default {
         });
 
     },
-    uploadCourseResourceFile(context, file) {
-      return courseService.uploadFile(file);
+    uploadCourseResourceFile(context, {publicKey, file}) {
+      
+      
+      return courseService.uploadFile(publicKey,file);
     },
 
     deleteCourseResourceFile(context, data) {
+      const coursePublicKey = data.coursePublicKey;
       const publicKey = data.publicKey;
-      const courseResourcePublicKey = data.courseResourcePublicKey;
-      return courseService.deleteFile(publicKey, courseResourcePublicKey)
+      return courseService.deleteFile(coursePublicKey, publicKey)
         .then(response => {
           if (response.status) {
             context.dispatch('getAllResources', publicKey);

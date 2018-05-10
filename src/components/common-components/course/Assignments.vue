@@ -1,29 +1,25 @@
 <template>
   <div>
+      <v-container   fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
+
           <v-flex md12 sm12>
-              <v-flex md2 offset-md5 v-if="courseAssignments.length == 0">
-                    <h3 class="text-md-center text-xs-center no-content">There is no assignment yet.</h3>
+              <v-flex md2 offset-md5>
+                    <h3 class="text-md-center text-xs-center no-content">No assignment yet.</h3>
               </v-flex>
               <section class="Container">
                   <announcement-template v-for="(assignment, i) in courseAssignments" :key="i" :assignment="assignment" :courseAssignment="true"/>
               </section>
           </v-flex> 
-      
-        
           <div>
             <v-btn fixed dark fab bottom right color="pink" @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ASSIGNMENT)"> 
             <v-icon>add</v-icon>
             </v-btn>
           </div>
-
-          <template>
-            <v-btn block class="load-more" light outline @click="loadCourseAssignments(page)" v-if="loader">More</v-btn>
-          </template>
-
           <post-course-assignment :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ASSIGNMENT)"/>
 
     
           
+  </v-container>
 
   </div>
 </template>
@@ -43,43 +39,28 @@ export default {
   data() {
     return {
       dialog: false,
-      page: 1,
-      deleteDialog: false
+      deleteDialog: false,
+      
     };
   },
   created() {
-    if (this.courseAssignments.length == 0) {
-      this.loadCourseAssignments(this.page);
-    } else {
-      this.page = this.courseAssignments.length / 5 + 1;
-    }
+    this.loadCourseAssignments();
   },
   methods: {
-    loadCourseAssignments(page) {
-      const data = {
-        publicKey: this.$route.params.id,
-        page: page
-      };
-      this.$store.dispatch("getCourseAssignments", data).then(response => {
-        if (!response.status) {
-          this.$notify({
-            type: "error",
-            title: "Course Assignments",
-            text: response.data.message
-          });
-        }
-      });
-      this.page++;
+    loadCourseAssignments() {
+      this.$store.dispatch("getCourseAssignments", this.$route.params.id)
     },
 
     deleteAssignment(publicKey) {
+
       if (
         this.authenticatedUser.accessPrivileges.includes(
           this.accessPrivileges.DELETE_COURSE_ASSIGNMENT_FILE
         )
       ) {
+        const data = {coursePublicKey: this.$route.params.id,filePublicKey: publicKey};
         this.$store
-          .dispatch("deleteCourseAssignment", publicKey)
+          .dispatch("deleteCourseAssignment", data)
           .then(response => {
             if (response.status) {
               this.$notify({
@@ -108,9 +89,7 @@ export default {
       "accessPrivileges",
       "courseAssignments"
     ]),
-    loader() {
-      return this.courseAssignments.length / this.page == 5;
-    }
+    
   }
 };
 </script>

@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div>
     <loader v-if="!isLoaded"/>
     <div v-if="isLoaded">
@@ -45,16 +44,12 @@
       </div>
         
       <save-resource :dialog="dialog"/>
-=======
-    <div>
-        Test - QUIZ
->>>>>>> development
     </div>
     
     <v-dialog v-model="dialogg" max-width="400" persistent>
       <v-card>
         <v-card-title class="headline">Confirm</v-card-title>
-        <v-card-text>Remove the specified resource?</v-card-text>
+        <v-card-text>Do you want to remove the specified resource?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat="flat" @click.native="dialogg = false">Back</v-btn>
@@ -99,29 +94,26 @@ export default {
     };
   },
   created() {
-    this.$store
-      .dispatch(
-        "hasAccessPrivilege",
-        this.accessPrivileges.READ_ALL_COURSE_RESOURCES
-      )
-      .then(auth => {
-        if (!auth) {
-          this.$router.back();
-          return;
-        }
-      });
-    this.$store.dispatch("getAllResources", this.$route.params.id);
+    if(this.$route.params.id != null){
+
+      this.$store.dispatch("getAllResources", this.$route.params.id);
+    }
+
   },
   methods: {
+    
+
+    
     deleteResource(publicKey) {
       if (
         this.authenticatedUser.accessPrivileges.includes(
           this.accessPrivileges.DELETE_COURSE_RESOURCE_FILE
         )
       ) {
-        this.$store
-          .dispatch("deleteCourseResourceFile", publicKey)
-          .then(response => {
+        const data = {coursePublicKey: this.$route.params.id, publicKey: publicKey}
+
+        this.$store.dispatch("deleteCourseResourceFile", data)
+        .then(response => {
             if (response.status) {
               this.$notify({
                 type: "info",
@@ -168,11 +160,7 @@ export default {
   opacity: 0;
 }
 
-<<<<<<< HEAD
 .no-content {
   padding-top: 50%;
 }
 </style>
-=======
-</style>
->>>>>>> development

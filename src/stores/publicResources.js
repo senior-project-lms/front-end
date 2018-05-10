@@ -5,11 +5,22 @@ var publicResourceService = new PublicResourceService();
 
 export default {
   state: {
+    course: {
+      name: '',
+      code: '',
+    },
     publicCourseResources: [],
+    allCourses:[],
 
   },
 
   mutations: {
+    setCourses(state, list) {
+      state.allCourses = list;
+    },
+    setCourse(state, object) {
+      state.course = object;
+    },
 
     setPublicCourseResources(state, resources) {
       resources = state.publicCourseResources.concat(resources);
@@ -21,6 +32,15 @@ export default {
 
   },
   actions: {
+    getAllCoursesForAuthUser(context) {
+      return publicResourceService.getAllCourses()
+        .then(response => {
+          if (response.status) {
+            context.commit("setCourses", response.data)
+          }
+          return response;
+        })
+    },
     getAllResources(context, publicKey) {
       return publicResourceService.getAllResources(publicKey)
         .then(response => {
@@ -31,7 +51,7 @@ export default {
         });
     },
     deleteCourseResource(context, data) {
-      const publicKey = data.publicKey;
+      const publicKey = data.coursePublicKey;
       const filePublicKey = data.filePublicKey;
       return publicResourceService.delete(publicKey, filePublicKey)
         .then(response => {
@@ -60,6 +80,12 @@ export default {
   getters: {
     publicCourseResources(state) {
       return state.publicCourseResources;
-    }
+    },
+    allCourses(state){
+      return state.allCourses;
+    },
+    course(state) {
+      return state.course;
+    },
   }
 }

@@ -26,18 +26,20 @@
                 <v-list>
                   <v-subheader>Courses</v-subheader>       
                   <v-divider></v-divider>
-                  <template v-for="(course, i) in courses">
-                    <v-list-tile  :key="course.publicKey" @click="loadPublicResources(course.publicKey)">                           
+                  <template v-for="(course, i) in allCourses">
+                    <v-list-tile  v-model="selectedAuthority" :key="course.publicKey" @click="loadPublicResources(course.publicKey)">                           
                       <v-list-tile-content>
                           <v-list-tile-title><p class="course">{{course.code}} - {{course.name}}</p></v-list-tile-title>
                       </v-list-tile-content>
+                      <v-icon right v-if="i == selectedAuthority">check_circle</v-icon>
+
                     </v-list-tile>
-                   <v-divider :key="i" v-if="i + 1 < courses.length"></v-divider>                      
+                   <v-divider :key="i" v-if="i + 1 < allCourses.length"></v-divider>                      
                   </template>
                             
-                  <v-list-tile v-if="courses.length == 0">                           
+                  <v-list-tile v-if="allCourses.length == 0">                           
                     <v-list-tile-content>
-                      <v-list-tile-title class="text-md-center text-sm-center text-xs-center"><p class="grey--text">No such course is found.</p></v-list-tile-title>
+                      <v-list-tile-title class="text-md-center text-sm-center text-xs-center"><p class="grey--text">No course is available.</p></v-list-tile-title>
                     </v-list-tile-content>
                   </v-list-tile>                            
                             
@@ -54,7 +56,7 @@
           <v-flex md2>
             <v-card>
               <a
-                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)"
+                v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE)"
                 @click="dialog = true"
                 class="right dismiss">
                 Remove
@@ -85,7 +87,7 @@
             <v-dialog v-model="dialog" max-width="400" persistent>
               <v-card>
                 <v-card-title class="headline">Confirm</v-card-title>
-                <v-card-text>Want to Remove it?</v-card-text>
+                <v-card-text>Do you want to remove the specified resource?</v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                   <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
@@ -105,15 +107,19 @@ import * as moment from "moment";
 import CourseEnrollment from "@/components/common-components/course/CourseEnrollment";
 import { AccessPrivileges } from "@/properties/accessPrivileges";
 import { AccessLevel } from "@/properties/accessLevel";
+import Loader from "@/components/Loader";
 
 export default {
   props: ["theResource"],
 
   components: {
+    Loader,
     CourseEnrollment
   },
   data() {
     return {
+      selectedAuthority: null,
+
       selectedResources: [],
       moment: moment,
 
@@ -124,7 +130,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("getAllCoursesOfAuthUser");
+    this.$store.dispatch("getAllCoursesForAuthUser");
   },
   methods: {
     cancelCourseDialog() {
@@ -132,6 +138,10 @@ export default {
     },
     loadPublicResources(publicKey) {
       //publicKey: this.$route.params.id,
+        
+        //var publicKey = this.allCourses[0].publicKey;
+        //this.loadPublicResources(publicKey);
+
         this.$store.dispatch("getAllResources", publicKey).then(response => {
           if (!response.status) {
             this.$notify({
@@ -143,11 +153,8 @@ export default {
         });
     },
 
-    deleteResourceFile(filePublicKey) {
-      const data = {
-        publicKey: this.$route.params.id,
-        filePublicKey: publicKey
-      };
+    deleteResourceFile(publicKey) {
+      const data = {coursePublicKey: this.$route.params.id, filePublicKey: publicKey};
       this.$store.dispatch("deleteCourseResource", data).then(response => {
         if (response.status) {
           this.$notify({
@@ -169,7 +176,7 @@ export default {
     ...mapGetters([
       "authenticatedUser",
       "accessPrivileges",
-      "courses",
+      "allCourses",
       "publicCourseResources"
     ])
   }

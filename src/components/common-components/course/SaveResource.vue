@@ -53,26 +53,30 @@ export default {
 
       courseResource: {
         resourceKeys: [],
-        imagePublicKeys: []
+        imagePublicKeys: [],
       }
     };
   },
+  
   created() {},
   methods: {
     processFiles(event) {
+      
       const chosenFiles = Array.from(event.target.files);
-      chosenFiles.map(file => {
-        this.$store
-          .dispatch("uploadCourseResourceFile", file)
-          .then(response => {
-            if (response.status) {
-              const data = response.data;
-              this.resources.push(data);
-              this.courseResource.resourceKeys.push(data.publicKey);
-            }
+      chosenFiles.map((file) => {
+          this.$store.dispatch("uploadCourseResourceFile", {publicKey: this.$route.params.id, file})
+          .then((response) => {
+              if(response.status){
+                const data = response.data;
+                this.resources.push(data);
+                this.systemAnnouncement.resourceKeys.push(data.publicKey)  
+              }
+                
           });
+            
       });
-    },
+  },      
+      
     save() {
       const data = {
         publicKey: this.$route.params.id,
@@ -81,7 +85,7 @@ export default {
           imagePublicKeys: this.courseResource.imagePublicKeys
         }
       };
-      this.$store.dispatch("saveCourseResource", data).then(response => {
+      this.$store.dispatch("saveCourseResource", this.data).then(response => {
         if (response.status) {
           this.$notify({
             type: "success",

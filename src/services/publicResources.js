@@ -21,4 +21,9 @@ export default class PublicResourceService {
   save(publicKey, params) {
     return service.post(`/api/public-resources/${publicKey}`, params);
   }
+  getAllCourses(){
+    //return service.getAll('/api/public-resources');
+    console.log("FUCK YOU")
+  }
+  
 }

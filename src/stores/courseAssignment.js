@@ -1,4 +1,5 @@
 import CourseAssignmentService from "../services/courseAssignment";
+
 var courseAssignmentService = new CourseAssignmentService();
 
 export default {
@@ -19,18 +20,12 @@ export default {
     }
   },
   actions: {
-    getCourseAssignments(context, data) {
+    getCourseAssignments(context, publicKey) {
 
-      return courseAssignmentService.getAll(data.publicKey, data.page)
+      return courseAssignmentService.getAll(publicKey)
         .then(response => {
           if (response.status) {
-            if (data.page == 0) {
-              context.commit("clearCourseAssignments");
-
-            }
-            if (response.data != null && response.data.length > 0) {
-              context.commit("setCourseAssignments", response.data);
-            }
+           context.commit("setCourseAssignments", response.data);
           }
           return response;
         });
@@ -41,21 +36,20 @@ export default {
       return courseAssignmentService.save(publicKey, params)
         .then(response => {
           if (response.status) {
-            const data = {
-              publicKey: assignment.publicKey,
-              page: 1,
-            }
-            context.dispatch("getCourseAssignments", data);
+            
+            context.dispatch("getCourseAssignments", publicKey);
 
           }
           return response;
         })
     },
-    deleteCourseAssignment(context, publicKey) {
-      return courseAssignmentService.delete(publicKey)
+    deleteCourseAssignment(context, data) {
+      const publicKey = data.coursePublicKey;
+      const filePublicKey = data.filePublicKey;
+      return courseAssignmentService.delete(publicKey,filePublicKey)
         .then(response => {
           if (response.status) {
-            context.dispatch("getCourseAssignments", 0)
+            context.dispatch("getCourseAssignments",publicKey)
           }
           return response;
         })
@@ -63,7 +57,15 @@ export default {
 
     clearCourseAssignments(context) {
       context.commit("clearCourseAssignments");
-    }
+    },
+    uploadCourseAssignmentFile(context,{publicKey, file}){
+        return courseAssignmentService.uploadFile(publicKey,file);
+  },
+  deleteCourseAssignmentFile(context, data){
+    const publicKey = data.coursePublicKey;
+    const filePublicKey = data.filePublicKey;
+    return courseAssignmentService.deleteFile(publicKey,filePublicKey);
+  },
 
 
   },

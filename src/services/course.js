@@ -134,11 +134,10 @@ export default class CourseService {
 
 
 
-  uploadFile(file) {
+  uploadFile(coursePublicKey,file) {
     const accessToken = authService.getAccessToken();
 
-    //return storageService.upload(`/api/courses/${coursePublicKey}/storage/file`, file)
-    return console.log("Laylay lom")
+    return storageService.upload(`/api/courses/${coursePublicKey}/storage/file`, file)
       .then(response => {
         if (response.data != null && response.data != undefined) {
           response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;
@@ -152,8 +151,8 @@ export default class CourseService {
 
   }
 
-  deleteFile(publicKey, coursePublicKey) {
-    return storageService.delete(`/api/courses/${publicKey}/storage/file`, courseResourcePublicKey);
+  deleteFile(coursePublicKey, publicKey) {
+    return storageService.delete(`/api/courses/${coursePublicKey}/storage/file`, publicKey);
   }
 
 }
