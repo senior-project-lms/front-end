@@ -17,20 +17,22 @@
                 :headers="headers"
                 :items="courseResources"
                 :rows-per-page-items="[10, 20, 30, 40, 50, 75]"
-                select-all
                 v-model="selectedResources"
                 class="elevation-1">
                 <template slot="items" slot-scope="props">
                   <tr :class="props.item.color">
-                    <td><v-checkbox primary hide-details v-model="props.selected"></v-checkbox></td>   
                     <!-- <td :to="{name: 'Profile', params: {id: props.item.publicKey}}">{{ props.item.username }}</td> -->
-                    <td class="text-xs-center"><a  :href="props.item.url" download> {{ props.item.originalFileName}}</a></td>
-                    <td class="text-xs-center">{{props.item.name}} {{ props.item.surname}}</td>
-                    <td class="text-xs-center">{{ props.item.email }}</td>
-                    <td class="text-xs-center">{{ moment(props.item.uploadedat).fromNow() }}</td>
-                    <td class="text-xs-right"><a class="red--text" @click="deleteResource(props.item.publicKey)"
-                        v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE_FILE)">
-                        @click="dialog = true"></a></td>
+                    <td class="text-xs-left"><a  :href="props.item.url" download> {{ props.item.originalFileName}}</a></td>
+                    <td class="text-xs-center">umit.kas</td>
+                    <td class="text-xs-center">{{ moment(props.item.createdAt).fromNow() }}</td>
+                    <td class="text-xs-right">
+                      <a class="red--text" @click="selectedItem=props.item; deleteDialog = true"
+                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE_FILE)"
+                      >
+                      <!--  -->
+                          delete
+                        </a>
+                    </td>
                   </tr>
               </template>
               </v-data-table>
@@ -46,13 +48,13 @@
       <save-resource :dialog="dialog"/>
     </div>
     
-    <v-dialog v-model="dialogg" max-width="400" persistent>
+    <v-dialog v-model="deleteDialog" max-width="400" persistent>
       <v-card>
         <v-card-title class="headline">Confirm</v-card-title>
         <v-card-text>Do you want to remove the specified resource?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat="flat" @click.native="dialogg = false">Back</v-btn>
+            <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Back</v-btn>
             <v-btn color="green darken-1" flat="flat" @click.native="deleteResource">Remove</v-btn>
         </v-card-actions>
       </v-card>
@@ -77,18 +79,17 @@ export default {
   data() {
     return {
       moment: moment,
-
+      selectedItem: null,
       search: "",
       selectedResources: [],
       isLoaded: true,
       dialog: false,
       activeText: "Course Resources",
-      dialogg: false,
+      deleteDialog: false,
       headers: [
         { text: "Url", value: "url", align: "left" },
-        { text: "UploadedBy", value: "uploadedby", align: "center" },
-        { text: "Email", value: "email", align: "center" },
-        { text: "UploadedAt", value: "uploadedat", align: "center" },
+        { text: "Uploaded By", value: "uploadedBy", align: "center" },
+        { text: "Uploaded At", value: "uploadedAt", align: "center" },
         { text: "", value: "event" }
       ]
     };
@@ -104,13 +105,9 @@ export default {
     
 
     
-    deleteResource(publicKey) {
-      if (
-        this.authenticatedUser.accessPrivileges.includes(
-          this.accessPrivileges.DELETE_COURSE_RESOURCE_FILE
-        )
-      ) {
-        const data = {coursePublicKey: this.$route.params.id, publicKey: publicKey}
+    deleteResource() {
+     
+        const data = {coursePublicKey: this.$route.params.id, publicKey: this.selectedItem.publicKey}
 
         this.$store.dispatch("deleteCourseResourceFile", data)
         .then(response => {
@@ -128,12 +125,13 @@ export default {
               });
             }
           });
-      }
+            this.deleteDialog = false;
+
     },
 
     cancelDialog() {
       this.dialog = false;
-      this.dialogg = false;
+      this.deleteDialog = false;
     }
   },
 

@@ -5,7 +5,7 @@ var publicResourceService = new PublicResourceService();
 
 export default {
   state: {
-    course: {
+    theCourse: {
       name: '',
       code: '',
     },
@@ -19,7 +19,7 @@ export default {
       state.allCourses = list;
     },
     setCourse(state, object) {
-      state.course = object;
+      state.theCourse = object;
     },
 
     setPublicCourseResources(state, resources) {
@@ -58,6 +58,8 @@ export default {
           if (response.status) {
             context.dispatch('getAllResources', publicKey);
           }
+          return response;
+
         });
     },
     saveCourseResource(context, data) {
@@ -84,8 +86,8 @@ export default {
     allCourses(state){
       return state.allCourses;
     },
-    course(state) {
-      return state.course;
+    theCourse(state) {
+      return state.theCourse;
     },
   }
 }

@@ -52,9 +52,9 @@ export default class CourseAssignmentService {
    */ 
   }
   uploadFile(coursePublicKey,file) {
-    const accessToken = authService.getAccessToken();
+    const accessToken = authenticationService.getAccessToken();
 
-    return service.upload(`/api/courses/${coursePublicKey}/storage/file`, file)
+    return storageService.upload(`/api/courses/${coursePublicKey}/storage/file`, file)
       .then(response => {
         if (response.data != null && response.data != undefined) {
           response.data.path = `${Axios.defaults.baseURL}${response.data.path}?access_token=${accessToken}`;

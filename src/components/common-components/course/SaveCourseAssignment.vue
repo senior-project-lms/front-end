@@ -1,5 +1,9 @@
 <template>
-<v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false" scrollable>
+<v-dialog v-model="dialog"
+        fullscreen
+        transition="dialog-bottom-transition"
+        :overlay="false"
+        scrollable>
   <v-card tile>
     <v-toolbar card dark color="primary">
       
@@ -85,10 +89,9 @@ export default {
       resources: [],
 
       courseAssignment: {
-        title: "",
-        content: "",
+        title: '',
+        content: '',
         resourceKeys: [],
-        imagePublicKeys: [],
       }
     }
   },
@@ -153,8 +156,8 @@ export default {
               type: "error",
               title: "Course Assignment",
               text: response.data.message
-            });
-          }
+            })
+          };
         });
       }
     },
@@ -165,7 +168,6 @@ export default {
         content: "",
         resourceKeys: [],
         resources: [],
-        imagePublicKeys: [],
       }
     },
     cancel(saved) {

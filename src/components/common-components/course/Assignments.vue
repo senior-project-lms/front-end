@@ -1,27 +1,29 @@
 <template>
   <div>
-      <v-container   fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
+      
+     <!-- <v-container   fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>   </v-container>
+-->
 
           <v-flex md12 sm12>
-              <v-flex md2 offset-md5>
+              <v-flex md2 offset-md5 v-if="courseAssignments.length == 0">
                     <h3 class="text-md-center text-xs-center no-content">No assignment yet.</h3>
               </v-flex>
               <section class="Container">
                   <announcement-template v-for="(assignment, i) in courseAssignments" :key="i" :assignment="assignment" :courseAssignment="true"/>
               </section>
           </v-flex> 
+
           <div>
-            <v-btn fixed dark fab bottom right color="pink" @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ASSIGNMENT)"> 
+            <v-btn fixed dark fab bottom right color="pink" @click="dialog = !dialog"> 
             <v-icon>add</v-icon>
             </v-btn>
           </div>
-          <post-course-assignment :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ASSIGNMENT)"/>
+          <post-course-assignment :dialog="dialog"/>
 
     
           
-  </v-container>
-
   </div>
+
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -39,19 +41,18 @@ export default {
   data() {
     return {
       dialog: false,
-      deleteDialog: false,
+      deleteDialog: false
+
       
     };
   },
   created() {
-    this.loadCourseAssignments();
+    if(this.$route.params.id != null){
+      this.$store.dispatch("getCourseAssignments", this.$route.params.id)
+    }
   },
   methods: {
-    loadCourseAssignments() {
-      this.$store.dispatch("getCourseAssignments", this.$route.params.id)
-    },
-
-    deleteAssignment(publicKey) {
+   deleteAssignment(publicKey) {
 
       if (
         this.authenticatedUser.accessPrivileges.includes(
@@ -76,11 +77,13 @@ export default {
               });
             }
           });
+
       }
     },
 
     cancelDialog() {
       this.dialog = false;
+
     }
   },
   computed: {
@@ -95,11 +98,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.load-more {
-  opacity: 0.7;
-  margin-left: 10px;
-  margin-right: 10px;
-}
 
 .no-content {
   padding-top: 50%;

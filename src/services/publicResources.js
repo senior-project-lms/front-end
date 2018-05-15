@@ -23,7 +23,6 @@ export default class PublicResourceService {
   }
   getAllCourses(){
     //return service.getAll('/api/public-resources');
-    console.log("FUCK YOU")
   }
   
 }

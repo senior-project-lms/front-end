@@ -54,7 +54,7 @@ import * as moment from 'moment';
 import {mapGetters} from 'vuex';
 export default {
     name: 'AnnouncementTemplate',
-    props: ['announcement', 'systemAnnouncement','courseAssignment'],
+    props: ['announcement', 'systemAnnouncement','courseAssignment','assignment'],
     data(){
         return{
             moment: moment,

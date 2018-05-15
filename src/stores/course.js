@@ -280,7 +280,7 @@ export default {
       return courseService.deleteFile(coursePublicKey, publicKey)
         .then(response => {
           if (response.status) {
-            context.dispatch('getAllResources', publicKey);
+            context.dispatch('getAllResources', coursePublicKey);
           }
         });
     },

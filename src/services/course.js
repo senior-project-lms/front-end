@@ -128,7 +128,7 @@ export default class CourseService {
   }
 
   saveCourseResource(publicKey, params) {
-    return service.post(`/api/courses/${publicKey}/resources`, params);
+    return service.post(`/api/courses/${publicKey}/resource`, params);
 
   }
 

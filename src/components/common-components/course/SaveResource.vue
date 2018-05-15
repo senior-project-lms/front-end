@@ -1,5 +1,9 @@
 <template>
-<v-dialog v-model="dialog" persistent max-width="1000" transition="dialog-bottom-transition" :overlay="false" scrollable>
+<v-dialog v-model="dialog"
+        fullscreen
+        transition="dialog-bottom-transition"
+        :overlay="false"
+        scrollable>
     <v-card tile>
         <v-toolbar card dark color="primary">
             <v-btn icon @click="cancel" dark><v-icon>close</v-icon></v-btn>
@@ -53,7 +57,6 @@ export default {
 
       courseResource: {
         resourceKeys: [],
-        imagePublicKeys: [],
       }
     };
   },
@@ -69,7 +72,7 @@ export default {
               if(response.status){
                 const data = response.data;
                 this.resources.push(data);
-                this.systemAnnouncement.resourceKeys.push(data.publicKey)  
+                this.courseResource.resourceKeys.push(data.publicKey)  
               }
                 
           });
@@ -81,11 +84,14 @@ export default {
       const data = {
         publicKey: this.$route.params.id,
         params: {
-          resourceKeys: this.courseResource.resourceKeys,
-          imagePublicKeys: this.courseResource.imagePublicKeys
+          resources: this.resources
         }
       };
-      this.$store.dispatch("saveCourseResource", this.data).then(response => {
+      this.cancel();
+      this.$store.dispatch("getAllResources", this.$route.params.id);
+
+      /*
+      this.$store.dispatch("saveCourseResource", data).then(response => {
         if (response.status) {
           this.$notify({
             type: "success",
@@ -93,6 +99,8 @@ export default {
             text: "Successfuly saved"
           });
           this.cancel();
+          this.$store.dispatch("getAllResources", this.$route.params.id);
+
         } else {
           this.$notify({
             type: "error",
@@ -101,6 +109,7 @@ export default {
           });
         }
       });
+      */
     },
 
     removeFile(courseResourcePublicKey) {
@@ -158,10 +167,7 @@ export default {
   },
   watch: {},
   beforeDestroy() {
-    if (this.courseResource.imagePublicKeys.length > 0) {
-      // remove the files
     }
-  }
 };
 </script>
 <style lang="stylus" scoped>

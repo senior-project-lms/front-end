@@ -26,18 +26,18 @@
                 <v-list>
                   <v-subheader>Courses</v-subheader>       
                   <v-divider></v-divider>
-                  <template v-for="(course, i) in allCourses">
-                    <v-list-tile  v-model="selectedAuthority" :key="course.publicKey" @click="loadPublicResources(course.publicKey)">                           
+                  <template v-for="(theCourse, i) in allCourses">
+                    <v-list-tile  v-model="selectedAuthority" :key="theCourse.publicKey" @click="loadPublicResources(theCourse.publicKey)">                           
                       <v-list-tile-content>
-                          <v-list-tile-title><p class="course">{{course.code}} - {{course.name}}</p></v-list-tile-title>
+                          <v-list-tile-title><p class="theCourse">{{theCourse.code}} - {{theCourse.name}}</p></v-list-tile-title>
                       </v-list-tile-content>
                       <v-icon right v-if="i == selectedAuthority">check_circle</v-icon>
 
                     </v-list-tile>
                    <v-divider :key="i" v-if="i + 1 < allCourses.length"></v-divider>                      
                   </template>
-                            
-                  <v-list-tile v-if="allCourses.length == 0">                           
+                            <!--v-if="allCourses.length == 0"-->
+                  <v-list-tile >                           
                     <v-list-tile-content>
                       <v-list-tile-title class="text-md-center text-sm-center text-xs-center"><p class="grey--text">No course is available.</p></v-list-tile-title>
                     </v-list-tile-content>
@@ -170,6 +170,7 @@ export default {
           });
         }
       });
+      this.deleteDialog = false;
     }
   },
   computed: {
