@@ -43,7 +43,8 @@
                                 <template slot="items" slot-scope="props">
                                     <td>{{props.item.name}} {{props.item.surname}}</td>
                                     <td>
-                                        <student-score class="student-score" v-if="isSaved" :user="props.item" :view="view"></student-score>
+                                        <student-score class="student-score" v-if="isSaved && !view" :user="props.item"></student-score>
+                                        <div v-else-if="props.item.score != undefined">{{props.item.score}}</div>
                                         <div v-else>-</div>
                                     </td>
                                     <td class="red--text text--lighten-2" v-if="props.item.observer">Observer</td>    
@@ -133,7 +134,7 @@ export default {
           },
           headers: [
             {
-                text: 'Name Surname',
+                text: 'Name Sugrade',
                 align: 'left',
                 sortable: true,
                 value: 'name'
@@ -145,7 +146,7 @@ export default {
             },
             {
                 text: 'Status',
-                sortable: true,
+                sortable: false,
                 value: 'observer'
             },            
         ],
@@ -162,7 +163,7 @@ export default {
         if(this.$route.params.id != null){
             this.$store.dispatch("getAllRegisteredStudents", this.$route.params.id)
         }
-
+        
     },
     fetchGrade(){
         const data = {
@@ -210,14 +211,23 @@ export default {
             this.$store.dispatch("updateCourseGrade", data);
         }
     },    
-    clearForm(){
-
-    },
     cancel(saved){
-      this.$store.commit("clearAllGrades");
-      this.clearForm();
       this.$parent.cancelDialog();
+        
+      this.$store.commit("clearAllGrades");
     },
+
+    setScores(){
+        this.allRegisteredStudets.forEach(student => {
+            this.grade.scores.some(item => {
+                if(item.student.publicKey == student.publicKey){
+                    student.score = item.score;
+                    return;
+                }
+            })        
+        })
+        
+    }
  
   },
 
@@ -226,9 +236,26 @@ export default {
     ...mapGetters(['authenticatedUser', 'accessPrivileges', 'allRegisteredStudets', 'grade']),
     isSaved(){
         return this.grade.publicKey != '';
-    }
+    },
+
   },
   watch:{  
+    grade(nval, oval){
+        var list = [];
+        if(!this.allRegisteredStudets){
+            return nval;
+        }
+        if(!nval){
+            return nval;
+        }
+        this.setScores();
+        
+        return nval;
+    },
+    allRegisteredStudets(nval, oval){
+        this.setScores();
+    }
+
   },
   beforeDestroy(){
     
