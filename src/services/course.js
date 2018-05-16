@@ -93,6 +93,10 @@ export default class CourseService{
         return service.getAll(`/api/course/${publicKey}/observer-users`);
     }
 
+    getAllRegisteredUsers(publicKey){
+        return service.getAll(`/api/course/${publicKey}/all-registered-users`);
+    }
+
     getCourseInfo(publicKey){
         return service.get(`/api/course/${publicKey}/info`);
     }
@@ -122,7 +126,6 @@ export default class CourseService{
 
     getAllEventsOfRegisteredCoursesOfAuthUser(){
         return service.getAll(`/api/course/all/calendar`);
-
     }
 
 }

@@ -162,12 +162,13 @@ export default {
         this.qa.tags.splice(index,1)
     },
     newTag(){
-        this.addTag({name: this.tagSearch});
+        this.addTag({name: this.tagSearch,});
         this.tagSearch = "";
     },
     addTag(item){
         
-        if(!this.qa.tags.some(e => e.publicKey == item.publicKey)){
+
+        if(!this.qa.tags.some(e => e.name == item.name)){
             this.qa.tags.push(item);
         }
         

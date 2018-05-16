@@ -3,7 +3,7 @@ import {AccessPrivileges} from '../../properties/accessPrivileges'
 import Course from '../../components/common-components/course/Course'
 
 //Insede Course
-import CourseTestQuiz from '../../components/common-components/course/TestQuiz';
+import CourseQuizTest from '../../components/common-components/course/QuizTest';
 import CourseCalendar from '../../components/common-components/course/Calendar';
 import CourseAnnouncements from '../../components/common-components/course/Announcements';
 import CourseGrades from '../../components/common-components/course/Grades';
@@ -19,10 +19,10 @@ import CourseEnrollmentRequests from '../../components/common-components/course/
 import CourseAuthenticatedUsers from '../../components/common-components/course/AuthenticatedUsers';
 
 
-var testQuiz = {
+var quizTest = {
     path: 'test-quiz',
-    name: 'CourseTestQuiz',
-    component: CourseTestQuiz,
+    name: 'CourseQuizTest',
+    component: CourseQuizTest,
     meta: {
       privilege: AccessPrivileges.PAGE_COURSE_QT,
       requeiresAuthentication: true,
@@ -177,7 +177,7 @@ export default {
       qa,
       qaPage,
       calendar,
-      testQuiz,
+      quizTest,
       assignments,
       settings,
       users,

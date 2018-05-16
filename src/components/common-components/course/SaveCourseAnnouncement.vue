@@ -31,6 +31,8 @@
                 </v-layout>
                 <v-layout row wrap>
                         <v-flex md12 sm12 xs12>
+                                <div id="editorContainer"></div>
+
                           <vue-editor class="editor" :editorToolbar="customToolbar" 
                           v-model="courseAnnouncement.content" required/>
                         </v-flex>

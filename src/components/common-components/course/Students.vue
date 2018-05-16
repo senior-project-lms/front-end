@@ -13,6 +13,17 @@
             </v-flex>
         </v-layout>        
         <v-layout row wrap>
+            <v-flex md12 class="text-md-right">
+                <json-excel
+                    class   = "excel blue--text"
+	                :fields = "excelFields"
+                    :data   = "diplayedStudents"
+                    :name    = "filename">
+                    export as excel                    
+                </json-excel>            
+            </v-flex>
+        </v-layout>
+        <v-layout row wrap>
             <v-flex md12 sm12 xs12>
                 <v-data-table
                 :headers="headersStudentTable"
@@ -28,9 +39,9 @@
                             <td class="red--text text--lighten-2" v-if="props.item.observer">{{props.item.status}}</td>    
                             <td class="blue--text text--lighten-1" v-else>{{props.item.status}}</td>    
                             <td class="text-md-right text-xs-right">
-                                <v-btn icon>
+                                <!-- <v-btn icon>
                                     <v-icon>settings</v-icon>
-                                </v-btn>
+                                </v-btn> -->
                             </td>                                
                         </tr>
                     </template>
@@ -42,12 +53,23 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import JsonExcel from 'vue-json-excel'
 
 export default{
+    components: {
+        JsonExcel
+    },
     data(){
         return{
             searchStudent: '',
-
+            filename: '',
+            excelFields: {
+                username: 'username',
+                name: 'name',
+                surname: 'surname',
+                email: 'email',
+                status: 'status'
+            },
             headersStudentTable: [
                 { text: "Name", value: "name", align: "left" },
                 { text: "Surname", value: "surname",  },
@@ -58,6 +80,7 @@ export default{
         }
     },
     created(){
+        this.filename = this.$route.params.id + '.xls'
         if(this.$route.params.id != null){
             this.$store.dispatch("getEnrolledUsers", this.$route.params.id)
             this.$store.dispatch("getEnrolledObserverUsers", this.$route.params.id)
@@ -94,5 +117,10 @@ export default{
 }
 </script>
 <style scoped>
+    .excel{
+        text-decoration: underline;
+        cursor:pointer;
 
+    }
+        
 </style>

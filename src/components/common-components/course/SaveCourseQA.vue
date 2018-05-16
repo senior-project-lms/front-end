@@ -175,7 +175,7 @@ export default {
     },
     addTag(item){
         
-        if(!this.qa.tags.some(e => e.publicKey == item.publicKey)){
+        if(!this.qa.tags.some(e => e.name == item.name)){
             this.qa.tags.push(item);
         }
         

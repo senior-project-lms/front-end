@@ -46,7 +46,7 @@
   
                                     <v-list-tile
                                     v-if="!props.item.published && $security.hasPermission(authenticatedUser, accessPrivileges.UPDATE_COURSE_QT)"
-                                     @click="dialog = true; edit = true; selectedPublicKey = props.item.publicKey">
+                                     @click="editDialog = true; selectedPublicKey = props.item.publicKey">
                                         <v-list-tile-title >Edit</v-list-tile-title>
                                     </v-list-tile>
                                     <v-list-tile 
@@ -141,7 +141,20 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>        
-        </div>        
+        </div>
+        <div>
+            <v-dialog v-model="editDialog" max-width="290">
+                <v-card>
+                    <v-card-title class="headline">Edit</v-card-title>
+                    <v-card-text>Are you sure to edit?</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="editDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="editDialog = false; dialog = true; edit = true;">Edit</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>        
+        </div>               
     </div>
         
     </div>
@@ -151,7 +164,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import PostQuizTest from './PostTestQuiz';
+import PostQuizTest from './PostQuizTest';
 import QuestionView from './QuestionView'
 import QtStudentView from './QTStudentView'
 import QtStudentList from './QTStudentList'
@@ -171,6 +184,7 @@ export default {
     data(){
         return{
             moment: moment,
+            editDialog: false,
             usersAnswersView: false,
             studentViewDialog: false,
             selectedDeleteItem: null,
@@ -238,6 +252,7 @@ export default {
             this.dialog = false;    
             this.studentViewDialog = false;
             this.usersAnswersView = false;
+            this.editDialog = false;
         },
         isPublished(published){
             return published ? 'green lighten-5' : 'red lighten-5';

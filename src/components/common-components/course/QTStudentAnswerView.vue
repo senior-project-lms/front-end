@@ -3,9 +3,15 @@
         <v-card>
             <v-card-text>
                 <v-layout row wrap>
-                    <v-flex md12>   
+
+                </v-layout>
+                <v-layout row wrap>
+                    <v-flex md11>   
                         <p v-html="question.content"></p>                
                     </v-flex>
+                    <v-flex md1 class="text-md-right" v-if="item != null">
+                        <el-input class="score" size="small" placeholder="Score"></el-input>
+                    </v-flex>                    
                 </v-layout>
                 <v-layout row wrap>
                     <v-flex md12>
@@ -19,7 +25,7 @@
                                 <template v-for="(answer, i) in question.answers">
                                     <v-layout v-if="answer.type == 1" :key="`layout-${i}`">
                                         <v-flex md12>
-                                            <p>{{text}}</p>
+                                            <p class="answer-text">{{text}}</p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout v-if="answer.type == 2" :key="`layout-${i}`">
@@ -28,18 +34,19 @@
                                             
                                                 <el-checkbox :label="answer.publicKey">
                                                     {{answer.text}}
-                                                    <i v-if="answer.correct" class="el-icon-success"></i>
+                                                <v-icon color="green" v-if="answer.correct">check_circle_outline</v-icon>
 
                                                 </el-checkbox>
                                             </el-checkbox-group>
                                         </v-flex>
                                     </v-layout>                                      
                                     <v-layout v-if="answer.type == 3" :key="`layout-${i}`">
-                                        <v-flex md12 class="">
+                                        <v-flex md12 class="">                                                                                                                                                                                                                                   
                                             <el-radio :label="answer.publicKey" v-model="radio" :disabled="true">
                                                 {{answer.text}}
-                                                    <i v-if="answer.correct" class="el-icon-success"></i>
                                             </el-radio>
+                                            <v-icon color="green" v-if="answer.correct">check_circle_outline</v-icon>
+                                        
                                         </v-flex>
                                     </v-layout>                                    
                                 </template>
@@ -69,9 +76,11 @@ export default {
             dialog: false,
             checkboxes: [],
             text: '',
+            correctCount: 0,
         }
     },
     created(){
+        
         
     },
     methods: {
@@ -118,4 +127,9 @@ export default {
         margin-top 25px
     .save-btn
         margin-top 10px
+    .answer-text
+        color #616161
+    .score
+        width 70px
+
 </style>

@@ -16,7 +16,7 @@
         <v-flex md12>
             <v-tabs
                 v-model="active"
-                color="grey lighten-4"
+                color="grey lighten-2"
                 light
                 slider-color="blue"
                 grow
@@ -37,8 +37,8 @@
                 </v-tab-item>
             </v-tabs>             
         </v-flex>    
-        <v-flex>
-            <router-view></router-view>
+        <v-flex >
+            <router-view ></router-view>
         </v-flex>  
     </div>
 </template>
@@ -74,7 +74,7 @@ export default {
 
                 {
                     text: 'Quiz - Testing',
-                    to: {name: 'CourseTestQuiz'},
+                    to: {name: 'CourseQuizTest'},
                     privilege: AccessPrivileges.PAGE_COURSE_QT,
                 },
                 {
