@@ -268,9 +268,7 @@ export default {
         });
 
     },
-    uploadCourseResourceFile(context, {publicKey, file}) {
-      
-      
+    uploadCourseResourceFile(context, {publicKey, file}) {  
       return courseService.uploadFile(publicKey,file);
     },
 
@@ -282,11 +280,12 @@ export default {
           if (response.status) {
             context.dispatch('getAllResources', coursePublicKey);
           }
+          return response;
         });
     },
-
-
-
+    shareCourseResourcePublicly(context, data){
+      return courseService.sharePublicly(data.coursePublicKey, data.publicKey, data.val);
+    },
 
   },
   getters: {

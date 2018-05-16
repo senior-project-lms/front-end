@@ -41,7 +41,7 @@ export default {
           return response;
         })
     },
-    getAllResources(context, publicKey) {
+    getAllPublicResources(context, publicKey) {
       return publicResourceService.getAllResources(publicKey)
         .then(response => {
           if (response.status) {

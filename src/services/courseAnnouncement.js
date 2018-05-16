@@ -14,19 +14,19 @@ export default class CourseAnnouncementService{
 
   
     save(publicKey,params){
-        return service.post(`/api/courses/${publicKey}/announcements`, params);      
+        return service.post(`/api/course/${publicKey}/announcements`, params);      
     }
 
 
      
     delete(publicKey){
-        return service.delete(`/api/courses/${publicKey}/announcements`,);
+        return service.delete(`/api/course/${publicKey}/announcements`,);
     }
 
    
     getAll(publicKey,page){
         const accessToken = authenticationService.getAccessToken();
-        return service.getAll(`/api/courses/${publicKey}/announcements/${page}`)
+        return service.getAll(`/api/course/${publicKey}/announcements/${page}`)
         /*
         .then(response => {
             

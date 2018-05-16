@@ -3,7 +3,7 @@
     <loader v-if="!isLoaded"/>
     <div v-if="isLoaded">
       
-      <v-container>
+      <v-container  fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
         <v-layout row wrap >
           <v-flex md12 sm12 xs12>
             <v-card>
@@ -15,19 +15,19 @@
                     
               <v-data-table
                 :headers="headers"
+                :search="search"
                 :items="courseResources"
                 :rows-per-page-items="[10, 20, 30, 40, 50, 75]"
-                v-model="selectedResources"
                 class="elevation-1">
                 <template slot="items" slot-scope="props">
                   <tr :class="props.item.color">
                     <!-- <td :to="{name: 'Profile', params: {id: props.item.publicKey}}">{{ props.item.username }}</td> -->
                     <td class="text-xs-left"><a  :href="props.item.url" download> {{ props.item.originalFileName}}</a></td>
-                    <td class="text-xs-center">umit.kas</td>
-                    <td class="text-xs-center">{{ moment(props.item.createdAt).fromNow() }}</td>
+                    <td class="text-xs-center">{{ props.item.username }}</td>
+                    <td class="text-xs-center">{{ moment(props.item.createdAt).format('MMMM Do YYYY HH:mm') }}</td>
                     <td class="text-xs-right">
                       <a class="red--text" @click="selectedItem=props.item; deleteDialog = true"
-                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE_FILE)"
+                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE)"
                       >
                       <!--  -->
                           delete
@@ -41,8 +41,12 @@
         </v-layout>
       </v-container>
       
-      <div><v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" > 
-        <v-icon>add</v-icon></v-btn>
+      <div>
+        <v-btn 
+          v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)"
+          fixed dark fab bottom right color="pink"  @click="dialog = !dialog" > 
+          <v-icon>add</v-icon>
+        </v-btn>
       </div>
         
       <save-resource :dialog="dialog"/>
@@ -87,8 +91,8 @@ export default {
       activeText: "Course Resources",
       deleteDialog: false,
       headers: [
-        { text: "Url", value: "url", align: "left" },
-        { text: "Uploaded By", value: "uploadedBy", align: "center" },
+        { text: "File", value: "originalFileName", align: "left" },
+        { text: "Uploaded By", value: "username", align: "center" },
         { text: "Uploaded At", value: "uploadedAt", align: "center" },
         { text: "", value: "event" }
       ]
@@ -137,28 +141,21 @@ export default {
 
   computed: {
     ...mapGetters(["authenticatedUser", "accessPrivileges", "courseResources"])
+  },
+  watch: {
+      courseResources(nval, oval){
+
+        nval.forEach(resource => {
+            resource.username = resource.createdBy.username;
+        });
+
+        return nval;        
+      }
   }
 };
 </script>
 <style lang="stylus" scoped>
-.input-file {
-  background-color: Transparent;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-  outline: none;
-}
 
-.upload-btn-wrapper input[type=file] {
-  font-size: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
-
-.no-content {
-  padding-top: 50%;
-}
+  .no-content
+    padding-top 50%
 </style>

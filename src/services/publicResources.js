@@ -12,17 +12,8 @@ const authenticationService = new AuthenticationService();
 export default class PublicResourceService {
   constructor() {}
 
-  delete(publicKey, filePublicKey) {
-    return service.delete(`/api/public-resources/${publicKey}/${filePublicKey}`);
-  }
   getAllResources(publicKey) {
     return service.getAll(`/api/public-resources/${publicKey}`);
-  }
-  save(publicKey, params) {
-    return service.post(`/api/public-resources/${publicKey}`, params);
-  }
-  getAllCourses(){
-    return service.getAll('/api/public-resources');
   }
   
 }

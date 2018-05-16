@@ -98,6 +98,9 @@ export default {
       this.dialog = false;
     }
   },
+  beforeDestroy(){
+    this.$store.commit('clearCourseAnnouncementStore');
+  },
   computed: {
     ...mapGetters([
       "authenticatedUser",

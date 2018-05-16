@@ -16,7 +16,7 @@ export default class StorageService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
+        .catch(response => {
             return service.___then(response)
         });
     }
@@ -28,7 +28,7 @@ export default class StorageService{
         .then(response => {
             return service.___then(response)
         })
-        .catch(() => {
+        .catch(response => {
             return service.___then(response)
         });
     }

@@ -1,12 +1,12 @@
 <template>
 <v-dialog v-model="dialog"
-        fullscreen
+        :width="width"
         transition="dialog-bottom-transition"
         :overlay="false"
         scrollable>
     <v-card tile>
         <v-toolbar card dark color="primary">
-            <v-btn icon @click="cancel" dark><v-icon>close</v-icon></v-btn>
+            <v-btn icon @click="cancel(false)" dark><v-icon>close</v-icon></v-btn>
             <v-toolbar-title>Add Course Resource</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
@@ -21,21 +21,37 @@
             <v-container fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm>
                 <v-layout row wrap >
                     <v-flex class="uploader" md12 sm12 xs12>
-                        <input type="file" @change="processFiles($event)" multiple
-                        v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_COURSE_RESOURCE_FILE)">
+                        <div class="upload-btn-wrapper">
+                            <v-btn outline v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_COURSE_RESOURCE_FILE)" >Upload File</v-btn>
+                            <input type="file" @change="processFiles($event)" multiple/>
+                        </div>
+                        <!-- <input class="input-file" type="file" @change="processFiles($event)" 
+                          > -->
                     </v-flex>
                 </v-layout>
                 
                 <v-layout row wrap>
                     <v-flex md12 sm12>
                         <ul class="file-list">
-                            <li v-for="(resource, i) in resources" :key="i">
-                                <a class="red--text lighten-1" @click="removeFile(this.$route.params.id)">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>{{ i + 1}} - {{ resource.originalFileName }} 
+                            <li v-for="(resource, i) in resources" :key="i" >
+                              <v-layout>
+                              <v-flex md10 xs10>
+                                  <a class="red--text lighten-1 remove-file" @click="removeFile(resource.publicKey)">
+                                      <i class="fa fa-times" aria-hidden="true"></i>
+                                  </a>{{ i + 1}} - {{ resource.originalFileName }}                                   
+                                </v-flex>
+                                <v-flex md2 xs2 class="text-md-right">
+                                    <el-switch 
+                                    :key="resource.publicKey"
+                                    v-model="resource.publicShared" 
+                                    :change="sharePublicly(resource.publicShared, resource.publicKey)"></el-switch>                                  
+                                </v-flex>                         
+                              </v-layout>
+                                
+                                <v-divider class="divide-li"/>
+
                             </li>
                         </ul>
-                        <v-divider></v-divider>  
                         {{ resources.length }} file is uploaded.                  
                     </v-flex>                    
                 </v-layout>   
@@ -52,6 +68,7 @@ export default {
   props: ["dialog"],
   data() {
     return {
+      saved: false,
       uploader: false,
       resources: [],
 
@@ -64,22 +81,22 @@ export default {
   created() {},
   methods: {
     processFiles(event) {
-      
-      const chosenFiles = Array.from(event.target.files);
-      chosenFiles.map((file) => {
-          this.$store.dispatch("uploadCourseResourceFile", {publicKey: this.$route.params.id, file})
-          .then((response) => {
-              if(response.status){
-                const data = response.data;
-                this.resources.push(data);
-                this.courseResource.resourceKeys.push(data.publicKey)  
-              }
-                
-          });
-            
-      });
-  },      
-      
+        
+        const chosenFiles = Array.from(event.target.files);
+        chosenFiles.map((file) => {
+            this.$store.dispatch("uploadCourseResourceFile", {publicKey: this.$route.params.id, file})
+            .then((response) => {
+                if(response.status){
+                  const data = response.data;
+                  this.resources.push(data);
+                  this.courseResource.resourceKeys.push(data.publicKey)  
+                }
+                  
+            });
+              
+        });
+    },      
+        
     save() {
       const data = {
         publicKey: this.$route.params.id,
@@ -87,35 +104,15 @@ export default {
           resources: this.resources
         }
       };
-      this.cancel();
+      this.cancel(true);
       this.$store.dispatch("getAllResources", this.$route.params.id);
 
-      /*
-      this.$store.dispatch("saveCourseResource", data).then(response => {
-        if (response.status) {
-          this.$notify({
-            type: "success",
-            title: "Course Resource",
-            text: "Successfuly saved"
-          });
-          this.cancel();
-          this.$store.dispatch("getAllResources", this.$route.params.id);
-
-        } else {
-          this.$notify({
-            type: "error",
-            title: "Course Resource",
-            text: response.data.message
-          });
-        }
-      });
-      */
     },
 
-    removeFile(courseResourcePublicKey) {
+    removeFile(filePublicKey) {
       const data = {
-        publicKey: this.$route.params.id,
-        courseResourcePublicKey: publicKey
+        publicKey: filePublicKey,
+        coursePublicKey: this.$route.params.id
       };
       this.$store.dispatch("deleteCourseResourceFile", data).then(response => {
         if (response.status) {
@@ -125,7 +122,7 @@ export default {
             text: "Successfuly deleted"
           });
           this.resources.map((file, index) => {
-            if (file.publicKey === publicKey) {
+            if (file.publicKey === filePublicKey) {
               this.resources.splice(index, 1);
               const index = this.courseResource.resourceKeys.indexOf(
                 file.publicKey
@@ -141,13 +138,17 @@ export default {
           });
         }
       });
+      this.$store.dispatch("getAllResources", this.$route.params.id);
     },
+
     cancel(saved) {
       if (!saved) {
-        this.courseResource.resourceKeys.map(publicKey => {
-          this.$store.dispatch("deleteCourseResourceFile", publicKey);
-        });
+        this.resources.forEach(item => {
+          this.removeFile(item.publicKey)
+        })
+
       }
+  
 
       this.cancelForm();
       this.$parent.cancelDialog();
@@ -160,28 +161,68 @@ export default {
         resourceKeys: [],
         imagePublicKeys: []
       };
+    },
+
+    sharePublicly(val, publicKey){
+      const data = {
+        publicKey: publicKey,
+        coursePublicKey: this.$route.params.id,
+        val: val,
+      };
+      
+      this.$store.dispatch("shareCourseResourcePublicly", data);
     }
   },
   computed: {
-    ...mapGetters(["authenticatedUser", "accessPrivileges"])
+    ...mapGetters(["authenticatedUser", "accessPrivileges"]),
+    width(){
+      if(this.$vuetify.breakpoint.width < 650){
+          return '100%'
+      }
+      else {
+        return '50%'
+      }
+    }
   },
   watch: {},
   beforeDestroy() {
-    }
+
+  }
 };
 </script>
 <style lang="stylus" scoped>
-.uploader {
-    margin-top: 50px;
-}
+.uploader 
+    margin-top 10px
 
-.file-list {
-    margin-top: 10px;
-    list-style-type: none;
-}
 
-.remove-file {
-    margin-right: 10px;
-}
+.file-list 
+    margin-top 10px
+    list-style-type none
+
+
+.remove-file 
+    margin-right 10px
+
+.input-file
+    background-color Transparent
+    background-repeat no-repeat
+    border none
+    cursor pointer
+    overflow hidden
+    outline none
+
+.upload-btn-wrapper
+    position: relative
+    overflow: hidden
+    
+
+.upload-btn-wrapper input[type=file] 
+    font-size 100px
+    position absolute
+    left 0
+    top 0
+    opacity 0
+
+.divide-li
+  margin 10px 0
 </style>
-
