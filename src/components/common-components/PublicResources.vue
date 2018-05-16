@@ -51,6 +51,7 @@
         
       <course-enrollment v-if="$security.hasPermission(authenticatedUser, accessPrivileges.ENROLL_COURSE)" :dialog="coursesDialog"/> 
 
+<!--
       <v-container fluid  grid-list-md grid-list-sm grid-list-xs>
         <v-layout row wrap class="">
           <v-flex md2>
@@ -98,6 +99,7 @@
           </v-flex>
         </v-layout>
       </v-container>
+-->
 </v-layout></v-container></div></div></template>
 
 <script>
@@ -137,10 +139,6 @@ export default {
       this.coursesDialog = false;
     },
     loadPublicResources(publicKey) {
-      //publicKey: this.$route.params.id,
-        
-        //var publicKey = this.allCourses[0].publicKey;
-        //this.loadPublicResources(publicKey);
 
         this.$store.dispatch("getAllResources", publicKey).then(response => {
           if (!response.status) {
