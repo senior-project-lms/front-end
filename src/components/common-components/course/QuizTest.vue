@@ -164,7 +164,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import PostQuizTest from './PostTestQuiz';
+import PostQuizTest from './PostQuizTest';
 import QuestionView from './QuestionView'
 import QtStudentView from './QTStudentView'
 import QtStudentList from './QTStudentList'

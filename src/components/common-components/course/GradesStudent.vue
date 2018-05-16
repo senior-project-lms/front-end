@@ -11,7 +11,7 @@
                 <td class="" >{{ floarNumber(props.item.average) }} / {{ floarNumber(props.item.maxScore) }}</td>
                 <td class="" >{{ props.item.weight }}%</td>
                 <td class="text-xs-right">
-                    <v-btn v-if="props.item.menu" outline color="indigo" slot="activator" small>View Detail</v-btn>                               
+                    <!-- <v-btn v-if="props.item.menu" outline color="indigo" slot="activator" small>View Detail</v-btn>                                -->
                 </td>
 
             </template>                

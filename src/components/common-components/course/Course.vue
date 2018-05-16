@@ -74,7 +74,7 @@ export default {
 
                 {
                     text: 'Quiz - Testing',
-                    to: {name: 'CourseTestQuiz'},
+                    to: {name: 'CourseQuizTest'},
                     privilege: AccessPrivileges.PAGE_COURSE_QT,
                 },
                 {

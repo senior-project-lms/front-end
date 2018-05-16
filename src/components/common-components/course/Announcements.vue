@@ -14,7 +14,7 @@
       <v-layout>
         <v-flex>
           <template>
-            <v-btn block class="load-more" light outline @click="loadCourseAnnouncements(page)" v-if="loader">More</v-btn>
+            <v-btn block class="load-more" light outline @click="loadCourseAnnouncements" v-if="loader">More</v-btn>
           </template>
         </v-flex>
       </v-layout>
@@ -58,21 +58,13 @@ export default {
     }
   },
   created(){
-    if(this.courseAnnouncements.length == 0){
-      this.loadCourseAnnouncements(this.page);
-    }
-    else{
-      this.page = (this.courseAnnouncements.length / 5) + 1;
-    }
-    
-    
+    this.fetchAnnouncements()   
   },
   methods:{
-    
-    loadCourseAnnouncements(page){
+    fetchAnnouncements(){
       const data ={
         publicKey:this.$route.params.id,
-        page:page,
+        page:this.page,
       }
       this.$store.dispatch("getCourseAnnouncements",data)
       .then(response => {
@@ -80,7 +72,10 @@ export default {
             this.$notify({type: "error", title: "Course Announcement", text: response.data.message}) 
           }
       });
+    },
+    loadCourseAnnouncements(){
       this.page++;
+      this.fetchAnnouncements();
     },
     
     deleteAnnouncement(publicKey){
@@ -100,6 +95,8 @@ export default {
     
     cancelDialog(){
       this.dialog = false;
+      this.page = 1;
+      this.fetchAnnouncements(this.page);
     }
 
   },
