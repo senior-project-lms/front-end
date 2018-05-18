@@ -207,7 +207,7 @@ export default {
             params: list
         }
         this.$store.dispatch('saveAllCourseGrade', data);
-        this.$parent.cancelDialog();
+        this.$parent.closeDialog();
     },
     update(){
 
