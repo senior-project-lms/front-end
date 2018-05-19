@@ -62,7 +62,7 @@
                                                 <div>
                                                     > {{comment.content}}
                                                     <span v-if="comment.anonymous"> -anonymous</span>
-                                                    <span else class="blue--text"> -{{comment.createdBy.username}}</span>
+                                                    <span else class="blue--text"> -{{answer.createdBy.username}}</span>
                                                 </div>
                                                 <v-divider :key="`comment-divider-${i}`"></v-divider>
 
