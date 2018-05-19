@@ -72,7 +72,7 @@
                         </template>
                         <template slot="no-data">
                             <div  class="text-xs-center">
-                                <b class="">No such a Quiz or Test exist :(</b>
+                                <b class="">No such a Quiz or Test exist.</b>
                             </div>
                         </template>                        
                     </v-data-table>
@@ -197,7 +197,7 @@ export default {
             edit: false,
             headers: [
             {
-                text: 'Exam Date',
+                text: 'Exam Name',
                 align: 'left',
                 sortable: false,
                 value: 'name'
@@ -205,14 +205,6 @@ export default {
             { text: 'Due Date', value: 'dueDate', sortable:false, align: 'left' },
             { text: '', value: 'publicKey', sortable:false, align: 'right' }
             ],                
-            exams: [   
-                {
-                    publicKey: '1231231231230',
-                    name: 'Quiz-1',
-                    publishDate: '11/04/2018 15:30',
-                    dueDate: '19/04/2018 15:30',
-                }      
-            ]
         }
     },
     created(){

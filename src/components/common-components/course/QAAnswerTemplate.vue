@@ -65,9 +65,7 @@
                                                     <span else class="blue--text"> -{{comment.createdBy.username}}</span>
                                                 </div>
                                                 <v-divider :key="`comment-divider-${i}`"></v-divider>
-
                                             </div>                                                 
-                                     
                                     </v-flex>
                                 </v-layout>
                                 <v-layout>

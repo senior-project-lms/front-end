@@ -15,6 +15,7 @@ import globalQA from './globalQA';
 import courseQA from './courseQA';
 import quizTest from './quizTest';
 import grade from './grade';
+import assignment from './assignment';
 
 export default{
 
@@ -36,4 +37,5 @@ export default{
     courseQA:courseQA,
     quizTest: quizTest,
     grade: grade,
+    assignment: assignment,
 }
