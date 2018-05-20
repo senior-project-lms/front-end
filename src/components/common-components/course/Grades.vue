@@ -13,17 +13,16 @@
                     </div>
 
                     <grades-lecturer v-if="$security.hasPermission(authenticatedUser, accessPrivileges.READ_ALL_COURSE_SCORES)"></grades-lecturer>
-
                     <div class="detail"
                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.READ_ALL_COURSE_SCORES)
                      && 
                      $security.hasPermission(authenticatedUser, accessPrivileges.READ_OWN_COURSE_SCORES)"
                     >
                         <h3 class="header">Details of My Grades</h3>
-                        <v-divider ></v-divider>
+                        <v-divider></v-divider>
                     </div>
                     
-                    <grades-student v-if="!$security.hasPermission(authenticatedUser, accessPrivileges.READ_ALL_COURSE_SCORES)" ></grades-student>
+                    <grades-student v-if=" $security.hasPermission(authenticatedUser, accessPrivileges.READ_OWN_COURSE_SCORES)"></grades-student>
                 </v-flex>
             </v-layout>
         </v-container>

@@ -8,14 +8,14 @@
       >
       <v-card tile>
         <v-toolbar card dark color="primary">
-                <v-btn icon @click="cancel(edit)" dark>
+                <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>New Assigment</v-toolbar-title>
+                <v-toolbar-title>Assignment View</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                <v-btn v-if="!edit" dark flat @click.native="save">Save</v-btn>
-                <v-btn v-else dark flat @click.native="update">Update</v-btn>
+                <!-- <v-btn v-if="" dark flat @click.native="save">Save</v-btn>
+                <v-btn v-else dark flat @click.native="update">Update</v-btn> -->
 
                 </v-toolbar-items>
                 <v-menu bottom right offset-y>
@@ -30,52 +30,49 @@
                         <v-flex md9>
                             <v-layout row wrap>
                                 <v-flex md12>
-                                        <el-input placeholder="Assignment name" v-model="assignment.title"></el-input>
+                                        <b class="headline">{{ assignment.title }}</b>
                                 </v-flex>
                             </v-layout>
+                            <v-divider></v-divider>
                             <v-layout row wrap>
                                 <v-flex md12>
-                                    <vue-editor class="editor" :editorToolbar="customToolbar" v-model="assignment.content"/>
-
+                                    <p v-html="assignment.content"></p>
                                 </v-flex>
                             </v-layout>
-                                <v-layout row wrap >
+                                <!-- <v-layout row wrap >
                                     <v-flex class="uploader" md12 sm12 xs12>
                                         <div class="upload-btn-wrapper">
-                                            <v-btn outline v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_COURSE_RESOURCE_FILE)" >Upload File</v-btn>
+                                            <v-btn outline v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_OWN_COURSE_ASSIGNMENT_FILE)" >Upload File</v-btn>
                                             <input type="file" @change="processFiles($event)" multiple/>
                                         </div>
-                                        <!-- <input class="input-file" type="file" @change="processFiles($event)" 
-                                        > -->
+                                    </v-flex>
+                                </v-layout> -->
+                                <v-layout row wrap>
+                                    <v-flex md12 class="">
+                                        <b class="headline">Files</b>
                                     </v-flex>
                                 </v-layout>
-                                
                                 <v-layout row wrap>
                                     <v-flex md12 sm12>
                                         <ul class="file-list">
                                             <li v-for="(resource, i) in assignment.resources" :key="i" >
                                             <v-layout>
                                             <v-flex md10 xs10>
-                                                <a class="red--text lighten-1 remove-file" @click="removeFile(resource.publicKey)">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                                </a>
-                                                <a  :href="resource.url" download>{{resource.originalFileName}}</a>                                 
+                                                <a  :href="resource.url" download> {{ i + 1}} - {{resource.originalFileName}}</a>
+                                                      
                                                 </v-flex>
                                                 <v-flex md2 xs2 class="text-md-right">
                                                 </v-flex>                         
                                             </v-layout>
                                                 
-                                                <v-divider class="divide-li"/>
-
                                             </li>
                                         </ul>
-                                        {{ assignment.resources.length }} file is uploaded.                  
                                     </v-flex>                    
-                                </v-layout>                                                             
+                                </v-layout>           
                         </v-flex>   
                         <v-flex md3>
                             <v-layout row wrap>
-                                <v-flex md12 class="tex">
+                                <v-flex md12 class="">
                                     <b class="headline">Details</b>
                                 </v-flex>
                             </v-layout>
@@ -85,12 +82,7 @@
                                     <b class="subheading">Due Date</b>
                                 </v-flex>
                                 <v-flex md8>
-                                    <el-date-picker
-                                    type="datetime" 
-                                    v-model="assignment.dueDate"
-                                    placeholder="Select a date and time"
-                                    size="small">
-                                    </el-date-picker>                                     
+                                    {{ moment(assignment.dueDate).format('MMMM Do YYYY, HH:mm') }}
                                 </v-flex>
                             </v-layout>
                             
@@ -99,63 +91,30 @@
                                     <b class="subheading">Last Date</b>
                                 </v-flex>
                                 <v-flex md8>
-                                    <el-date-picker
-                                    type="datetime" 
-                                    v-model="assignment.lastDate"
-                                    placeholder="Select a date and time"
-                                    size="small">
-                                    </el-date-picker>                                     
+                                    {{ moment(assignment.lastDate).format('MMMM Do YYYY, HH:mm') }}
                                 </v-flex>
                             </v-layout>
                             <v-divider></v-divider>
-                            <v-layout>
+                            <v-layout v-if="assignment.gradable && assignment.hasGrade">
                                 <v-flex md4>
-                                     <b class="subheading">Gradable</b>                   
+                                     <b class="subheading" >Grade</b>                   
                                 </v-flex>
                                 <v-flex md8>
-                                    <el-switch
-                                    v-model="assignment.gradable"
-                                    active-color="#13ce66"
-                                    inactive-color="#E0E0E0">
-                                    </el-switch>                                
+                                     <b class="subheading">{{ assignment.score }}</b>                   
                                 </v-flex>
-                            </v-layout>
-                            <v-layout row wrap v-if="assignment.gradable">
-                                <v-flex md4>
-                                    <b class="subheading">Grade Name</b>
-                                </v-flex>
-                                <v-flex md8 cla>
-                                    <el-input
-                                    size="small" 
-                                    placeholder="Enter a grade name"
-                                    v-model="assignment.grade.name"
-                                    ></el-input>
-                                </v-flex>
-                            </v-layout>                            
-                            <v-layout v-if="assignment.gradable">
-                                <v-flex md4>
-                                    <b class="subheading">Max Score</b>
-                                </v-flex>
-                                <v-flex md4>
-                                    <el-input placeholder="0"  size="small" min="0"
-                                    v-model="assignment.grade.maxScore"
-                                    ></el-input> 
-                                </v-flex>                                
-                            </v-layout>                                  
-                            <v-layout v-if="assignment.gradable">
-                                <v-flex md4>
-                                    <b class="subheading">Weight</b>
-                                </v-flex>
-                                <v-flex md4>
-                                    <el-input
-                                    placeholder="0" size="small" min="0"
-                                    v-model="assignment.grade.weight">
-                                    </el-input>
-                                </v-flex>                                
-                                           
-                            </v-layout>                                                                                                     
+                            </v-layout>                                                                                               
                         </v-flex>     
                   </v-layout>
+                  <v-divider></v-divider>
+                    <v-layout row wrap>
+                        <v-flex md9>
+                            <post-student-assignment :publicKey="publicKey"></post-student-assignment>
+                        </v-flex>
+                        <v-flex md3>
+                          
+                        </v-flex>
+                    </v-layout>   
+
             </v-container>
         </v-card-text>
       </v-card>
@@ -165,28 +124,17 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
-
-var customToolbar = [
-  ['bold', 'italic', 'underline', 'strike'],
-  ['blockquote', 'code-block', 'link', ],
-  [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-  [{ 'indent': '-1'}, { 'indent': '+1' }],
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-  [{ 'color': [] }, { 'background': [] }],
-  [{ 'font': [] }],
-  [{ 'align': [] }],
-  ['clean',]
-]
+import * as moment from 'moment';
+import PostStudentAssignment from './PostStudentAssignment'
 
 export default {
-    props: ['dialog', 'edit', 'publicKey',],
+    props: ['dialog', 'publicKey',],
     components: {
-        VueEditor
+        PostStudentAssignment,
     },
     data(){
         return{
-            customToolbar: customToolbar, 
+            moment: moment,
             resources: [],
             courseResource: {
                 resourceKeys: [],
@@ -194,10 +142,9 @@ export default {
         }
     },
     created(){
-        if(this.edit){
-            this.fetchAssignment()
+        this.fetchAssignment()
             
-        }
+        
     },
     methods:{
         fetchAssignment(){
@@ -205,7 +152,7 @@ export default {
                 coursePublicKey: this.$route.params.id,
                 publicKey: this.publicKey,
             };            
-            this.$store.dispatch("getCourseAssignment", data);
+            this.$store.dispatch("getCourseAssignmentForStudent", data);
             
         },
         save(){
@@ -289,11 +236,11 @@ export default {
         
     },
     cancel(saved) {
-      if (!saved) {
-        this.assignment.resources.forEach(item => {
-          this.remove(item.publicKey)
-        })
-      }
+    //   if (!saved) {
+    //     this.assignment.resources.forEach(item => {
+    //       this.remove(item.publicKey)
+    //     })
+    //   }
   
       this.cancelForm();
       this.$parent.cancelDialog();

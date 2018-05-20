@@ -253,12 +253,6 @@ export default {
         return nval;
     },
     allRegisteredStudets(nval, oval){
-        if(!this.allRegisteredStudets){
-            return nval;
-        }
-        if(!nval){
-            return nval;
-        }        
         this.setScores();
     }
 

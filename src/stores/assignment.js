@@ -6,7 +6,6 @@ import AssignmentService from '../services/assignment';
 
 var courseService = new CourseService();
 var assignmentService = new AssignmentService();
-
 export default{
     state: {
         assignment: {
@@ -16,12 +15,21 @@ export default{
             dueDate: null,
             lastDate: null,
             gradable: false,
+            resourceKeys: [],
+            resources: [],
             grade: {
                 name: '',
                 maxScore: null,
                 weight: null,
             }
         },
+        studentAssignment: {
+            publicKey: '',
+            content: null,
+            resourceKeys: [],
+            resources: [],
+        },
+        studentAssignments: [],
         assignments: [],
 
     },
@@ -29,8 +37,22 @@ export default{
         setAssignment(state, obj){
             state.assignment = obj;
         },
+        setStudentAssignments(state, list){
+            state.studentAssignments = list;
+        },
         setAssignments(state, list){
             state.assignments = list;
+        },
+        setStudentAssignment(state, obj){
+            state.studentAssignment = obj;
+        },
+        clearStudentAssignment(state){
+            state.studentAssignment = {
+                publicKey: '',
+                content: null,
+                resourceKeys: [],
+                resources: [],
+            }
         },
         clearAssignment(state){
             state.assignment = {
@@ -40,6 +62,8 @@ export default{
                 dueDate: null,
                 lastDate: null,
                 gradable: false,
+                resourceKeys: [],
+                resources: [],
                 grade: {
                     name: '',
                     maxScore: null,
@@ -55,6 +79,8 @@ export default{
                 dueDate: null,
                 lastDate: null,
                 gradable: false,
+                resourceKeys: [],
+                resources: [],
                 grade: {
                     name: '',
                     maxScore: null,
@@ -66,6 +92,34 @@ export default{
         }
     },
     actions: {
+        getCourseStudentAssignments(context, data){
+            return assignmentService.getStudentsAssignmentAnswers(data.coursePublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setStudentAssignments", response.data);
+                }
+                return response;
+            });
+        }, 
+        getCourseAuthStudentAssignment(context, data){
+            return assignmentService.getAuthStudentAssignment(data.coursePublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setStudentAssignment", response.data);
+                }
+                return response;
+            });
+        }, 
+        getCourseAssignmentForStudent(context, data){
+            return assignmentService.getForStudent(data.coursePublicKey, data.publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setAssignment", response.data);
+                }
+                return response;
+            });
+        },   
+        
         getCourseAssignment(context, data){
             return assignmentService.get(data.coursePublicKey, data.publicKey)
             .then(response => {
@@ -75,7 +129,16 @@ export default{
                 return response;
             });
         },   
-
+        
+        getCourseAssignmentsOfStudent(context, coursePublicKey){
+            return assignmentService.getAllForStudent(coursePublicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit("setAssignments", response.data);
+                }
+                return response;
+            });
+        }, 
         getCourseAssignments(context, coursePublicKey){
             return assignmentService.getAll(coursePublicKey)
             .then(response => {
@@ -96,14 +159,10 @@ export default{
         },
 
         updateCourseAssignment(context, data){
-            return assignmentService.update(data.coursePublicKey, data.params)
+            return assignmentService.update(data.coursePublicKey, data.publicKey, data.params)
             .then(response => {
                 if(response.status){
-                    const dt = {
-                        coursePublicKey: data.coursePublicKey,
-                        publicKey: response.data.publicKey,
-                    }
-                    context.dispatch("getCourseAssignments", dt);
+                    context.dispatch("getCourseAssignments", data.coursePublicKey);
                 } 
                 return response;  
             })
@@ -138,6 +197,40 @@ export default{
             })
         },            
 
+        uploadCourseAssignmentFile(context, {publicKey, file}) {  
+            return assignmentService.uploadFile(publicKey,file);
+        },
+        
+        deleteCourseAssignmentFile(context, data) {
+            const coursePublicKey = data.coursePublicKey;
+            const publicKey = data.publicKey;
+            return assignmentService.deleteFile(coursePublicKey, publicKey)
+            //   .then(response => {
+            //     if (response.status) {
+            //       context.dispatch('getAllResources', coursePublicKey);
+            //     }
+            //     return response;
+            //   });
+        },
+        saveCourseStudentAssignment(context, data){
+            return assignmentService.saveStudentAssignment(data.coursePublicKey, data.publicKey, data.params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getCourseAuthStudentAssignment", data);
+                } 
+                return response;  
+            })
+        },
+        updateCourseStudentAssignment(context, data){
+            return assignmentService.updateStudentAssignment(data.coursePublicKey, data.publicKey, data.stdPublicKey, data.params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch("getCourseAuthStudentAssignment", data);
+                } 
+                return response;  
+            })
+        },
+
 
     },
     getters: {
@@ -147,7 +240,13 @@ export default{
         },
         assignments(state){
             return state.assignments;
-        },        
+        },    
+        studentAssignment(state){
+            return state.studentAssignment;
+        },
+        studentAssignments(state){
+            return state.studentAssignments;
+        }
 
     }
 }

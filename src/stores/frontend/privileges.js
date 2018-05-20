@@ -4,7 +4,6 @@ export default{
 
     state: {
         accessPrivileges : {
-             // Home
             GLOBAL_ACCESS : 1111100001,
 
 
@@ -16,8 +15,8 @@ export default{
             UPDATE_SYSTEM_ANNOUNCEMENT : 1110001100,
             UPLOAD_SYSTEM_ANNOUNCEMENT_FILE : 1110110010,
             DELETE_SYSTEM_ANNOUNCEMENT_FILE : 1110010111,
-
-
+        
+        
             // User
             SAVE_USER : 1110101100,
             READ_ALL_USERS : 1111000100,
@@ -26,7 +25,7 @@ export default{
             UPDATE_USER : 1110110011,
             READ_USER_STATUSES: 1001101000,
             UPDATE_USER_VISIBILITY: 1000100000,
-
+        
             // Course
             SAVE_COURSE : 1111011111,
             READ_ALL_COURSES : 1110111111,
@@ -35,31 +34,31 @@ export default{
             READ_COURSES_BY_VISIBILITY : 1111011011,
             READ_COURSE_STATUSES : 1111110100,
             UPDATE_COURSE_VISIBILITY : 1110000000,
-
+        
             // Authority
             SAVE_AUTHORITY : 1111101000,
             READ_ALL_AUTHORITIES : 1110010100,
             DELETE_AUTHORITY : 1111111001,
             UPDATE_AUTHORITY : 1110001101,
-
-
+        
+        
             // Privilege
             READ_ALL_PRIVILEGES : 1111000110,
-
-
-
+        
+        
+        
             // Default Authority
             READ_DEFAULT_AUTHORITIES_AND_PRIVILEGES : 1110000100,
             UPDATE_DEFAULT_AUTHORITY : 1110101010,
             SAVE_DEFAULT_AUTHORITY : 1111001010,
             DELETE_DEFAULT_AUTHORITY : 1111100010,
-
-
-
-
-
+        
+        
+        
+        
+        
             // PAGE PRIVILEGES
-
+        
             PAGE_USER_FOR_ADMIN : 1110011011,
             PAGE_COURSE_FOR_ADMIN : 1111011001,
             PAGE_AUTHORITIES : 1111111100,
@@ -72,10 +71,10 @@ export default{
             PAGE_OWN_PROFILE : 1110100001,
             PAGE_SETTINGS : 1111110101,
             PAGE_GLOBAL_RESOURCES : 1110011000,
-
-
-
-
+        
+        
+        
+        
             // PAGE COURSE PRIVILEGES
             PAGE_COURSE: 1010101010,
             PAGE_COURSE_ANNOUNCEMENT : 1111011101,
@@ -90,8 +89,8 @@ export default{
             PAGE_COURSE_ENROLLED_STUDENTS: 1101110001,
             PAGE_COURSE_AUTHENTICATED_USERS: 1101111100,
             PAGE_COURSE_SETTINGS : 1111110011,
-
-
+        
+        
             // COURSE ANNOUNCEMENT
             SAVE_COURSE_ANNOUNCEMENT : 1110010101,
             DELETE_COURSE_ANNOUNCEMENT : 1111000111,
@@ -102,6 +101,9 @@ export default{
             DELETE_COURSE_GRADE : 1111001101,
             UPDATE_COURSE_GRADE : 1111010111,
             READ_COURSE_GRADE : 1110010011,
+            ACCESS_GRADE_LECTURER_VIEW:100010101,
+            ACCESS_GRADE_STUDENT_VIEW:111010000,
+            PUBLISH_COURSE_GRADE:110000111,
 
             // COURSE SCORE
             SAVE_COURSE_SCORE : 1110110001,
@@ -109,9 +111,9 @@ export default{
             UPDATE_COURSE_SCORE : 1110001011,
             READ_ALL_COURSE_SCORES : 1110100010,
             READ_OWN_COURSE_SCORES : 1010000001,
-
-
-
+        
+        
+        
             // COURSE ASSIGNMENT
             SAVE_COURSE_ASSIGNMENT : 1110001111,
             DELETE_COURSE_ASSIGNMENT : 1110101101,
@@ -119,12 +121,16 @@ export default{
             READ_ALL_COURSE_ASSIGNMENTS : 1110000011,
             READ_OWN_COURSE_ASSIGNMENTS : 1110000001,
             UPLOAD_OWN_COURSE_ASSIGNMENT_FILE : 1110100000,
-            UPLOAD_COURSE_ASSIGNMENT_FILE : 1111100110,
             DELETE_OWN_COURSE_ASSIGNMENT_FILE : 1110110111,
-            DELETE_COURSE_ASSIGNMENT_FILE : 1110101011,
+            ACCESS_ASSIGNMENT_LECTURER_VIEW:110111000,
+            ACCESS_ASSIGNMENT_STUDENT_VIEW:110000110,
+            VIEW_NOT_PUBLISHED_ASSIGNMENTS:110000111,
+            PUBLISH_COURSE_ASSIGNMENT:110111000,
+            VIEW_COURSE_ASSIGNMENT_STUDENT_ANSWERS:100001010,
+            JOIN_COURSE_ASSIGNMENT: 101110110,
 
-
-
+        
+        
             // COURSE QT
             SAVE_COURSE_QT : 1111111111,
             DELETE_COURSE_QT : 1110111010,
@@ -133,9 +139,9 @@ export default{
             JOIN_COURSE_QT : 1111000101,
             READ_COURSE_QT: 1101000011,
             PUBLISH_COURSE_QT: 1000100100,
-            READ_NOT_PUBLISHED_COURSE_QT: 1000111000,            
+            READ_NOT_PUBLISHED_COURSE_QT: 1000111000,
             VIEW_USER_ANSWERS_COURSE_QT: 1100100001,
-
+        
             // COURSE RESOURCE
             SAVE_COURSE_RESOURCE : 1110011010,
             DELETE_COURSE_RESOURCE : 1110100101,
@@ -143,28 +149,27 @@ export default{
             READ_ALL_COURSE_RESOURCES : 1110010001,
             UPLOAD_COURSE_RESOURCE_FILE : 1110011001,
             DELETE_COURSE_RESOURCE_FILE : 1111001111,
-
-
-
+        
+        
+        
             // COURSE QA
             SAVE_COURSE_QA : 1111011100,
             DELETE_COURSE_QA : 1110110101,
             DELETE_OWN_COURSE_QA : 1111101111,
             UPDATE_COURSE_QA : 1110001010,
             VERIFY_COURSE_QA : 1111111000,
-            LIKE_COURSE_QA : 1110111110,
+            VOTE_COURSE_QA : 1110111110,
             STAR_COURSE_QA : 1111100000,
             UPDATE_OWN_COURSE_QA: 1010011110,
-
-
+        
             READ_AUTHENTICATED_USERS: 1101011111,
-
-
+        
+        
             SAVE_COURSE_CALENDAR : 1111010000,
             DELETE_COURSE_CALENDAR : 1111110111,
             UPDATE_COURSE_CALENDAR : 1111111110,
             READ_COURSE_CALENDAR : 1111101010,
-
+        
             // Enrolment
             ENROLL_COURSE : 1111110110,
             APPROVE_ENROLLMENT_REQUEST : 1111000001,
@@ -176,20 +181,20 @@ export default{
             READ_NOT_REGISTERED_COURSES : 1110100110,
             READ_REGISTERED_COURSES : 1111100101,
             READ_AUTHENTICATED_COURSES : 1110001110,
-
-
+        
+        
             SAVE_AUTHENTICATED_USER : 1110111000,
             DELETE_AUTHENTICATED_USER : 1110000111,
             UPDATE_AUTHENTICATED_USER : 1011101010,
-
-
-            
+        
+        
             READ_GLOBAL_CALENDAR: 1010101001,
             DELETE_GLOBAL_CALENDAR: 1100110001,
             UPDATE_GLOBAL_CALENDAR: 1000011010,
             SAVE_GLOBAL_CALENDAR: 1001111011,
         
-
+        
+        
             SAVE_GLOBAL_QA: 1100011001,
             DELETE_GLOBAL_QA: 1100111110,
             DELETE_OWN_GLOBAL_QA: 1011011001,

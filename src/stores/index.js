@@ -16,6 +16,8 @@ import courseQA from './courseQA';
 import quizTest from './quizTest';
 import grade from './grade';
 import assignment from './assignment';
+import publicResources from './publicResources';
+import courseResources from  './courseResources';
 
 export default{
 
@@ -37,5 +39,7 @@ export default{
     courseQA:courseQA,
     quizTest: quizTest,
     grade: grade,
+    courseResources: courseResources,
+    publicResources: publicResources,
     assignment: assignment,
 }

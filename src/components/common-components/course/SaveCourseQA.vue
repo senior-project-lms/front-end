@@ -11,7 +11,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Course QA</v-toolbar-title>
+                <v-toolbar-title>Global QA</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="save">Save</v-btn>

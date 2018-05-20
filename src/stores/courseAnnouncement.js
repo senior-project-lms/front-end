@@ -42,14 +42,14 @@ export default{
             const params=announcement.params;
             return courseAnnouncementService.save(publicKey,params)
             .then(response => {
-                // if(response.status){
-                //     const data ={
-                //         publicKey:announcement.publicKey,
-                //         page:1,
-                //     }
-                //    context.dispatch("getCourseAnnouncements",data);
+                if(response.status){
+                    const data ={
+                        publicKey:announcement.publicKey,
+                        page:1,
+                    }
+                   context.dispatch("getCourseAnnouncements",data);
                   
-                // }
+                }
                 return response;
             })
         },
