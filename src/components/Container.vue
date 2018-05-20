@@ -9,13 +9,18 @@
       width="250"
       >
       <v-list  dense class="left-menu-list" >
-        <template v-for="(item, i) in leftMenuItems">
+        <template v-for="(item, i) in leftMenuItems"
+          
+
+         v-if="authUser.accessPrivileges.includes(item.privilege)"
+         >
+          
           <v-list-tile  v-bind:to="item.to" :key="i">
             <v-list-tile-action>
-              <v-badge  v-if="item.badge && user.badge">
-                  <span slot="badge">{{ user.badgeCount}}</span>
-                  <v-icon>{{item.icon}}</v-icon>
-              </v-badge>
+                <v-badge  v-if="item.badge && user.badge">
+                    <span slot="badge">{{ user.badgeCount}}</span>
+                    <v-icon>{{item.icon}}</v-icon>
+                </v-badge>
                 <v-icon v-else>
                   {{ item.icon }}
                 </v-icon>
@@ -42,7 +47,7 @@
       <v-menu left>
         <v-btn flat  slot="activator">
           <v-icon left>fa-angle-down</v-icon>
-          {{user.username}}
+          {{authUser.username}}
         </v-btn>
         <v-list>
            <template v-for="(item, i) in topMenuItems">
@@ -63,17 +68,22 @@
       </v-menu>
     </v-toolbar>
       <v-content>
-        <router-view></router-view>
+        <v-card class="full-height grey lighten-4">  
+            <router-view></router-view>
+        </v-card>
+        
       </v-content>
   </v-app>
 </template>
 
 <script>
+  
+  import {mapGetters} from 'vuex';
   export default {
     data () {
       return {
         user: {
-          username: 'umit.kas',
+          username: '',
           badge: true,
           badgeCount: 3,
         },
@@ -82,74 +92,12 @@
         drawer: true,
         miniVariant: false,
         title: 'LMS',
-        leftMenuItems: null,
-        studentMenus: [
-          {
-            icon: 'fa-tachometer',
-            title: 'Home',
-            to: {name: 'StudentHome'},
-            
-          },
-          {
-            icon: 'fa-bullhorn',
-            title: 'Announcement',
-            to: {name: 'Announcement'},
-            badge: true,
-          },
-          {
-            icon: 'fa-book',
-            title: 'Courses',
-            to: {name: 'StudentCourses'},
-          },
-          {
-            icon: 'fa-calendar',
-            title: 'Calendar',
-            to: {name:'Calendar'},
-          },
-          {
-            icon: 'fa-files-o',
-            title: 'Public Resources',
-            to: {name:'PublicResources'},
-          },
-          {
-            icon: 'fa-question-circle-o',
-            title: 'QA-Global',
-            to: {name: 'QA-Global'},
-          },
-        ],
-        lecturerMenus: [],
-        adminMenus: [],
-
-        topMenuItems: [
-          {
-            icon: 'fa-user',
-            title: 'Profile',
-            to: {name:'Profile'},
-          },
-          {
-            icon: 'fa-cog',
-            title: 'Settings',
-            to: {name:'Settings'},
-          },
-          {
-            icon: 'fa-sign-out',
-            title: 'Sign Out',
-            to: {name:'Signout'},
-          },
-        ]
-
       }
     },
     created(){
           this.setMenuStatus();
-          
-
-          // according to user type change the menu
-          this.leftMenuItems = this.studentMenus;
-
     },
     methods:{
-      
       menuVisible(){
         this.drawer = !this.drawer;
         localStorage.setItem('menu-visible', this.drawer);
@@ -169,13 +117,23 @@
     },
     updated(){
           this.setMenuStatus();
-      
+    },
+    computed:{
+      ...mapGetters(['authenticatedUser', 'leftMenuItems', 'topMenuItems']),
+      authUser(){
+        return {
+          username: this.authenticatedUser.username,
+          accessPrivileges: this.authenticatedUser.accessPrivileges,
+        }
+      }
+
     }
+
   }
 
 </script>
 
-<style lang="stylus" >
+<style lang="stylus" scoped>
 
   .link
     text-decoration none
@@ -186,5 +144,7 @@
   .left-menu-list v-list-tile:hover 
     color dark
     
+  .full-height
+    height calc(100%) !important    
 
 </style>
