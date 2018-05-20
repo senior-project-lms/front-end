@@ -14,6 +14,8 @@ import courseAnnouncement from './courseAnnouncement';
 import globalQA from './globalQA';
 import courseQA from './courseQA';
 import quizTest from './quizTest';
+import grade from './grade';
+import assignment from './assignment';
 import publicResources from './publicResources';
 import courseResources from  './courseResources';
 
@@ -36,6 +38,8 @@ export default{
     globalQA:globalQA,
     courseQA:courseQA,
     quizTest: quizTest,
-    publicResources: publicResources,
+    grade: grade,
     courseResources: courseResources,
+    publicResources: publicResources,
+    assignment: assignment,
 }

@@ -61,7 +61,7 @@
                                         <v-flex md9>
                                             <el-input
                                             v-show="!view"
-                                            placeholder="Quiz-Test Name" size="small" 
+                                            placeholder="Grade name" size="small" 
                                             v-model="grade.name"
                                             ></el-input>
                                         </v-flex>
@@ -73,7 +73,7 @@
                                     </v-layout>
                                     <v-layout  v-show="view">
                                         <v-flex md12>
-                                            <b v-show="view" class="header grey--text text--darken-3">Exam Name: <span class="detail">{{ grade.name }}</span></b>                                                                                                                                                                
+                                            <b v-show="view" class="header grey--text text--darken-3">Grade Name: <span class="detail">{{ grade.name }}</span></b>                                                                                                                                                                
                                         </v-flex>
                                     </v-layout>
                                     <v-divider></v-divider>                                                                         

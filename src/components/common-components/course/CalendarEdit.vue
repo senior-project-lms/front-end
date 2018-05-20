@@ -25,7 +25,7 @@
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
-                                <v-layout>
+                                <v-layout row wrap>
                                     <v-flex md7 xs12>
                                         <el-input
                                         v-model="event.title"
@@ -41,7 +41,7 @@
                                         end-placeholder="End date">
                                         </el-date-picker>                                                                    
                                     </v-flex>
-                                    <v-flex md2 class="">
+                                    <v-flex md2 class="text-md-right">
                                         <el-button type="primary" @click="save">Add to Calendar</el-button>
                                     </v-flex>                                     
                                 </v-layout>
@@ -74,7 +74,7 @@
                                 <td>{{ moment(props.item.end).format('MMMM Do YYYY, h:mm:ss a')}}</td>
                                 <td class="text-xs-right"><a class="red--text" @click="deleteEvent(props.item.publicKey)"
                                 v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_CALENDAR)"> 
-                                >delete</a></td>
+                                delete</a></td>
                             </template>
                             <v-alert slot="no-results" :value="true" color="error" icon="warning">
                                 Your search for "{{ search }}" found no results.
@@ -144,14 +144,11 @@ export default{
     },
     computed:{
         ...mapGetters(['authenticatedUser', 'accessPrivileges', 'courseEvents']),
-
     },
     watch:{
-
     }
 }
     
 </script>
 <style lang="stylus" scoped>
-
 </style>

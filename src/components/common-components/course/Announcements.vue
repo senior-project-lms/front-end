@@ -11,7 +11,9 @@
       
         
           <div>
-            <v-btn fixed dark fab bottom right color="pink" @click="dialog = !dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ANNOUNCEMENT)"> 
+            <v-btn fixed dark fab bottom right color="pink" 
+            @click="dialog = !dialog" 
+            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_ANNOUNCEMENT)"> 
             <v-icon>add</v-icon>
           </v-btn>
           </div>
@@ -20,7 +22,8 @@
             <v-btn block class="load-more" light outline @click="loadCourseAnnouncements(page)" v-if="loader">More</v-btn>
           </template>
 
-          <post-course-announcement :dialog="dialog" v-if="authenticatedUser.accessPrivileges.includes(accessPrivileges.SAVE_COURSE_ANNOUNCEMENT)"/>
+          <post-course-announcement :dialog="dialog" 
+            v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_ANNOUNCEMENT)"/>
   </div>
 </template>
 <script>
