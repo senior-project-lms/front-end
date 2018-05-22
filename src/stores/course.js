@@ -17,7 +17,10 @@ export default{
         observerStudents: [],
         assistants: [],
         events: [],
-        allRegisteredStudets: []
+        allRegisteredStudets: [],
+        notifications: {
+            assignment: 0,
+        }
 
     },
     mutations: {
@@ -29,6 +32,9 @@ export default{
         },
         setCourses(state, list){
             state.courses = list;
+        },
+        setNotification(state, obj){
+            state.notifications = obj;
         },
         setCoursesStatuses(state, statuses){
            state.coursesStatuses = statuses;
@@ -245,6 +251,16 @@ export default{
             });
         },
 
+        getNotifications(context, publicKey){
+            return courseService.getNotifications(publicKey)
+            .then(response => {
+                if(response.status){
+                    const data = response.data;
+                    context.commit('setNotification', data);
+                }
+            })
+        }
+
     },
     getters: {
       
@@ -275,6 +291,9 @@ export default{
         },
         allRegisteredStudets(state){
             return state.allRegisteredStudets
+        },
+        notifications(state){
+            return state.notifications;
         }
     }
 }

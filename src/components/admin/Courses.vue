@@ -59,7 +59,7 @@
                                 <v-layout row>
                                     <v-flex>
                                         <div>
-                                            <div class="headline text-md-center text-sm-center text-xs-center">99</div>
+                                            <div class="headline text-md-center text-sm-center text-xs-center">0</div>
                                         </div>
                                     </v-flex>
                                 </v-layout>

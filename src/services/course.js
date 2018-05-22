@@ -127,4 +127,8 @@ export default class CourseService{
         return service.getAll(`/api/course/all/calendar`);
     }
 
+    getNotifications(publicKey){
+        return service.get(`/api/course/${publicKey}/notifications`, publicKey);
+    }
+
 }
