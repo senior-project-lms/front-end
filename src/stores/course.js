@@ -259,7 +259,20 @@ export default{
                     context.commit('setNotification', data);
                 }
             })
-        }
+        },
+        
+        deleteStudentFromCourse(context, data){
+            return courseService.deleteStudent(data.coursePublicKey, data.userPublicKey)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getEnrolledUsers', data.coursePublicKey);
+
+                }
+                return response;
+            });
+
+            
+        },
 
     },
     getters: {

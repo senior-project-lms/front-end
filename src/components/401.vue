@@ -1,9 +1,28 @@
 <template>
     <div>
-        <h1>401 page is not authorized</h1>
-        <h4>We will redirect you in {{ remainingTime }} second later</h4>
+        <v-container fluid>
+        <v-layout column align-center>
+
+            
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+
+            <blockquote>
+                <v-icon x-large color="blue darken-2">error</v-icon><br/>
+                <h1>Hold on...</h1>
+                <h3>
+                    You're not allowed to enter here.
+                </h3>
+
+        <br/>
+        <h5>You will be redirected in {{ remainingTime }} seconds.</h5>
+        <p>ERROR: 401 - UNAUTHORIZED</p>
+        </blockquote>
+
+        </v-layout>
+        </v-container>
     </div>
 </template>
+
 <script>
 export default{
     data(){
