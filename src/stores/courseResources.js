@@ -17,9 +17,7 @@ setCourseResources(state, list) {
     clearCourseStore(state) {
       state.courseResources = [];
     },
-    clearCourseResources(state) {
-        state.courseResources = [];
-    },
+    
   },
 
 actions: {

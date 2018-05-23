@@ -6,7 +6,7 @@ var courseAnnouncementService = new CourseAnnouncementService();
 export default{
 
     state: {
-        courseAnnouncements: []
+        courseAnnouncements: [],
     },
     mutations:{
         setCourseAnnouncements(state, announcements){

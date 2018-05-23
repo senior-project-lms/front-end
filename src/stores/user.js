@@ -16,7 +16,8 @@ export default{
         },
         clearUserStore(state){
             state.users = [];
-            usersStatus: {}
+            state.usersStatus= {};
+            state.usernames=[];
         },
         setUsernames(state, list){
             state.usernames = list;
