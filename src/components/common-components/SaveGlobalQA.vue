@@ -31,12 +31,14 @@
                 </v-layout>
                 <v-layout row wrap>
                         <v-flex md12 sm12 xs12>
-                          <vue-editor  :editorToolbar="customToolbar" 
-                          v-model="qa.content" required/>
+                          <!-- <vue-editor  :editorToolbar="customToolbar" 
+                          v-model="qa.content" required/> -->
+                        <quill-editor class="editor" v-model="qa.content"></quill-editor>
+                          
                         </v-flex>
                 </v-layout>
                 <v-layout>
-                    <v-flex md3 sm3 xs12>
+                    <v-flex md3 sm3 xs12 class="tags">
                         <el-autocomplete
                         v-model="tagSearch"
                         :fetch-suggestions="querySearchAsync"
@@ -46,7 +48,7 @@
                         <el-button v-if="addBtn" @click="newTag" type="info" size="mini" plain>add</el-button>
                                           
                     </v-flex>
-                    <v-flex md9 sm9 xs12>
+                    <v-flex md9 sm9 xs12 class="tags">
                             <v-chip v-for="(tag, i) in qa.tags" :key="`tag-${i}`" @input="deleteTag(i)" close >{{tag.name}}</v-chip>
                     </v-flex>
                 </v-layout>
@@ -63,7 +65,14 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
+//import { VueEditor } from 'vue2-editor';
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -80,7 +89,8 @@ var customToolbar = [
 export default {
   props: ['dialog'],
   components: {
-      VueEditor,
+      //VueEditor,
+      quillEditor
 },
   data(){
       return{
@@ -198,5 +208,7 @@ export default {
       margin-right 10px
     
     .editor
-      height 450px
+      height 250px
+    .tags
+     margin-top 50px
 </style>

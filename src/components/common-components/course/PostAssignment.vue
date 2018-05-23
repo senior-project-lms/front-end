@@ -35,8 +35,9 @@
                             </v-layout>
                             <v-layout row wrap>
                                 <v-flex md12>
-                                    <vue-editor class="editor" :editorToolbar="customToolbar" v-model="assignment.content"/>
-
+                                    <!-- <vue-editor class="editor" :editorToolbar="customToolbar" v-model="assignment.content"/> -->
+                                    <quill-editor class="editor" v-model="assignment.content"></quill-editor>
+                                    
                                 </v-flex>
                             </v-layout>
                                 <v-layout row wrap >
@@ -165,7 +166,13 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
+///import { VueEditor } from 'vue2-editor';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -182,7 +189,8 @@ var customToolbar = [
 export default {
     props: ['dialog', 'edit', 'publicKey',],
     components: {
-        VueEditor
+        //VueEditor
+        quillEditor
     },
     data(){
         return{
@@ -329,7 +337,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .uploader 
-    margin-top 10px
+    margin-top 40px
     margin-left -10px
 .file-list 
     margin-top 10px
@@ -355,4 +363,7 @@ export default {
     opacity 0
 .divide-li
   margin 10px 0
+
+.editor
+    height 250px
 </style>

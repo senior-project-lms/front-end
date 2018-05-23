@@ -4,12 +4,13 @@
       <v-layout row wrap>
         <h2 class="headline"> Your answer</h2><br>
           <v-flex md12>
-            <vue-editor :editorToolbar="customToolbar" 
-            v-model="content" required />
+            <!-- <vue-editor :editorToolbar="customToolbar" 
+            v-model="content" required /> -->
+          <quill-editor class="editor" v-model="content"></quill-editor>
           </v-flex>                 
       </v-layout>
-      <v-layout row wrap>
-            <v-btn color="info" @click="save"
+      <v-layout row wrap >
+            <v-btn class="save" color="info" @click="save"
               v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_QA)">
               Post Your Answer
             </v-btn>    
@@ -21,7 +22,13 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
+//import { VueEditor } from 'vue2-editor';
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
 
 
 const uuidv1 = require('uuid/v1');
@@ -41,7 +48,8 @@ var customToolbar = [
 export default {
   
   components: {
-      VueEditor,
+      //VueEditor,
+      quillEditor
 },
   data(){
       return{
@@ -83,4 +91,8 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+    .editor
+      height 250px
+    .save
+      margin-top 40px
 </style>
