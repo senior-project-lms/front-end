@@ -4,7 +4,6 @@
         fullscreen
         transition="dialog-bottom-transition"
         :overlay="false"
-        scrollable
       >
        <v-card tile>
             <v-toolbar card dark color="primary">
@@ -31,8 +30,9 @@
                 </v-layout>
                 <v-layout row wrap>
                         <v-flex md12 sm12 xs12>
-                          <vue-editor class="editor" :editorToolbar="customToolbar" 
-                          v-model="systemAnnouncement.content" required/>
+                          <!-- <vue-editor class="editor" :editorToolbar="customToolbar" 
+                          v-model="systemAnnouncement.content" required/> -->
+                     <quill-editor class="editor" v-model="systemAnnouncement.content"></quill-editor>
                         </v-flex>
                 </v-layout>
                 <v-layout row wrap >
@@ -64,7 +64,12 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
+//import { VueEditor } from 'vue2-editor';
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -78,10 +83,13 @@ var customToolbar = [
   ['clean',]
 ]
 
+
 export default {
   props: ['dialog'],
   components: {
-      VueEditor,
+  //    VueEditor,
+    quillEditor
+
 },
   data(){
       return{
@@ -197,5 +205,5 @@ export default {
       margin-right 10px
     
     .editor
-      height 450px
+      height 350px
 </style>

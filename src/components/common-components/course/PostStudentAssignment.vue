@@ -11,10 +11,12 @@
          </v-layout>
         <v-layout row wrap>
                 <v-flex md12 sm12 xs12>
-                    <vue-editor 
+                    <!-- <vue-editor 
                     v-show="!assignment.dueUp"
                     :editorToolbar="customToolbar" 
-                    v-model="studentAssignment.content" required/>
+                    v-model="studentAssignment.content" required/> -->
+                     <quill-editor class="editor" v-model="studentAssignment.content"></quill-editor>
+                    
                 </v-flex>
                 <p 
                 v-show="assignment.dueUp">
@@ -55,7 +57,13 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import { VueEditor } from 'vue2-editor';
+//import { VueEditor } from 'vue2-editor';
+
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
 
 var customToolbar = [
   ['bold', 'italic', 'underline', 'strike'],
@@ -72,7 +80,8 @@ var customToolbar = [
 export default {
   props: ['publicKey'],
   components: {
-      VueEditor,
+      //VueEditor,
+      quillEditor
 },
   data(){
       return{
