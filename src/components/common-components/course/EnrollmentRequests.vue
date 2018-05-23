@@ -19,7 +19,7 @@
             :headers="enrollmentRequestsTable"
             :items="courseEnrollmentRequests"
             class="elevation-1"
-            :rows-per-page-items="[10, 20]"
+            :rows-per-page-items="[5, 10, 20, 50, 100]"
             :search="searchEnrollmentRequest">
                 <template slot="items" slot-scope="props">
                     <tr>

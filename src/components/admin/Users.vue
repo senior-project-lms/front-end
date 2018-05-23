@@ -91,7 +91,7 @@
                                 <v-data-table
                                     :headers="headers"
                                     :items="users"
-                                    :rows-per-page-items="[50, 75]"
+                                    :rows-per-page-items="[5, 10, 20, 50, 100]"
                                     :search="search"
                                     class="elevation-1">
                                         <template slot="items" slot-scope="props">

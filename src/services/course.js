@@ -136,4 +136,11 @@ export default class CourseService{
 
     }
 
+    getNotEnrolledUsers(publicKey){
+        return service.get(`/api/course/${publicKey}/not-enrolled`);
+    }
+
+    registerByAdmin(publicKey, params){
+        return service.post(`/api/course/${publicKey}/register-by-admin`, params);
+    }
 }
