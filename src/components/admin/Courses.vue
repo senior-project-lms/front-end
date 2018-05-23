@@ -92,9 +92,8 @@
                             <v-data-table
                             :headers="headers"
                             :items="courses"
-                            :rows-per-page-items="[10, 20, 30, 40, 50, 75]"	
                             select-all
-                            v-model="selectedCurses"
+                            :rows-per-page-items="[5, 10, 20, 50, 100]"
                             class="elevation-1"
                             >
                                 <template slot="items" slot-scope="props">
@@ -108,7 +107,7 @@
                                         </td>                                        
                                         <td>{{ props.item.code }}</td>
                                         <td class="text-xs-center">
-                                            <router-link :to="{name: 'CourseAnnouncements', params: {id: props.item.publicKey}}">
+                                            <router-link :to="{name: 'AdminCourseStudents', params: {id: props.item.publicKey}}">
                                                 {{ props.item.name }}
                                             </router-link>
                                         </td>

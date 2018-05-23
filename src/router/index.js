@@ -40,6 +40,7 @@ import DefaultAuthorityPrivileges from '../components/admin/DefaultAuthorityPriv
 import Home from '../components/common-components/Home'
 
 import QAPage from "../components/common-components/QAPage"
+import AdminCourseStudents from "../components/admin/AdminCourseStudents";
 
 Vue.use(Router)
 
@@ -112,6 +113,15 @@ export default new Router({
                       requeiresAuthentication: true,
                     },
 
+                  },
+                  {
+                    path: '/course/:id',
+                    name: 'AdminCourseStudents',
+                    component: AdminCourseStudents,
+                    meta: {
+                      privilege: AccessPrivileges.PAGE_COURSE_USERS,
+                      requeiresAuthentication: true,
+                    },
                   }
                 ],
               },
