@@ -171,7 +171,7 @@ export default {
       };
       
       this.$store.dispatch("shareCourseResourcePublicly", data);
-    }
+    },
   },
   computed: {
     ...mapGetters(["authenticatedUser", "accessPrivileges"]),
