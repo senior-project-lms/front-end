@@ -25,7 +25,9 @@
                     <td class="text-xs-left"><a  :href="props.item.url" download> {{ props.item.originalFileName}}</a></td>
                     <td class="text-xs-center">{{ props.item.username }}</td>
                     <td class="text-xs-center">{{ moment(props.item.createdAt).format('MMMM Do YYYY HH:mm') }}</td>
-                    <td class="text-xs-right">
+                    <td class="text-xs-center"><el-switch v-model="props.item.publicShared"
+                    :change="sharePublicly(props.item.publicShared, props.item.publicKey)"></el-switch></td>
+                      <td class="text-xs-right">
                       <a class="red--text" @click="selectedItem=props.item; deleteDialog = true"
                       v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE)"
                       >
@@ -94,6 +96,7 @@ export default {
         { text: "File", value: "originalFileName", align: "left" },
         { text: "Uploaded By", value: "username", align: "center" },
         { text: "Uploaded At", value: "uploadedAt", align: "center" },
+        { text: "Share Publicly", value: "publicShared", align:"center"},
         { text: "", value: "event" }
       ]
     };
@@ -120,6 +123,7 @@ export default {
                 type: "info",
                 title: "Course Resource",
                 text: "Successfuly removed"
+                
               });
             } else {
               this.$notify({
@@ -131,6 +135,15 @@ export default {
           });
             this.deleteDialog = false;
 
+    },
+    sharePublicly(val, publicKey){
+      const data = {
+        publicKey: publicKey,
+        coursePublicKey: this.$route.params.id,
+        val: val,
+      };
+      
+      this.$store.dispatch("shareCourseResourcePublicly", data);
     },
 
     cancelDialog() {
