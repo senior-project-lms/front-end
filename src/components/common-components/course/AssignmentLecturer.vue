@@ -193,6 +193,9 @@ export default {
     },
 
     methods:{
+        fetchNotifications(){
+            this.$store.dispatch("getNotifications", this.$route.params.id);
+        },
         fetchAssignments(){
             this.$store.dispatch("getCourseAssignments", this.$route.params.id);
         },
@@ -204,6 +207,8 @@ export default {
             this.$store.dispatch("publishCourseAssignment", data);
             this.selectedPublishItem = null;
             this.publishDialog = false;
+            this.fetchNotifications();
+            
         },
         disableAssignment(){
             const data = {
@@ -213,6 +218,7 @@ export default {
             this.$store.dispatch("disableCourseAssignment", data);
             this.selectedPublishItem = null;
             this.disableDialog = false;
+            this.fetchNotifications();
         },        
         deleteAssignment(){
             const data = {
@@ -222,6 +228,7 @@ export default {
             this.$store.dispatch("deleteCourseAssignment", data);
             this.selectedDeleteItem = null;
             this.deleteDialog = false;
+            this.fetchNotifications();
         },
         cancelDialog(){        
             //this.$store.dispatch("getAllCourseQuizTest", this.$route.params.id);
@@ -229,6 +236,7 @@ export default {
             this.studentViewDialog = false;
             this.usersAnswersView = false;
             this.editDialog = false;
+            this.fetchNotifications();
         },
         isPublished(published){
             return published ? 'green lighten-5' : 'red lighten-5';

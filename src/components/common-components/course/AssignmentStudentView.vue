@@ -82,7 +82,12 @@
                                     <b class="subheading">Due Date</b>
                                 </v-flex>
                                 <v-flex md8>
-                                    {{ moment(assignment.dueDate).format('MMMM Do YYYY, HH:mm') }}
+                                    <span v-show="assignment.dueDate == null">
+                                        No Due Date
+                                    </span>
+                                    <span v-show="assignment.dueDate != null">
+                                        {{ moment(assignment.dueDate).format('MMMM Do YYYY, HH:mm') }}
+                                    </span>
                                 </v-flex>
                             </v-layout>
                             
@@ -91,7 +96,13 @@
                                     <b class="subheading">Last Date</b>
                                 </v-flex>
                                 <v-flex md8>
-                                    {{ moment(assignment.lastDate).format('MMMM Do YYYY, HH:mm') }}
+                                    <span v-show="assignment.lastDate == null">
+                                        No Last Date
+                                    </span>
+                                    <span v-show="assignment.lastDate != null">
+                                        {{ moment(assignment.lastDate).format('MMMM Do YYYY, HH:mm') }}
+                                    </span>
+                                    
                                 </v-flex>
                             </v-layout>
                             <v-divider></v-divider>

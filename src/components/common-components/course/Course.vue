@@ -28,8 +28,12 @@
                     :to="item.to"
                     v-if="$security.hasPermission(authenticatedUser, item.privilege)">
                     {{ item.text }}
-                    <v-badge class="notification" v-if="notifications[item.text] > 0">
-                        <span slot="badge">{{ notifications[item.text] }}</span>
+                
+                    <v-badge class="notification" v-if="notifications[item.notification] > 0 && item.notification != 'user'">
+                        <span slot="badge">{{ notifications[item.notification] }}</span>
+                    </v-badge>
+                    <v-badge class="notification" v-if="enrollmentRequestCounts.pending > 0 && item.notification == 'user'">
+                        <span slot="badge">{{ enrollmentRequestCounts.pending }}</span>
                     </v-badge>
                 </v-tab>
                 <v-tab-item>
@@ -52,11 +56,12 @@ export default {
     data () {
         return {
             active: null,
-                    text: 'QA',
-            notifications: {'Announcements': 1, 'Quiz - Testing': 1, 'Grades': 0, 'Assignments': 0, 'Resources': 0, 'QA': 0, 'Calendar': 0, 'Users': 0},
+            text: 'QA',
+            notf: [],
             courseTabMenus: [
                 {
                     text: 'Announcements',
+                    notification: 'announcement',
                     to: {name: 'CourseAnnouncements'},
                     privilege: AccessPrivileges.PAGE_COURSE_ANNOUNCEMENT,
             
@@ -68,12 +73,14 @@ export default {
                 },
                 {
                     text: 'Assignments',
+                    notification: 'assignment',
                     to: {name: 'CourseAssignments'},
                     privilege: AccessPrivileges.PAGE_COURSE_ASSIGNMENTS,
                 },
 
                 {
                     text: 'Quiz - Testing',
+                    notification: 'quiz-test',
                     to: {name: 'CourseQuizTest'},
                     privilege: AccessPrivileges.PAGE_COURSE_QT,
                 },
@@ -94,6 +101,7 @@ export default {
                 },
                 {
                     text: 'Users',
+                    notification: 'user',
                     to: {name: 'CourseStudents'},
                     privilege: AccessPrivileges.PAGE_COURSE_USERS,
                 },
@@ -110,6 +118,7 @@ export default {
         this.$store.dispatch('getCourse', this.$route.params.id);
         //this.$router.push({name: 'CourseAnnouncements'});
         this.initialize();
+        this.fetchNotifications();
         
     },
     beforeDestroy(){
@@ -117,16 +126,23 @@ export default {
     },
     methods: {
         initialize(){
-            this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.PAGE_COURSE_USERS)
-            .then(resp => {
-                if(resp){
+            if(this.$security.hasPermission(this.authenticatedUser, this.accessPrivileges.PAGE_COURSE_USERS)){
                     this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
-                }
-            })
+            }
+            // this.$store.dispatch("hasAccessPrivilege", AccessPrivileges.PAGE_COURSE_USERS)
+            // .then(resp => {
+            //     if(resp){
+            //         this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
+            //     }
+            // })
+        },
+
+        fetchNotifications(){
+            this.$store.dispatch("getNotifications", this.$route.params.id);
         }
     },
     computed: {
-        ...mapGetters(["authenticatedUser", 'accessPrivileges', 'course', 'enrollmentRequestCounts']),
+        ...mapGetters(["authenticatedUser", 'accessPrivileges', 'course', 'enrollmentRequestCounts', 'notifications']),
         displayedMenus(){
             const menus = [];
             for(var i in this.courseTabMenus){
@@ -139,9 +155,25 @@ export default {
         }
     },
     watch:{
-        enrollmentRequestCounts(nval, oval){
-            this.notifications['Users'] = nval.pending;
+        notifications(nval, oval){
+            if(nval != oval){
+                //this.notifications['user'] = this.enrollmentRequestCounts.pending;
+                this.notf = this.notifications;
+                this.notf['user'] = this.enrollmentRequestCounts.pending;
+            }
+            
             return nval;
+        },
+        enrollmentRequestCounts(nval, oval){
+
+                this.notf['user'] = this.enrollmentRequestCounts.pending;
+            return nval;
+        },
+        '$route'(nval, oval){
+            if(nval != oval){
+                this.fetchNotifications();
+            }
+            
         }
     }
     

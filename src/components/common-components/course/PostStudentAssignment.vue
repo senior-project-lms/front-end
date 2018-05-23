@@ -5,19 +5,27 @@
              <b class="subheading">Post Answer</b>
            </v-flex>
            <v-flex md9 class="text-md-right">
-                       <v-btn small color="primary" v-if="!isSaved" @click="save">Save</v-btn>
-                       <v-btn small color="primary" v-else @click="update">Update</v-btn>
+                       <v-btn small color="primary" v-if="!isSaved" v-show="!assignment.dueUp" @click="save">Save</v-btn>
+                       <v-btn small color="primary" v-else @click="update" v-show="!assignment.dueUp">Update</v-btn>
            </v-flex>
          </v-layout>
         <v-layout row wrap>
                 <v-flex md12 sm12 xs12>
-                    <vue-editor :editorToolbar="customToolbar" 
+                    <vue-editor 
+                    v-show="!assignment.dueUp"
+                    :editorToolbar="customToolbar" 
                     v-model="studentAssignment.content" required/>
                 </v-flex>
+                <p 
+                v-show="assignment.dueUp">
+                    {{ studentAssignment.content }}
+                </p>
         </v-layout>
         <v-layout row wrap >
             <v-flex class="uploader" md12 sm12 xs12>
-                <input type="file" @change="processFiles($event)" multiple
+                <input 
+                v-show="!assignment.dueUp"
+                type="file" @change="processFiles($event)" multiple
                 v-if="$security.hasPermission(authenticatedUser, accessPrivileges.UPLOAD_OWN_COURSE_ASSIGNMENT_FILE)">
             </v-flex>
         </v-layout>
@@ -25,7 +33,9 @@
             <v-flex md12 sm12>
                 <ul class="file-list">
                     <li v-for="(resource, i) in studentAssignment.resources" :key="i">
-                        <a class="red--text lighten-1 remove-file" @click="removeFile(resource.publicKey)">
+                        <a 
+                        v-show="!assignment.dueUp"
+                        class="red--text lighten-1 remove-file" @click="removeFile(resource.publicKey)">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <a  :href="resource.url" download>{{resource.originalFileName}}</a>                                 
@@ -144,6 +154,7 @@ export default {
             publicKey: this.publicKey,
         }
         this.$store.dispatch("saveCourseStudentAssignment", data);
+        this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
     },
     update(){
         const data = {
@@ -153,6 +164,8 @@ export default {
             stdPublicKey: this.studentAssignment.publicKey,
         }
         this.$store.dispatch("updateCourseStudentAssignment", data);
+        this.$store.dispatch('getEnrollmentRequestCounts', this.$route.params.id);
+        
     },
    cancel(saved){
 
@@ -166,7 +179,7 @@ export default {
 
 
   computed: {
-    ...mapGetters(['authenticatedUser', 'accessPrivileges', 'studentAssignment']),
+    ...mapGetters(['authenticatedUser', 'accessPrivileges', 'studentAssignment', 'assignment']),
     
     isSaved(){
         return this.studentAssignment.publicKey.length != 0;

@@ -111,7 +111,8 @@ export default {
       "courseAnnouncements"
     ]),
     loader() {
-      return this.courseAnnouncements.length / this.page == 5;
+      
+      return this.courseAnnouncements.length / (this.page - 1) == 5;
     }
   }
 };

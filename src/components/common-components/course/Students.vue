@@ -39,9 +39,7 @@
                             <td class="red--text text--lighten-2" v-if="props.item.observer">{{props.item.status}}</td>    
                             <td class="blue--text text--lighten-1" v-else>{{props.item.status}}</td>    
                             <td class="text-md-right text-xs-right">
-                                <!-- <v-btn icon>
-                                    <v-icon>settings</v-icon>
-                                </v-btn> -->
+                                <a class="red--text text--darken-1" @click="deleteDialog = true; selectedItem = props.item;">delete</a>
                             </td>                                
                         </tr>
                     </template>
@@ -49,6 +47,19 @@
             </v-flex>
         </v-layout>
     </v-container>
+    <div>
+        <v-dialog v-model="deleteDialog" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Delete</v-card-title>
+                <v-card-text>Are you sure to delete</v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Cancel</v-btn>
+                <v-btn color="green darken-1" flat="flat" @click.native="deleteStudent">Delete</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>        
+    </div>     
   </div>
 </template>
 <script>
@@ -61,6 +72,8 @@ export default{
     },
     data(){
         return{
+            selectedItem: null,
+            deleteDialog: false,
             searchStudent: '',
             filename: '',
             excelFields: {
@@ -75,7 +88,7 @@ export default{
                 { text: "Surname", value: "surname",  },
                 { text: "Email", value: "email", },
                 { text: "Status", value: "status", },
-                { text: "", value: "event" }
+                { text: "", value: "event", sortable:false, }
             ],
         }
     },
@@ -91,6 +104,14 @@ export default{
         //this.$store.commit('clearCourseStore');
     },
     methods:{
+        deleteStudent(){
+            const data = {
+                coursePublicKey:  this.$route.params.id,
+                userPublicKey: this.selectedItem.publicKey,
+            }
+            this.$store.dispatch("deleteStudentFromCourse", data);
+            this.deleteDialog = false;
+        }
 
     },
     computed: {

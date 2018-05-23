@@ -1,7 +1,25 @@
 <template>
     <div>
-        <h1>404 page is not found</h1>
-        <h4>We will redirect you in {{ remainingTime }} second later</h4>
+        <v-container fluid>
+        <v-layout column align-center>
+
+            
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+
+            <blockquote>
+                <v-icon x-large color="blue darken-2">error</v-icon><br/>
+                <h1>Uh oh...</h1>
+                <h3>
+                    It appears that what you're looking for doesn't exist.
+                </h3>
+
+        <br/>
+        <h5>You will be redirected in {{ remainingTime }} seconds.</h5>
+        <p>ERROR: 404 - PAGE NOT FOUND</p>
+        </blockquote>
+
+        </v-layout>
+        </v-container>
     </div>
 </template>
 <script>
