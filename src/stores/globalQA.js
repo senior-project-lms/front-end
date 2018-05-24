@@ -42,7 +42,7 @@ export default{
         },
         clearGlobalQAs(state){
             state.globalQAs = [];
-            globalQA= {
+            state.globalQA = {
                 title: '',
                 content: '',
                 answers: [],
@@ -55,7 +55,7 @@ export default{
                     username: ''
                 },
             };
-            relateds= []; 
+            state.relateds= []; 
         }
     },
 
