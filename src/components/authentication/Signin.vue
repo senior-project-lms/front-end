@@ -11,6 +11,7 @@
                                     :items="usernames"
                                     :error-messages="usernameErrorMessage"
                                     :error="usernameError"
+                                    autocomplete
                                     required>
                                     </v-select>
                             </v-flex>
