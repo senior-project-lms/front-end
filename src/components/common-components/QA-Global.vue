@@ -11,7 +11,7 @@
         > 
             <v-icon>add</v-icon>
         </v-btn>
-            <post-global-question :dialog="dialog"/>
+            <post-global-question :dialog="dialog" v-if="dialog"/>
 
         <template>
             <v-btn block class="load-more" light outline @click="loadGlobalQAs(page)" v-if="loader">More</v-btn>
@@ -50,7 +50,9 @@
             },
     
             cancelDialog(){
+                this.page = 1;
                 this.dialog = false;
+                this.loadGlobalQAs(this.page);
             },
 
         },

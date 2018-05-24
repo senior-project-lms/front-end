@@ -90,11 +90,15 @@ export default{
 
 
 
-        deleteCourseQA(context, publicKey){
-            return qaService.delete(publicKey)
+        deleteCourseQA(context, data){
+            return qaService.delete(data.coursePublicKey, data.publicKey)
             .then(response => {
                 if(response.status){
-                    return context.dispatch("getCourseQAs", 1) 
+                    const dt = {
+                        coursePublicKey: data.coursePublicKey,
+                        page: 1,
+                    }
+                    return context.dispatch("getCourseQAs", dt) 
                  }
                  return response;
             })

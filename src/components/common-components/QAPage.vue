@@ -2,9 +2,12 @@
     <div class="full-height white" >
         <v-container  fluid grid-list-md grid-list-lg grid-list-xs grid-list-sm >
             <v-layout>
-            <v-flex md12 xs12>
+            <v-flex md11 xs11>
                     <div><h1 class="headline">{{globalQA.title}}</h1></div>
                     <v-divider class="divider-space-title"></v-divider>                   
+            </v-flex>
+            <v-flex md1 xs1 class="text-md-right">
+                <a v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_GLOBAL_QA) || globalQA.owner" class="red--text" @click="deleteDialog = true;">delete</a>
             </v-flex>
             </v-layout>            
             <v-layout row wrap>
@@ -72,7 +75,19 @@
                 class="right dismiss">
                 delete
             </a>-->
-
+        <div>
+            <v-dialog v-model="deleteDialog" max-width="290">
+                <v-card>
+                    <v-card-title class="headline">Delete</v-card-title>
+                    <v-card-text>Are you sure to delete</v-card-text>
+                    <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="deleteQA">Delete</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>        
+        </div>   
       
     </div>
 </template>
@@ -92,6 +107,7 @@
         },
         data(){
             return{
+                deleteDialog: false,
                 dialog: false,
                 moment: moment,
                 update: true,
@@ -109,6 +125,14 @@
                 this.update = false;
                 //Object.assign(this.$data,this.$options.data.call(this));
                 this.update = true;
+            },
+            deleteQA(){
+                
+                this.$store.dispatch("deleteGlobalQA", this.$route.params.qaId);
+                this.cancel();
+            },
+            cancel(){
+                this.$router.push({name: "QA-Global"});
             }
         },
         watch: {

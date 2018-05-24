@@ -11,10 +11,12 @@
                   <v-subheader>Courses</v-subheader>       
                   <v-divider></v-divider>
                   <template v-for="(theCourse, i) in publicResources">
-                    <v-list-tile :key="theCourse.publicKey" @click="selectedItem=theCourse">                           
+                    <v-list-tile v-model="selected" :key="theCourse.publicKey" @click="selectedItem=theCourse">                           
                       <v-list-tile-content>
                           <v-list-tile-title><p>{{theCourse.code}} - {{theCourse.name}}</p></v-list-tile-title>
                       </v-list-tile-content>
+                        <v-icon right v-if="i == selected">check_circle</v-icon>                          
+                      
                     </v-list-tile>
                    <v-divider :key="i" v-if="i + 1 < publicResources.length"></v-divider>                      
                   </template>
@@ -71,12 +73,11 @@ export default {
       search: "",
       activeText: "Public Course Resources",
       moment: moment,
-
+      selected: null,
       selectedItem: [],
       headers: [
         { text: "File", value: "originalFileName", align: "left" },
         { text: "Uploaded At", value: "uploadedAt", align: "center" },
-        { text: "", value: "event" }
       ]
       
     };
