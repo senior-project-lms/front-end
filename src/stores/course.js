@@ -67,6 +67,8 @@ export default{
             state.observerStudents = [];
             state.assistants = [];
             state.events = [];
+            state.notifications={assignment: 0};
+            state.allRegisteredStudets=[];
 
         }
     },

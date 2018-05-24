@@ -23,6 +23,7 @@ export default{
         clearEnrollmentRequestStore(state){
             state.enrollmentRequests = [];
             state.courseEnrollmentRequests = [];
+            state.enrollmentRequestCounts={};
         },
 
         

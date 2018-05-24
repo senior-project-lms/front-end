@@ -23,9 +23,14 @@ export default {
         this.$store.commit("clearEnrollmentRequestStore");
         this.$store.commit("clearUserStore");
         this.$store.commit("clearQuizTestAllStates");
+        this.$store.commit("clearSystemEventStore");
+        this.$store.commit("clearGlobalQAs");
+        this.$store.commit("clearPublicResourcesStore");
+        this.$store.commit("clearAllGrades");
+        this.$store.commit("clearCourseAnnouncementStore");
+        this.$store.commit("clearCourseQAs");
+        this.$store.commit("clearAllAllAssignments");
 
-        // this.$store.dispatch("cleareAuthenticatedUser");
-        // this.$store.dispatch("cleareAuthenticatedUser");
 
         authService.clearStorage();
         this.$router.push({name: "SignIn"})

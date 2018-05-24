@@ -134,7 +134,7 @@ export default {
           },
           headers: [
             {
-                text: 'Name Sugrade',
+                text: 'Name Surname',
                 align: 'left',
                 sortable: true,
                 value: 'name'

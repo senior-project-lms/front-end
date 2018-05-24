@@ -43,6 +43,20 @@ export default{
         },
         clearCourseQAs(state){
             state.courseQAs = [];
+            state.relateds=[];
+            state.courseQA= {
+                title: '',
+                content: '',
+                answers: [],
+                upCount: 0,
+                downCount: 0,
+                stared: false,
+                upped: false,
+                downed: false,  
+                createdBy:{
+                    username: ''
+                },        
+            };
         }
     },
 

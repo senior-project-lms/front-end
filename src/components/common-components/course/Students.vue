@@ -51,7 +51,7 @@
         <v-dialog v-model="deleteDialog" max-width="290">
             <v-card>
                 <v-card-title class="headline">Delete</v-card-title>
-                <v-card-text>Are you sure to delete</v-card-text>
+                <v-card-text>Are you sure to delete?</v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Cancel</v-btn>
