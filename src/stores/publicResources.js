@@ -17,6 +17,13 @@ export default {
     setPublicResources(state, list) {
       state.publicResources = list;
     },
+    clearPublicResourcesStore(state){
+      state.theCourse= {
+        name: '',
+        code: '',
+      };
+      state.publicResources=[];
+    }
     
 
   },

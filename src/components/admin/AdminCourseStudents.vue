@@ -28,8 +28,8 @@
                 <v-data-table
                 :headers="headersStudentTable"
                 :items="allRegisteredStudets"
+                :rows-per-page-items="[5, 10, 20, 50]"
                 class="elevation-1"
-                :rows-per-page-items="[5, 10, 20, 50, 100]"
                 :search="searchStudent">
                     <template slot="items" slot-scope="props">
                         <tr>
@@ -47,11 +47,19 @@
             </v-flex>
         </v-layout>
     </v-container>
+    <v-btn fixed dark fab bottom right color="pink"  @click="dialog = !dialog" 
+    v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_USER)"
+        > 
+        <v-icon>add</v-icon>
+    </v-btn>    
+    <div>
+        <add-multi :dialog="dialog"></add-multi>
+    </div>
     <div>
         <v-dialog v-model="deleteDialog" max-width="290">
             <v-card>
                 <v-card-title class="headline">Delete</v-card-title>
-                <v-card-text>Are you sure to delete?</v-card-text>
+                <v-card-text>Are you sure to delete</v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" flat="flat" @click.native="deleteDialog = false">Cancel</v-btn>
@@ -65,13 +73,17 @@
 <script>
 import { mapGetters } from "vuex";
 import JsonExcel from 'vue-json-excel'
+import AddMulti from "./AddMultiUserToCourse";
 
 export default{
     components: {
-        JsonExcel
+        JsonExcel,
+        AddMulti,
+
     },
     data(){
         return{
+            dialog: false,
             selectedItem: null,
             deleteDialog: false,
             searchStudent: '',
@@ -110,11 +122,15 @@ export default{
             }
             this.$store.dispatch("deleteStudentFromCourse", data);
             this.deleteDialog = false;
-        }
+        },
+        closeDialog() {
+        this.dialog = false;
+        }        
 
     },
     computed: {
-        ...mapGetters(["authenticatedUser", "accessPrivileges", 'allRegisteredStudets']),  
+        ...mapGetters(["authenticatedUser", "accessPrivileges", 'allRegisteredStudets']),
+      
     },
     watch:{
           allRegisteredStudets(nval, oval){
@@ -126,7 +142,7 @@ export default{
             return nval;
         
         }
-    }    
+    }
 }
 </script>
 <style scoped>

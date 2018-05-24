@@ -20,10 +20,14 @@ export default{
         allRegisteredStudets: [],
         notifications: {
             assignment: 0,
-        }
+        },
+        notEnrolledUsers: []
 
     },
     mutations: {
+        setNotEnrolledUsers(state, obj){
+            state.notEnrolledUsers = obj; 
+        },
         setCourse(state, object){
             state.course = object;
         },
@@ -63,6 +67,8 @@ export default{
             state.observerStudents = [];
             state.assistants = [];
             state.events = [];
+            state.notifications={assignment: 0};
+            state.allRegisteredStudets=[];
 
         }
     },
@@ -265,7 +271,7 @@ export default{
             return courseService.deleteStudent(data.coursePublicKey, data.userPublicKey)
             .then(response => {
                 if(response.status){
-                    context.dispatch('getEnrolledUsers', data.coursePublicKey);
+                    context.dispatch('getAllRegisteredStudents', data.coursePublicKey);
 
                 }
                 return response;
@@ -273,6 +279,26 @@ export default{
 
             
         },
+
+        getNotEnrolledUsers(context, publicKey){
+            return courseService.getNotEnrolledUsers(publicKey)
+            .then(response => {
+                if(response.status){
+                    context.commit('setNotEnrolledUsers', response.data);
+
+                }
+                return response;
+            });
+        },
+        registerByAdmin(context, data){
+            return courseService.registerByAdmin(data.coursePublicKey, data.params)
+            .then(response => {
+                if(response.status){
+                    context.dispatch('getAllRegisteredStudents', data.coursePublicKey);
+
+                }
+                return response;
+            });        }
 
     },
     getters: {
@@ -307,6 +333,9 @@ export default{
         },
         notifications(state){
             return state.notifications;
+        },
+        notEnrolledUsers(state){
+            return state.notEnrolledUsers;
         }
     }
 }

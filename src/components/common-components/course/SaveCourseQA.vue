@@ -11,7 +11,7 @@
                 <v-btn icon @click="cancel" dark>
                     <v-icon>close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Global QA</v-toolbar-title>
+                <v-toolbar-title>Course QA</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                 <v-btn dark flat @click.native="save">Save</v-btn>
@@ -118,11 +118,11 @@ export default {
             this.$store.dispatch("saveCourseQA", data)
             .then(response => {
               if(response.status){
-                this.$notify({type: "success", title: "Global QA", text: "Successfuly published"})
+                this.$notify({type: "success", title: "Course QA", text: "Successfuly published"})
                 this.cancel(true);
               }
               else{
-                  this.$notify({type: "error", title: "Global QA", text: response.message})
+                  this.$notify({type: "error", title: "Course QA", text: response.message})
               }
             });
         }

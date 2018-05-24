@@ -42,6 +42,20 @@ export default{
         },
         clearGlobalQAs(state){
             state.globalQAs = [];
+            state.globalQA = {
+                title: '',
+                content: '',
+                answers: [],
+                upCount: 0,
+                downCount: 0,
+                stared: false,
+                upped: false,
+                downed: false,  
+                createdBy: {
+                    username: ''
+                },
+            };
+            state.relateds= []; 
         }
     },
 

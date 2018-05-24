@@ -11,7 +11,10 @@ export default{
     mutations: {
         setSystemEvents(state, list){
             state.systemEvents = list; 
-        }
+        },
+        clearSystemEventStore(state){
+            state.systemEvents= [];
+        },
     },
     actions: {
         getAllSystemEvents(context){
