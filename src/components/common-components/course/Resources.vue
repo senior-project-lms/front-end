@@ -25,7 +25,9 @@
                     <td class="text-xs-left"><a  :href="props.item.url" download> {{ props.item.originalFileName}}</a></td>
                     <td class="text-xs-center">{{ props.item.username }}</td>
                     <td class="text-xs-center">{{ moment(props.item.createdAt).format('MMMM Do YYYY HH:mm') }}</td>
-                    <td class="text-xs-center"><el-switch v-model="props.item.publicShared"
+                    <td class="text-xs-center"><el-switch
+                      v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)"
+                     v-model="props.item.publicShared"
                     :change="sharePublicly(props.item.publicShared, props.item.publicKey)"></el-switch></td>
                       <td class="text-xs-right">
                       <a class="red--text" @click="selectedItem=props.item; deleteDialog = true"
