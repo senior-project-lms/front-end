@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const Axios = axios.create({
-    baseURL: 'http://127.0.0.1:8090/lms',
+    //baseURL: 'http://127.0.0.1:8090/lms',
+    baseURL: '    http://206.189.22.130:8080/lms',
     timeout: 10000,
     headers: {
         //'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',

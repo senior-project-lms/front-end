@@ -28,7 +28,23 @@
                     <td class="text-xs-center"><el-switch
                       v-if="$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)"
                      v-model="props.item.publicShared"
-                    :change="sharePublicly(props.item.publicShared, props.item.publicKey)"></el-switch></td>
+                    :change="sharePublicly(props.item.publicShared, props.item.publicKey)">
+                    </el-switch>
+                    <span
+                      class="blue--text"
+                      v-if="!$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)
+                      && props.item.publicShared"
+                    >
+                      Public
+                    </span>
+                    <span
+                      class="red--text"                    
+                      v-if="!$security.hasPermission(authenticatedUser, accessPrivileges.SAVE_COURSE_RESOURCE)
+                      && !props.item.publicShared"
+                    > 
+                      Private
+                    </span>                    
+                    </td>
                       <td class="text-xs-right">
                       <a class="red--text" @click="selectedItem=props.item; deleteDialog = true"
                       v-if="$security.hasPermission(authenticatedUser, accessPrivileges.DELETE_COURSE_RESOURCE)"
@@ -98,7 +114,7 @@ export default {
         { text: "File", value: "originalFileName", align: "left" },
         { text: "Uploaded By", value: "username", align: "center" },
         { text: "Uploaded At", value: "uploadedAt", align: "center" },
-        { text: "Share Publicly", value: "publicShared", align:"center"},
+        { text: "Publicity Status", value: "publicShared", align:"center"},
         { text: "", value: "event" }
       ]
     };
