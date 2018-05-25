@@ -134,7 +134,7 @@ export default{
         deleteEvent(eventPublicKey){
             const data = {
                 publicKey: this.$route.params.id,
-                eventPublicKey: publicKey
+                eventPublicKey: eventPublicKey
             }
             this.$store.dispatch("deleteCourseEvent", data);
         },
